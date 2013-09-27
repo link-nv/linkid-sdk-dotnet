@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace safe_online_sdk_dotnet
 {
-    public enum PaymentState { STARTED, WAITING_FOR_UPDATE, FAILED, PAYED };
+    public enum PaymentState { STARTED, DEFERRED, WAITING_FOR_UPDATE, FAILED, PAYED };
 
     public class PaymentResponse
     {
