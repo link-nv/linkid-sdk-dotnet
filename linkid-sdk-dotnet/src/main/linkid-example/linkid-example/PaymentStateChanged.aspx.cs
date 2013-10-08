@@ -24,14 +24,8 @@ namespace linkid_example
                 return;
             }
 
-            // Load applications's keypair and linkID's certificate
-            RSACryptoServiceProvider applicationKey = KeyStoreUtil.GetPrivateKeyFromPem(LinkIDLogin.KEY_APP, true);
-            X509Certificate2 applicationCert = new X509Certificate2(LinkIDLogin.CERT_APP);
-            applicationCert.PrivateKey = applicationKey;
-            X509Certificate2 linkidCert = new X509Certificate2(LinkIDLogin.CERT_LINKID);
-
             // get the latesst state of this payment transaction from linkID
-            PaymentClient paymentClient = new PaymentClientImpl(LinkIDLogin.LINKID_HOST, applicationCert, linkidCert);
+            PaymentClient paymentClient = new PaymentClientImpl(LinkIDLogin.LINKID_HOST);
 
             PaymentState paymentState = paymentClient.getStatus(transactionId);
 

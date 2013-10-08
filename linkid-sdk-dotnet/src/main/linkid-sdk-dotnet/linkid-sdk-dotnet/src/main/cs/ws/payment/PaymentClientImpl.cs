@@ -26,19 +26,14 @@ namespace safe_online_sdk_dotnet
 	{
 		private PaymentServicePortClient client;
 
-        public PaymentClientImpl(string location, X509Certificate2 appCertificate, X509Certificate2 linkidCertificate)
+        public PaymentClientImpl(string location)
 		{			
 			string address = "https://" + location + "/linkid-ws/payment";
 			EndpointAddress remoteAddress = new EndpointAddress(address);
 
-            this.client = new PaymentServicePortClient(new LinkIDBinding(linkidCertificate), remoteAddress);
-			
-			this.client.ClientCredentials.ClientCertificate.Certificate = appCertificate;
-			this.client.ClientCredentials.ServiceCertificate.DefaultCertificate = linkidCertificate;
-			// To override the validation for our self-signed test certificates
-			this.client.ClientCredentials.ServiceCertificate.Authentication.CertificateValidationMode = X509CertificateValidationMode.None;
-			
-			this.client.Endpoint.Contract.ProtectionLevel = ProtectionLevel.Sign;
+            BasicHttpBinding binding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
+
+            this.client = new PaymentServicePortClient(binding, remoteAddress);
 			this.client.Endpoint.Behaviors.Add(new LoggingBehavior());
 		}
 		
