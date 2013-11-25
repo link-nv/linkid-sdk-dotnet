@@ -34,8 +34,8 @@ namespace linkid_example
          * Application specific configuration...
          */
         // linkID host to be used
-//        public static string LINKID_HOST = "192.168.5.14:8443";
-        public static string LINKID_HOST = "demo.linkid.be";
+        public static string LINKID_HOST = "192.168.5.14:8080";
+//        public static string LINKID_HOST = "demo.linkid.be";
 
         // location of this page, linkID will post its authentication response back to this location.
         private static string LOGINPAGE_LOCATION = "http://localhost:53825/LinkIDLogin.aspx";
@@ -62,9 +62,11 @@ namespace linkid_example
         /*
          * All code below should not be modified.
          */
-        private static string LINKID_AUTH_ENTRY = "https://" + LINKID_HOST + "/linkid-auth/entry";
-        private static string LINKID_MOBILE_MINIMAL_ENTRY = "https://" + LINKID_HOST + "/linkid-qr/auth-min";
-        private static string LINKID_MOBILE_MODAL_ENTRY = "https://" + LINKID_HOST + "/linkid-qr/auth";
+        private static string LINKID_AUTH_ENTRY = "http://" + LINKID_HOST + "/linkid-auth/entry";
+        private static string LINKID_MOBILE_MINIMAL_ENTRY = "http://" + LINKID_HOST + "/linkid-qr/auth-min";
+        private static string LINKID_MOBILE_MODAL_ENTRY = "http://" + LINKID_HOST + "/linkid-qr/auth";
+        private static string LINKID_MOBILE_REG_MINIMAL_ENTRY = "http://" + LINKID_HOST + "/linkid-qr/reg-min";
+        private static string LINKID_MOBILE_REG_MODAL_ENTRY = "http://" + LINKID_HOST + "/linkid-qr/reg";
 
         // Session attributes
         private static string SESSION_SAML2_AUTH_UTIL = "linkID.saml2AuthUtil";
@@ -155,6 +157,7 @@ namespace linkid_example
                  */
                 bool mobile = null != Request[RequestConstants.MOBILE_AUTHN_REQUEST_PARAM];
                 bool mobileMinimal = null != Request[RequestConstants.MOBILE_AUTHN_MINIMAL_REQUEST_PARAM];
+                bool mobileForceRegistration = null != Request[RequestConstants.MOBILE_FORCE_REG_REQUEST_PARAM];
                 String targetURI = Request[RequestConstants.TARGET_URI_REQUEST_PARAM];
                 String loginMode = Request[RequestConstants.LOGIN_MODE_REQUEST_PARAM];
                 String startPage = Request[RequestConstants.START_PAGE_REQUEST_PARAM];
@@ -162,12 +165,18 @@ namespace linkid_example
                 String linkIDLandingPage = LINKID_AUTH_ENTRY;
                 if (mobile)
                 {
-                    linkIDLandingPage = LINKID_MOBILE_MODAL_ENTRY;
+                    if (mobileForceRegistration)
+                        linkIDLandingPage = LINKID_MOBILE_MODAL_ENTRY;
+                    else
+                        linkIDLandingPage = LINKID_MOBILE_REG_MODAL_ENTRY;
                     Session[SESSION_MOBILE_AUTH] = "true";
                 }
                 if (mobileMinimal)
                 {
-                    linkIDLandingPage = LINKID_MOBILE_MINIMAL_ENTRY;
+                    if (mobileForceRegistration)
+                        linkIDLandingPage = LINKID_MOBILE_REG_MINIMAL_ENTRY;
+                    else
+                        linkIDLandingPage = LINKID_MOBILE_MINIMAL_ENTRY;
                     Session[SESSION_MOBILE_AUTH_MINIMAL] = "true";
                 }
                 // Construct the SAML v2.0 Authentication request and fill in the form parameters

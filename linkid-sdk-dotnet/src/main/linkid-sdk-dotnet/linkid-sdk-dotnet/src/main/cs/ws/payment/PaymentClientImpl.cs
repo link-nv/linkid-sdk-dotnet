@@ -51,6 +51,10 @@ namespace safe_online_sdk_dotnet
                     return PaymentState.PAYED;
                 case PaymentStatusType.FAILED:
                     return PaymentState.FAILED;
+                case PaymentStatusType.REFUNDED:
+                    return PaymentState.REFUNDED;
+                case PaymentStatusType.REFUND_STARTED:
+                    return PaymentState.REFUND_STARTED;
             }
 
             throw new RuntimeException("Payment state type " + response.paymentStatus + "is not supported!");

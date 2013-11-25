@@ -21,6 +21,7 @@ namespace safe_online_sdk_dotnet
         // Mobile authentication flows
         public static readonly String MOBILE_AUTHN_REQUEST_PARAM = "mobileAuthn";
         public static readonly String MOBILE_AUTHN_MINIMAL_REQUEST_PARAM = "mobileAuthnMinimal";
+        public static readonly String MOBILE_FORCE_REG_REQUEST_PARAM = "mobileForceReg";
 
         // Case SP wants to force linkID to go straight to registration or authentication page
         public static readonly String START_PAGE_REQUEST_PARAM = "start_page";
