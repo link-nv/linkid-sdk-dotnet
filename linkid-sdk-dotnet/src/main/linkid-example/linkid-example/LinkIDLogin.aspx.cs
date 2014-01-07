@@ -21,15 +21,7 @@ using System.Xml;
 namespace linkid_example
 {
     public partial class LinkIDLogin : System.Web.UI.Page
-    {
-        /*
-         * Some session state keys to store optional devicecontext, attribute suggestions, 
-         * payment context, which will be added to the SAML v2.0 authentication request.
-         */
-        public static String SESSION_DEVICE_CONTEXT = "AuthnRequest.DeviceContext";
-        public static String SESSION_ATTRIBUTE_SUGGESTIONS = "AuthnRequest.AttributeSuggestions";
-        public static String SESSION_PAYMENT_CONTEXT = "AuthnRequest.PaymentContext";
-         
+    {         
         /*
          * Application specific configuration...
          */
@@ -188,13 +180,13 @@ namespace linkid_example
                 this.form1.Action = linkIDLandingPage;
 
                 // device context
-                Dictionary<string, string> deviceContextMap = getDeviceContext(Session);
+                Dictionary<string, string> deviceContextMap = LoginUtil.getDeviceContext(Session);
 
                 // attribute suggestions
-                Dictionary<string, List<Object>> attributeSuggestions = getAttributeSuggestions(Session);
+                Dictionary<string, List<Object>> attributeSuggestions = LoginUtil.getAttributeSuggestions(Session);
 
                 // payment context
-                PaymentContext paymentContext = getPaymentContext(Session);
+                PaymentContext paymentContext = LoginUtil.getPaymentContext(Session);
 
                 this.SAMLRequest.ID = RequestConstants.SAML2_POST_BINDING_REQUEST_PARAM;
                 this.SAMLRequest.Value = saml2AuthUtil.generateEncodedAuthnRequest(APP_NAME, null, null,
@@ -212,36 +204,5 @@ namespace linkid_example
                 }
             }
         }
-
-        public static void setDeviceContext(HttpSessionState session, Dictionary<string, string> deviceContext)
-        {
-            session.Add(SESSION_DEVICE_CONTEXT, deviceContext);
-        }
-
-        public static Dictionary<string, string> getDeviceContext(HttpSessionState session)
-        {
-            return (Dictionary<string, string>)session[SESSION_DEVICE_CONTEXT];
-        }
-
-        public static void setAttriuteSuggestions(HttpSessionState session, Dictionary<string, List<Object>> attributeSuggestions)
-        {
-            session.Add(SESSION_ATTRIBUTE_SUGGESTIONS, attributeSuggestions);
-        }
-
-        public static Dictionary<string, List<Object>> getAttributeSuggestions(HttpSessionState session)
-        {
-            return (Dictionary<string, List<Object>>)session[SESSION_ATTRIBUTE_SUGGESTIONS];
-        }
-
-        public static void setPaymentContext(HttpSessionState session, PaymentContext paymentContext)
-        {
-            session.Add(SESSION_PAYMENT_CONTEXT, paymentContext);
-        }
-
-        public static PaymentContext getPaymentContext(HttpSessionState session)
-        {
-            return (PaymentContext)session[SESSION_PAYMENT_CONTEXT];
-        }
-
     }
 }

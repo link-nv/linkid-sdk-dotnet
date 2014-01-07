@@ -16,7 +16,7 @@ namespace linkid_example
             // device context
             Dictionary<string, string> deviceContextMap = new Dictionary<string, string>();
             deviceContextMap.Add(RequestConstants.DEVICE_CONTEXT_TITLE, "Test .NET context");
-            LinkIDLogin.setDeviceContext(Session, deviceContextMap);
+            LoginUtil.setDeviceContext(Session, deviceContextMap);
         }
     }
 }

@@ -17,7 +17,7 @@ namespace linkid_example
             // device context
             Dictionary<string, string> deviceContextMap = new Dictionary<string, string>();
             deviceContextMap.Add(RequestConstants.DEVICE_CONTEXT_TITLE, "Test .NET context");
-            LinkIDLogin.setDeviceContext(Session, deviceContextMap);
+            LoginUtil.setDeviceContext(Session, deviceContextMap);
 
             // attribute suggestions
             Dictionary<string, List<Object>> attributeSuggestions = new Dictionary<string, List<object>>();
@@ -26,7 +26,7 @@ namespace linkid_example
             attributeSuggestions.Add("test.attribute.boolean", new List<Object> { true });
             attributeSuggestions.Add("test.attribute.integer", new List<Object> { 69 });
             attributeSuggestions.Add("test.attribute.double", new List<Object> { 3.14159 });
-            LinkIDLogin.setAttriuteSuggestions(Session, attributeSuggestions);
+            LoginUtil.setAttriuteSuggestions(Session, attributeSuggestions);
         }
     }
 }
