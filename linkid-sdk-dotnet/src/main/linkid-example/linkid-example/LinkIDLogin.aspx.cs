@@ -26,8 +26,8 @@ namespace linkid_example
          * Application specific configuration...
          */
         // linkID host to be used
-        public static string LINKID_HOST = "192.168.5.14:8080";
-//        public static string LINKID_HOST = "demo.linkid.be";
+//        public static string LINKID_HOST = "192.168.5.14:8080";
+        public static string LINKID_HOST = "demo.linkid.be";
 
         // location of this page, linkID will post its authentication response back to this location.
         private static string LOGINPAGE_LOCATION = "http://localhost:53825/LinkIDLogin.aspx";
@@ -54,11 +54,11 @@ namespace linkid_example
         /*
          * All code below should not be modified.
          */
-        private static string LINKID_AUTH_ENTRY = "http://" + LINKID_HOST + "/linkid-auth/entry";
-        private static string LINKID_MOBILE_MINIMAL_ENTRY = "http://" + LINKID_HOST + "/linkid-qr/auth-min";
-        private static string LINKID_MOBILE_MODAL_ENTRY = "http://" + LINKID_HOST + "/linkid-qr/auth";
-        private static string LINKID_MOBILE_REG_MINIMAL_ENTRY = "http://" + LINKID_HOST + "/linkid-qr/reg-min";
-        private static string LINKID_MOBILE_REG_MODAL_ENTRY = "http://" + LINKID_HOST + "/linkid-qr/reg";
+        private static string LINKID_AUTH_ENTRY = "https://" + LINKID_HOST + "/linkid-auth/entry";
+        private static string LINKID_MOBILE_MINIMAL_ENTRY = "https://" + LINKID_HOST + "/linkid-qr/auth-min";
+        private static string LINKID_MOBILE_MODAL_ENTRY = "https://" + LINKID_HOST + "/linkid-qr/auth";
+        private static string LINKID_MOBILE_REG_MINIMAL_ENTRY = "https://" + LINKID_HOST + "/linkid-qr/reg-min";
+        private static string LINKID_MOBILE_REG_MODAL_ENTRY = "https://" + LINKID_HOST + "/linkid-qr/reg";
 
         // Session attributes
         private static string SESSION_SAML2_AUTH_UTIL = "linkID.saml2AuthUtil";
@@ -80,11 +80,19 @@ namespace linkid_example
             X509Certificate2 linkidCert = new X509Certificate2(CERT_LINKID);
 
             string[] responses = Page.Request.Form.GetValues(RequestConstants.SAML2_POST_BINDING_RESPONSE_PARAM);
+            
+            /*
+             * Check if "force" query param is present.
+             * If set, an authentication will be started, regardless if the user was already logged in.
+             * For e.g. linkID payments...
+             */
+            bool forceAuthentication = null != Request.QueryString["force"];
+            
             /*
              * If a SAML2 response was found but no authentication context was on the session we received a
              * SAML2 authentication response.
              */
-            if (null != responses && null == Session[SESSION_AUTH_CONTEXT])
+            if (null != responses && null == Session[SESSION_AUTH_CONTEXT] )
             {
                 Saml2AuthUtil saml2AuthUtil = (Saml2AuthUtil)Session[SESSION_SAML2_AUTH_UTIL];
                 string encodedSaml2Response = responses[0];
@@ -139,8 +147,13 @@ namespace linkid_example
              * Generate a SAML2 authentication request and store in the hiddenfield.
              * Put the used authentication utility class on the session.
              */
-            if (null == Session[SESSION_AUTH_CONTEXT])
+            if (null == Session[SESSION_AUTH_CONTEXT] || forceAuthentication)
             {
+                if (forceAuthentication)
+                {
+                    Session[SESSION_AUTH_CONTEXT] = null;
+                }
+
                 /*
                  * Check page's request parameters.
                  * They will contain e.g. 

@@ -26,7 +26,7 @@
             <iframe id="linkid" style="display: none;"></iframe>
         </div>
         <div>
-            <a class="linkid-login" data-login-href="./LinkIDLogin.aspx" 
+            <a class="linkid-login" data-login-href="./LinkIDLogin.aspx?force=true" 
                     data-mobile-minimal="linkid" data-completion-href="./LoggedIn.aspx">
                 Start
             </a>        
