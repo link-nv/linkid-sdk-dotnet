@@ -14,11 +14,9 @@ namespace linkid_example
 {
     public partial class PaymentStateChanged : System.Web.UI.Page
     {
-        public static readonly String PAYMENT_CHANGED_ID_PARAM = "txn_id";
-
         protected void Page_Load(object sender, EventArgs e)
         {
-            String transactionId = Request[PAYMENT_CHANGED_ID_PARAM];
+            String transactionId = Request[RequestConstants.PAYMENT_CHANGED_ID_PARAM];
             if (null == transactionId)
             {
                 return;

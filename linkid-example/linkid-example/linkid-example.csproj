@@ -68,6 +68,7 @@
     <Content Include="LoginMobileForceReg.aspx" />
     <Content Include="DocData.aspx" />
     <Content Include="DocDataLoggedIn.aspx" />
+    <Content Include="LTQRNotification.aspx" />
     <Content Include="PaymentMobile.aspx" />
     <Content Include="LinkIDLogout.aspx" />
     <Content Include="LoggedIn.aspx" />
@@ -99,6 +100,13 @@
     </Compile>
     <Compile Include="DocDataLoggedIn.aspx.designer.cs">
       <DependentUpon>DocDataLoggedIn.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="LTQRNotification.aspx.cs">
+      <DependentUpon>LTQRNotification.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="LTQRNotification.aspx.designer.cs">
+      <DependentUpon>LTQRNotification.aspx</DependentUpon>
     </Compile>
     <Compile Include="PaymentMobile.aspx.cs">
       <DependentUpon>PaymentMobile.aspx</DependentUpon>

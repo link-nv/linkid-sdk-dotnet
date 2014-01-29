@@ -14,6 +14,7 @@ namespace safe_online_sdk_dotnet
         public static readonly String PROFILE_KEY          = "PaymentContext.profile";
         public static readonly String VALIDATION_TIME_KEY  = "PaymentContext.validationTime";
         public static readonly String ADD_LINK_KEY         = "PaymentContext.addLinkKey";
+        public static readonly String DEFERRED_PAY_KEY     = "PaymentContext.deferredPay";
 
         // amount to pay, carefull amount is in cents!!
         public Double amount { get; set; }
@@ -21,7 +22,7 @@ namespace safe_online_sdk_dotnet
         public String description { get; set; }
 
         // optional payment profile
-        private String paymentProfile { get; set; }
+        public String paymentProfile { get; set; }
 
         // maximum time to wait for payment validation, if not specified defaults to 5s
         public int paymentValidationTime { get; set; }
@@ -29,8 +30,12 @@ namespace safe_online_sdk_dotnet
         // whether or not to display a link to linkID's payment method page if the linkID user has no payment methods added, default is true
         public Boolean showAddPaymentMethodLink { get; set; }
 
+        // whether or not deferred payments are allowed, if a user has no payment token attached to the linkID account
+        // linkID can allow for the user to make a deferred payment which he can complete later on from this browser.
+        public Boolean allowDeferredPay;
+
         public PaymentContext(Double amount, Currency currency, String description, 
-            String paymentProfile, int paymentValidationTime, Boolean showAddPaymentMethodLink)
+            String paymentProfile, int paymentValidationTime, Boolean showAddPaymentMethodLink, Boolean allowDeferredPay)
         {
             this.amount = amount;
             this.currency = currency;
@@ -38,6 +43,7 @@ namespace safe_online_sdk_dotnet
             this.paymentProfile = paymentProfile;
             this.paymentValidationTime = paymentValidationTime;
             this.showAddPaymentMethodLink = showAddPaymentMethodLink;
+            this.allowDeferredPay = allowDeferredPay;
         }
 
         public PaymentContext(double amount, Currency currency, String description, String paymentProfile)
@@ -48,6 +54,7 @@ namespace safe_online_sdk_dotnet
             this.paymentProfile = paymentProfile;
             this.paymentValidationTime = 5;
             this.showAddPaymentMethodLink = true;
+            this.allowDeferredPay = false;
         }
 
         public PaymentContext(double amount, Currency currency)
@@ -56,6 +63,7 @@ namespace safe_online_sdk_dotnet
             this.currency = currency;
             this.paymentValidationTime = 5;
             this.showAddPaymentMethodLink = true;
+            this.allowDeferredPay = false;
         }
 
         public Dictionary<string, string> toDictionary()
@@ -69,6 +77,7 @@ namespace safe_online_sdk_dotnet
                 dictionary.Add(PROFILE_KEY, paymentProfile);
             dictionary.Add(VALIDATION_TIME_KEY, paymentValidationTime.ToString());
             dictionary.Add(ADD_LINK_KEY, showAddPaymentMethodLink.ToString());
+            dictionary.Add(DEFERRED_PAY_KEY, allowDeferredPay.ToString());
             return dictionary;
         }
     }

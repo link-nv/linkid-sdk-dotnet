@@ -36,6 +36,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>.\BouncyCastle.Crypto.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Web.Services3, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="nunit.framework" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -81,7 +82,16 @@
     <Compile Include="src\main\cs\ws\exception\SubscriptionNotFoundException.cs" />
     <Compile Include="src\main\cs\ws\idmapping\IdMappingClient.cs" />
     <Compile Include="src\main\cs\ws\idmapping\IdMappingClientImpl.cs" />
+    <Compile Include="src\main\cs\ws\LinkIDUsernameBinding.cs" />
     <Compile Include="src\main\cs\ws\LoggingBehavior.cs" />
+    <Compile Include="src\main\cs\ws\ltqr\ErrorCode.cs" />
+    <Compile Include="src\main\cs\ws\ltqr\exception\PullException.cs" />
+    <Compile Include="src\main\cs\ws\ltqr\exception\PushException.cs" />
+    <Compile Include="src\main\cs\ws\ltqr\exception\RemoveException.cs" />
+    <Compile Include="src\main\cs\ws\ltqr\LTQRClient.cs" />
+    <Compile Include="src\main\cs\ws\ltqr\LTQRClientImpl.cs" />
+    <Compile Include="src\main\cs\ws\ltqr\LTQRClientSession.cs" />
+    <Compile Include="src\main\cs\ws\ltqr\LTQRSession.cs" />
     <Compile Include="src\main\cs\ws\notification\NotificationSubscriptionManagerClientImpl.cs" />
     <Compile Include="src\main\cs\ws\notification\NotificationSubscriptionManagerClient.cs" />
     <Compile Include="src\main\cs\ws\notification\NotificationProducerClientImpl.cs" />
@@ -90,6 +100,7 @@
     <Compile Include="src\main\cs\ws\notification\NotificationConsumerClientImpl.cs" />
     <Compile Include="src\main\cs\ws\notification\NotificationConsumerClient.cs" />
     <Compile Include="src\main\cs\ws\LinkIDBinding.cs" />
+    <Compile Include="src\main\cs\ws\PasswordDigestBehavior.cs" />
     <Compile Include="src\main\cs\ws\payment\PaymentClientImpl.cs" />
     <Compile Include="src\main\cs\ws\payment\PaymentClient.cs" />
     <Compile Include="src\main\cs\ws\ping\PingClient.cs" />
@@ -142,6 +153,10 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="target\services\SafeOnlineLTQRWebService.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="src\main\cs\AssemblyInfo.cs" />
     <None Include="src\main\resources\*" />
     <None Include="src\main\resources\attrib-ws\*" />
@@ -152,6 +167,7 @@
     <None Include="src\main\resources\notification-ws\*" />
     <None Include="src\main\resources\session-ws\*" />
     <None Include="src\main\resources\payment-ws\*" />
+    <None Include="src\main\resources\ltqr-ws\*" />
   </ItemGroup>
   <Target Name="BeforeBuild">
     <MakeDir Directories="target\services" />
@@ -165,6 +181,7 @@
     <Exec Command="svcutil /namespace:*,NotificationSubscriptionManagerWSNameSpace /directory:target\services src\main\resources\notification-ws\notification-subscription-manager.wsdl src\main\resources\notification-ws\b-2.xsd src\main\resources\notification-ws\bf-2.xsd src\main\resources\ws-addr.xsd src\main\resources\notification-ws\t-1.xsd" />
     <Exec Command="svcutil /namespace:*,SessionWSNameSpace /directory:target\services src\main\resources\session-ws\safe-online-session.wsdl src\main\resources\session-ws\safe-online-session.xsd" />
     <Exec Command="svcutil /namespace:*,PaymentWSNameSpace /directory:target\services src\main\resources\payment-ws\safe-online-payment.wsdl src\main\resources\payment-ws\safe-online-payment.xsd src\main\resources\ws-addr.xsd src\main\resources\xmldsig-core-schema.xsd src\main\resources\xenc-schema.xsd" />
+    <Exec Command="svcutil /namespace:*,LTQRWSNameSpace /directory:target\services src\main\resources\ltqr-ws\safe-online-ltqr.wsdl src\main\resources\ltqr-ws\safe-online-ltqr.xsd" />
   </Target>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

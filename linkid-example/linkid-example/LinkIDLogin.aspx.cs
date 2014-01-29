@@ -26,8 +26,8 @@ namespace linkid_example
          * Application specific configuration...
          */
         // linkID host to be used
-//        public static string LINKID_HOST = "192.168.5.14:8080";
-        public static string LINKID_HOST = "demo.linkid.be";
+        public static string LINKID_HOST = "192.168.5.14:8443";
+//        public static string LINKID_HOST = "demo.linkid.be";
 
         // location of this page, linkID will post its authentication response back to this location.
         private static string LOGINPAGE_LOCATION = "http://localhost:53825/LinkIDLogin.aspx";
@@ -35,7 +35,11 @@ namespace linkid_example
         // application details
         public static string APP_NAME = "demo-test";
 
-        // certificates and key locations
+        // username,password case SAML Artifcat binding / WS-Security Password token is used
+        public static string wsUsername = "demo-test";
+        public static string wsPassword = "08427E9F-6355-4DE4-B992-B1AB93CEE9D4";
+
+        // certificates and key locations case SAML Post / WS-Security X509 profile is used
         public static string KEY_DIR = "C:\\cygwin\\home\\devel\\keystores\\";
         public static string CERT_LINKID = KEY_DIR + "linkid.crt";
         public static string CERT_APP = KEY_DIR + "demotest.crt";
