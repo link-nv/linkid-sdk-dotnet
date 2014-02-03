@@ -19,5 +19,9 @@ namespace safe_online_sdk_dotnet
 		/// <exception cref="SubscriptionFailedException"></exception>
 		/// <exception cref="RuntimeException"></exception>
 		void subscribe(string topic, string address);
+
+        // log incoming and outgoing soap messages to the console
+        void enableLogging();
+
 	}
 }

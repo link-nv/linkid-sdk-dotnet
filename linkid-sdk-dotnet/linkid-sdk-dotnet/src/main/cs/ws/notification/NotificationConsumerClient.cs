@@ -12,5 +12,9 @@ namespace safe_online_sdk_dotnet
 	public interface NotificationConsumerClient
 	{
 		void sendNotification(string topic, string destination, string subject, string content);
+
+        // log incoming and outgoing soap messages to the console
+        void enableLogging();
+
 	}
 }

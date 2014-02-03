@@ -12,5 +12,8 @@ namespace safe_online_sdk_dotnet
 	public interface IdMappingClient
 	{
 		string getUserId(String attributeType, String identifier);
+
+        // log incoming and outgoing soap messages to the console
+        void enableLogging();
 	}
 }

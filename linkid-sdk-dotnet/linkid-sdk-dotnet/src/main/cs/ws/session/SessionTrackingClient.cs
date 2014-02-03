@@ -18,6 +18,9 @@ namespace safe_online_sdk_dotnet
 	{
 		List<SessionAssertion> getAssertions(string session, string subject, 
 		                                     List<string> applicationPools);
+
+        // log incoming and outgoing soap messages to the console
+        void enableLogging();
 		
 	}
 }

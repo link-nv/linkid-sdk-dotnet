@@ -33,6 +33,17 @@ namespace safe_online_sdk_dotnet
 		
 		private SessionTrackingPortClient client;
 
+        public SessionTrackingClientImpl(string location, string username, string password)
+		{
+            string address = "https://" + location + "/linkid-ws-username/session";
+			EndpointAddress remoteAddress = new EndpointAddress(address);
+
+            BasicHttpBinding binding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
+
+            this.client = new SessionTrackingPortClient(binding, remoteAddress);
+            this.client.Endpoint.Behaviors.Add(new PasswordDigestBehavior(username, password));
+		}
+
         public SessionTrackingClientImpl(string location, X509Certificate2 appCertificate, X509Certificate2 linkidCertificate)
 		{
 			string address = "https://" + location + "/linkid-ws/session";
@@ -46,8 +57,12 @@ namespace safe_online_sdk_dotnet
 			this.client.ClientCredentials.ServiceCertificate.Authentication.CertificateValidationMode = X509CertificateValidationMode.None;
 			
 			this.client.Endpoint.Contract.ProtectionLevel = ProtectionLevel.Sign;
-			this.client.Endpoint.Behaviors.Add(new LoggingBehavior());
 		}
+
+        public void enableLogging()
+        {
+            this.client.Endpoint.Behaviors.Add(new LoggingBehavior());
+        }
 		
 		public List<SessionAssertion> getAssertions(string session, string subject, 
 		                                            List<string> applicationPools) {

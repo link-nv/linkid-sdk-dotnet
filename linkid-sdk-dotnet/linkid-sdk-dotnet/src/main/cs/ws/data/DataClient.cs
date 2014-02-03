@@ -55,5 +55,8 @@ namespace safe_online_sdk_dotnet
         void removeAttribute(String userId, AttributeSDK attribute);
 
         void removeAttributes(String userId, List<AttributeSDK> attributes);
+        
+        // log incoming and outgoing soap messages to the console
+        void enableLogging();
     }
 }

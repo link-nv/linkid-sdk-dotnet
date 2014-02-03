@@ -31,6 +31,18 @@ namespace safe_online_sdk_dotnet
     {
         private DataServicePortClient client;
 
+
+        public DataClientImpl(string location, string username, string password)
+		{			
+			string address = "https://" + location + "/linkid-ws-username/data";
+			EndpointAddress remoteAddress = new EndpointAddress(address);
+
+            BasicHttpBinding binding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
+
+            this.client = new DataServicePortClient(binding, remoteAddress);
+            this.client.Endpoint.Behaviors.Add(new PasswordDigestBehavior(username, password));
+		}
+
         public DataClientImpl(string location, X509Certificate2 appCertificate, X509Certificate2 linkidCertificate)
         {
             string address = "https://" + location + "/linkid-ws/data";
@@ -45,6 +57,10 @@ namespace safe_online_sdk_dotnet
 
             this.client.Endpoint.Contract.ProtectionLevel = ProtectionLevel.Sign;
             this.client.Endpoint.Contract.Behaviors.Add(new SignTargetIdentityBehavior());
+        }
+
+        public void enableLogging()
+        {
             this.client.Endpoint.Behaviors.Add(new LoggingBehavior());
         }
 

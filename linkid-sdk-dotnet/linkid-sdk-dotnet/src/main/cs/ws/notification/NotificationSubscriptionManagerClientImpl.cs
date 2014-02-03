@@ -26,6 +26,17 @@ namespace safe_online_sdk_dotnet
 	public class NotificationSubscriptionManagerClientImpl : NotificationSubscriptionManagerClient
 	{
 		private NotificationSubscriptionManagerPortClient client;
+
+        public NotificationSubscriptionManagerClientImpl(string location, string username, string password)
+		{
+            string address = "https://" + location + "/linkid-ws-username/subscription";
+			EndpointAddress remoteAddress = new EndpointAddress(address);
+
+            BasicHttpBinding binding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
+
+            this.client = new NotificationSubscriptionManagerPortClient(binding, remoteAddress);
+            this.client.Endpoint.Behaviors.Add(new PasswordDigestBehavior(username, password));
+		}
 		
         public NotificationSubscriptionManagerClientImpl(string location, X509Certificate2 appCertificate, X509Certificate2 linkidCertificate)
         {			
@@ -40,8 +51,12 @@ namespace safe_online_sdk_dotnet
 			this.client.ClientCredentials.ServiceCertificate.Authentication.CertificateValidationMode = X509CertificateValidationMode.None;
 			
 			this.client.Endpoint.Contract.ProtectionLevel = ProtectionLevel.Sign;
-			this.client.Endpoint.Behaviors.Add(new LoggingBehavior());
 		}
+
+        public void enableLogging()
+        {
+            this.client.Endpoint.Behaviors.Add(new LoggingBehavior());
+        }
 		
 		public void unsubscribe(string topic, string address) {
 			Console.WriteLine("unsubscribe " + address + " from topic " + topic);

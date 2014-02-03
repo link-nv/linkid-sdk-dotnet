@@ -22,7 +22,7 @@ namespace safe_online_sdk_dotnet.test.cs
         }
 
 		[Test]
-		public void TestGetUserId()
+		public void TestGetUserIdX509()
 		{
             X509Certificate2 appCertificate = KeyStoreUtil.loadCertificate(TestConstants.testPfxPath, TestConstants.testPfxPassword, false);
             X509Certificate2 linkidCertificate = new X509Certificate2(TestConstants.linkidCertPath);
@@ -32,5 +32,14 @@ namespace safe_online_sdk_dotnet.test.cs
 			String userId = idMappingClient.getUserId(TestConstants.loginAttribute, TestConstants.testLogin);
 			Console.WriteLine("admin userId: " + userId);
 		}
-	}
+
+        [Test]
+        public void TestGetUserIdUsername()
+        {
+            IdMappingClient idMappingClient =
+                new IdMappingClientImpl(TestConstants.wsLocation, TestConstants.testWsUsername, TestConstants.testWsPassword);
+            String userId = idMappingClient.getUserId(TestConstants.loginAttribute, TestConstants.testLogin);
+            Console.WriteLine("admin userId: " + userId);
+        }
+    }
 }

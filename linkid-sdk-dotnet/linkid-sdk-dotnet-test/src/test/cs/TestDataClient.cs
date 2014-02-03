@@ -23,22 +23,40 @@ namespace safe_online_sdk_dotnet.test.cs
         }
 
         [Test]
-        public void TestDataWS()
+        public void TestDataWSX509()
+        {
+            X509Certificate2 appCertificate = KeyStoreUtil.loadCertificate(TestConstants.testPfxPath, TestConstants.testPfxPassword, false);
+            X509Certificate2 linkidCertificate = new X509Certificate2(TestConstants.linkidCertPath);
+
+            IdMappingClient idMappingClient =
+                new IdMappingClientImpl(TestConstants.wsLocation, appCertificate, linkidCertificate);
+            DataClient dataClient = new DataClientImpl(TestConstants.wsLocation, appCertificate, linkidCertificate);
+            dataClient.enableLogging();
+
+            dataWSTest(idMappingClient, dataClient);
+        }
+
+        [Test]
+        public void TestDataWSUsername()
+        {
+            IdMappingClient idMappingClient =
+                new IdMappingClientImpl(TestConstants.wsLocation, TestConstants.testWsUsername, TestConstants.testWsPassword);
+            DataClient dataClient = new DataClientImpl(TestConstants.wsLocation, TestConstants.testWsUsername, TestConstants.testWsPassword);
+            dataClient.enableLogging();
+
+            dataWSTest(idMappingClient, dataClient);
+        }
+
+        private void dataWSTest(IdMappingClient idMappingClient, DataClient dataClient)
         {
             String attributeName = "profile.familyName";
             String value = "Family Name";
             String value2 = "Family Name 2";
 
-            X509Certificate2 appCertificate = KeyStoreUtil.loadCertificate(TestConstants.testPfxPath, TestConstants.testPfxPassword, false);
-            X509Certificate2 linkidCertificate = new X509Certificate2(TestConstants.linkidCertPath);
 
             // first fetch userId
-            IdMappingClient idMappingClient =
-                new IdMappingClientImpl(TestConstants.wsLocation, appCertificate, linkidCertificate);
             String userId = idMappingClient.getUserId(TestConstants.loginAttribute, TestConstants.testLogin);
             Console.WriteLine("admin userId: " + userId);
-
-            DataClient dataClient = new DataClientImpl(TestConstants.wsLocation, appCertificate, linkidCertificate);
 
             // Remove old attribute if any
             dataClient.removeAttributes(userId, attributeName); 

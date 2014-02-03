@@ -26,6 +26,17 @@ namespace safe_online_sdk_dotnet
 	public class NotificationProducerClientImpl : NotificationProducerClient
 	{
 		private NotificationProducerPortClient client;
+
+        public NotificationProducerClientImpl(string location, string username, string password)
+		{
+            string address = "https://" + location + "/linkid-ws-username/producer";
+			EndpointAddress remoteAddress = new EndpointAddress(address);
+
+            BasicHttpBinding binding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
+
+            this.client = new NotificationProducerPortClient(binding, remoteAddress);
+            this.client.Endpoint.Behaviors.Add(new PasswordDigestBehavior(username, password));
+		}
 		
         public NotificationProducerClientImpl(string location, X509Certificate2 appCertificate, X509Certificate2 linkidCertificate)
 		{
@@ -40,8 +51,12 @@ namespace safe_online_sdk_dotnet
 			this.client.ClientCredentials.ServiceCertificate.Authentication.CertificateValidationMode = X509CertificateValidationMode.None;
 			
 			this.client.Endpoint.Contract.ProtectionLevel = ProtectionLevel.Sign;
-			this.client.Endpoint.Behaviors.Add(new LoggingBehavior());
 		}
+
+        public void enableLogging()
+        {
+            this.client.Endpoint.Behaviors.Add(new LoggingBehavior());
+        }
 		
 		public void subscribe(string topic, string address) {
 			Console.WriteLine("subscribe " + address + " to " + topic);

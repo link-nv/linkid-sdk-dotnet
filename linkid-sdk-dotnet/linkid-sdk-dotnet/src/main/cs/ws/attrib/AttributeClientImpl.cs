@@ -29,6 +29,17 @@ namespace safe_online_sdk_dotnet
     {
         private SAMLAttributePortClient client;
 
+        public AttributeClientImpl(string location, string username, string password)
+		{
+            string address = "https://" + location + "/linkid-ws-username/attrib";
+			EndpointAddress remoteAddress = new EndpointAddress(address);
+
+            BasicHttpBinding binding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
+
+            this.client = new SAMLAttributePortClient(binding, remoteAddress);
+            this.client.Endpoint.Behaviors.Add(new PasswordDigestBehavior(username, password));
+		}
+
         public AttributeClientImpl(string location, X509Certificate2 appCertificate, X509Certificate2 linkidCertificate)
         {
             string address = "https://" + location + "/linkid-ws/attrib";
@@ -44,6 +55,11 @@ namespace safe_online_sdk_dotnet
 
             this.client.Endpoint.Contract.ProtectionLevel = ProtectionLevel.Sign;
 
+        }
+
+        public void enableLogging()
+        {
+            this.client.Endpoint.Behaviors.Add(new LoggingBehavior());
         }
 
         public List<AttributeSDK> getAttributes(String userId, String attributeName)

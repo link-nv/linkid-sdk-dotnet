@@ -41,5 +41,9 @@ namespace safe_online_sdk_dotnet
         /// <param name="clientSessionIds">﻿optional list of client session IDs to remove</param>
         /// <exception cref="RemoveException">Something went wrong, check the error code what</exception>
         void remove(String[] sessionIds, String[] clientSessionIds);
+
+        // log incoming and outgoing soap messages to the console
+        void enableLogging();
+
     }
 }

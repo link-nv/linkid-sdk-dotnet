@@ -34,8 +34,12 @@ namespace safe_online_sdk_dotnet
             BasicHttpBinding binding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
 
             this.client = new PaymentServicePortClient(binding, remoteAddress);
-			this.client.Endpoint.Behaviors.Add(new LoggingBehavior());
 		}
+
+        public void enableLogging()
+        {
+            this.client.Endpoint.Behaviors.Add(new LoggingBehavior());
+        }
 		
 		public PaymentState getStatus(String transactionId) {
 

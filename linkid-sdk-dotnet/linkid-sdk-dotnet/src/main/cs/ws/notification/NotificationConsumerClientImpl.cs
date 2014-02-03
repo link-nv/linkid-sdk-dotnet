@@ -27,6 +27,17 @@ namespace safe_online_sdk_dotnet
 	{
 		private NotificationConsumerPortClient client;
 
+        public NotificationConsumerClientImpl(string location, string username, string password)
+		{
+            string address = "https://" + location + "/linkid-ws-username/consumer";
+			EndpointAddress remoteAddress = new EndpointAddress(address);
+
+            BasicHttpBinding binding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
+
+            this.client = new NotificationConsumerPortClient(binding, remoteAddress);
+            this.client.Endpoint.Behaviors.Add(new PasswordDigestBehavior(username, password));
+		}
+
         public NotificationConsumerClientImpl(string location, X509Certificate2 appCertificate, X509Certificate2 linkidCertificate)
 		{
 			string address = "https://" + location + "/linkid-ws/consumer";
@@ -40,8 +51,12 @@ namespace safe_online_sdk_dotnet
 			this.client.ClientCredentials.ServiceCertificate.Authentication.CertificateValidationMode = X509CertificateValidationMode.None;
 			
 			this.client.Endpoint.Contract.ProtectionLevel = ProtectionLevel.Sign;
-			this.client.Endpoint.Behaviors.Add(new LoggingBehavior());
 		}
+
+        public void enableLogging()
+        {
+            this.client.Endpoint.Behaviors.Add(new LoggingBehavior());
+        }
 		
 		public void sendNotification(string topic, string destination, string subject, string content) {
 			Console.WriteLine("send notification for topic " + topic + " to destination " + destination +

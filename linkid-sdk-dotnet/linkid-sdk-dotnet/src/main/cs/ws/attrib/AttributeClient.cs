@@ -46,5 +46,9 @@ namespace safe_online_sdk_dotnet
 		/// <exception cref="RequestDeniedException">Attribute Request denied</exception>
 		/// <exception cref="AttributeUnavailableException">Attribute unavailable</exception>
 		Dictionary<String, List<AttributeSDK>> getAttributes(String userId);
+
+        // log incoming and outgoing soap messages to the console
+        void enableLogging();
+
 	}
 }
