@@ -22,8 +22,6 @@ namespace safe_online_sdk_dotnet
 {
 	/// <summary>
 	/// Client implementation of the linkID STS Web Service.
-	/// 
-	/// This is only a proof-of-concept implementation.
 	/// </summary>
 	public class STSClientImpl : STSClient
 	{

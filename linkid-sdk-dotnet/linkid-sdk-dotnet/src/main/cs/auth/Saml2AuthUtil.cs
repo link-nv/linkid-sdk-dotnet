@@ -34,6 +34,10 @@ namespace safe_online_sdk_dotnet
 
         private string expectedAudience;
 
+        public Saml2AuthUtil()
+        {
+        }
+
         public Saml2AuthUtil(RSACryptoServiceProvider key)
         {
             this.key = key;
@@ -89,9 +93,9 @@ namespace safe_online_sdk_dotnet
         /// <param name="attributeSuggestions">Optional attribute suggestions for certain attributes. Key is the internal linkID attributeName. The type of the values must be of the correct datatype</param>
         /// <param name="paymentContext">Optional payment context</param>
         /// <returns>SAML request</returns>
-        public string generateAuthnRequest(string applicationName, List<string> applicationPools, string applicationFriendlyName,
+        public AuthnRequestType generateAuthnRequestObject(string applicationName, List<string> applicationPools, string applicationFriendlyName,
                                            string serviceProviderUrl, string identityProviderUrl, List<string> devices,
-                                           bool ssoEnabled, Dictionary<string, string> deviceContextMap, 
+                                           bool ssoEnabled, Dictionary<string, string> deviceContextMap,
                                            Dictionary<string, List<Object>> attributeSuggestions, PaymentContext paymentContext)
         {
             this.expectedChallenge = Guid.NewGuid().ToString();
@@ -206,6 +210,40 @@ namespace safe_online_sdk_dotnet
                 authnRequest.Extensions = extensions;
             }
 
+            return authnRequest;
+        }
+
+        /// <summary>
+        /// Generates a SAML v2.0 Authentication Request with HTTP Browser Post Binding. The return string containing the request
+        /// is NOT Base64 encoded.
+        /// </summary>
+        /// <param name="applicationName"></param>
+        /// <param name="applicationPools">Optional list of application pools used for session tracking</param>
+        /// <param name="applicationFriendlyName">Optional friendly name to be displayed in LinkID authentication pages</param>
+        /// <param name="serviceProviderUrl">The URL that will handle the returned SAML response</param>
+        /// <param name="identityProviderUrl">The LinkID authentication entry URL</param>
+        /// <param name="devices">Option device restriction list</param>
+        /// <param name="ssoEnabled"></param>
+        /// <param name="deviceContextMap">Optional device context, e.g. the context title for the QR device</param>
+        /// <param name="attributeSuggestions">Optional attribute suggestions for certain attributes. Key is the internal linkID attributeName. The type of the values must be of the correct datatype</param>
+        /// <param name="paymentContext">Optional payment context</param>
+        /// <returns>SAML request</returns>
+        public string generateAuthnRequest(string applicationName, List<string> applicationPools, string applicationFriendlyName,
+                                           string serviceProviderUrl, string identityProviderUrl, List<string> devices,
+                                           bool ssoEnabled, Dictionary<string, string> deviceContextMap, 
+                                           Dictionary<string, List<Object>> attributeSuggestions, PaymentContext paymentContext)
+        {
+            AuthnRequestType authnRequest = generateAuthnRequestObject(applicationName, applicationPools, applicationFriendlyName, 
+                serviceProviderUrl, identityProviderUrl, devices, ssoEnabled, deviceContextMap, attributeSuggestions, paymentContext );
+
+            XmlDocument document = toXmlDocument(authnRequest);
+
+            string signedAuthnRequest = Saml2Util.signDocument(document, key, authnRequest.ID);
+            return signedAuthnRequest;
+        }
+
+        public static XmlDocument toXmlDocument(AuthnRequestType authnRequest)
+        {
             XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
             ns.Add("samlp", Saml2Constants.SAML2_PROTOCOL_NAMESPACE);
             ns.Add("saml", Saml2Constants.SAML2_ASSERTION_NAMESPACE);
@@ -221,10 +259,9 @@ namespace safe_online_sdk_dotnet
             XmlDocument document = new XmlDocument();
             memoryStream.Seek(0, SeekOrigin.Begin);
             document.Load(memoryStream);
-
-            string signedAuthnRequest = Saml2Util.signDocument(document, key, authnRequest.ID);
             xmlTextWriter.Close();
-            return signedAuthnRequest;
+
+            return document;
         }
 
         private XmlElement toXmlElement(PaymentContextType paymentContext)
@@ -330,32 +367,12 @@ namespace safe_online_sdk_dotnet
         }
 
         /// <summary>
-        /// Validates a base64 decoded SAML v2.0 Response.
+        /// Parses the given SAML v2.0 authentication response
         /// </summary>
-        /// <param name="encodedSamlResponse"></param>
-        /// <param name="wsLocation"></param>
-        /// <param name="appCertificate"></param>
-        /// <param name="linkidCertificate"></param>
+        /// <param name="response">tje SAML v2.0 authentication response</param>
         /// <returns>AuthenticationProtocolContext containing linkID userId, authenticated device(s) and optional dictionary of linkID attributes</returns>
-        public AuthenticationProtocolContext validateAuthnResponse(string samlResponse, string wsLocation,
-                                                                  X509Certificate2 appCertificate, X509Certificate2 linkidCertificate)
+        public AuthenticationProtocolContext parseAuthnResponse(ResponseType response)
         {
-            STSClient stsClient = new STSClientImpl(wsLocation, appCertificate, linkidCertificate);
-            bool result = stsClient.validateToken(samlResponse, TrustDomainType.NODE);
-            if (false == result)
-            {
-                return null;
-            }
-
-            XmlRootAttribute xRoot = new XmlRootAttribute();
-            xRoot.ElementName = "Response";
-            xRoot.Namespace = Saml2Constants.SAML2_PROTOCOL_NAMESPACE;
-
-            TextReader reader = new StringReader(samlResponse);
-            XmlSerializer serializer = new XmlSerializer(typeof(ResponseType), xRoot);
-            ResponseType response = (ResponseType)serializer.Deserialize(reader);
-            reader.Close();
-
             if (!response.InResponseTo.Equals(this.expectedChallenge))
             {
                 throw new AuthenticationExceptionInvalidInResponseTo("SAML response is not a response belonging to the original request.");
@@ -408,6 +425,37 @@ namespace safe_online_sdk_dotnet
             }
 
             return null;
+
+        }
+
+        /// <summary>
+        /// Validates a base64 decoded SAML v2.0 Response.
+        /// </summary>
+        /// <param name="encodedSamlResponse"></param>
+        /// <param name="wsLocation"></param>
+        /// <param name="appCertificate"></param>
+        /// <param name="linkidCertificate"></param>
+        /// <returns>AuthenticationProtocolContext containing linkID userId, authenticated device(s) and optional dictionary of linkID attributes</returns>
+        public AuthenticationProtocolContext validateAuthnResponse(string samlResponse, string wsLocation,
+                                                                  X509Certificate2 appCertificate, X509Certificate2 linkidCertificate)
+        {
+            STSClient stsClient = new STSClientImpl(wsLocation, appCertificate, linkidCertificate);
+            bool result = stsClient.validateToken(samlResponse, TrustDomainType.NODE);
+            if (false == result)
+            {
+                return null;
+            }
+
+            XmlRootAttribute xRoot = new XmlRootAttribute();
+            xRoot.ElementName = "Response";
+            xRoot.Namespace = Saml2Constants.SAML2_PROTOCOL_NAMESPACE;
+
+            TextReader reader = new StringReader(samlResponse);
+            XmlSerializer serializer = new XmlSerializer(typeof(ResponseType), xRoot);
+            ResponseType response = (ResponseType)serializer.Deserialize(reader);
+            reader.Close();
+
+            return parseAuthnResponse(response);
         }
 
         private PaymentResponse findPaymentResponse(ResponseType response)

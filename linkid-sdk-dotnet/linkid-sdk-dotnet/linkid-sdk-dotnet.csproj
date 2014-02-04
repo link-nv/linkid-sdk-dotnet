@@ -55,6 +55,8 @@
     <Compile Include="src\main\cs\auth\Compound.cs" />
     <Compile Include="src\main\cs\auth\AuthenticationExceptionInvalidInResponseTo.cs" />
     <Compile Include="src\main\cs\auth\AuthenticationExceptionNoAudiences.cs" />
+    <Compile Include="src\main\cs\auth\LoginConfig.cs" />
+    <Compile Include="src\main\cs\auth\LoginMode.cs" />
     <Compile Include="src\main\cs\auth\LoginUtil.cs" />
     <Compile Include="src\main\cs\auth\PaymentResponse.cs" />
     <Compile Include="src\main\cs\auth\PaymentContext.cs" />
@@ -63,6 +65,7 @@
     <Compile Include="src\main\cs\auth\RequestConstants.cs" />
     <Compile Include="src\main\cs\auth\Saml2LogoutUtil.cs" />
     <Compile Include="src\main\cs\auth\Saml2Util.cs" />
+    <Compile Include="src\main\cs\auth\StartPage.cs" />
     <Compile Include="src\main\cs\KeyStoreUtil.cs" />
     <Compile Include="src\main\cs\ws\attrib\AttributeClient.cs" />
     <Compile Include="src\main\cs\ws\attrib\AttributeClientImpl.cs" />
@@ -80,6 +83,10 @@
     <Compile Include="src\main\cs\ws\exception\SubjectNotFoundException.cs" />
     <Compile Include="src\main\cs\ws\exception\SubscriptionFailedException.cs" />
     <Compile Include="src\main\cs\ws\exception\SubscriptionNotFoundException.cs" />
+    <Compile Include="src\main\cs\ws\haws\exception\HawsPullException.cs" />
+    <Compile Include="src\main\cs\ws\haws\exception\HawsPushException.cs" />
+    <Compile Include="src\main\cs\ws\haws\HawsClient.cs" />
+    <Compile Include="src\main\cs\ws\haws\HawsClientImpl.cs" />
     <Compile Include="src\main\cs\ws\idmapping\IdMappingClient.cs" />
     <Compile Include="src\main\cs\ws\idmapping\IdMappingClientImpl.cs" />
     <Compile Include="src\main\cs\ws\LinkIDUsernameBinding.cs" />
@@ -157,6 +164,10 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="target\services\SafeOnlineHawsWebService.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="src\main\cs\AssemblyInfo.cs" />
     <None Include="src\main\resources\*" />
     <None Include="src\main\resources\attrib-ws\*" />
@@ -168,6 +179,7 @@
     <None Include="src\main\resources\session-ws\*" />
     <None Include="src\main\resources\payment-ws\*" />
     <None Include="src\main\resources\ltqr-ws\*" />
+    <None Include="src\main\resources\haws-ws\*" />
   </ItemGroup>
   <Target Name="BeforeBuild">
     <MakeDir Directories="target\services" />
@@ -182,6 +194,7 @@
     <Exec Command="svcutil /namespace:*,SessionWSNameSpace /directory:target\services src\main\resources\session-ws\safe-online-session.wsdl src\main\resources\session-ws\safe-online-session.xsd" />
     <Exec Command="svcutil /namespace:*,PaymentWSNameSpace /directory:target\services src\main\resources\payment-ws\safe-online-payment.wsdl src\main\resources\payment-ws\safe-online-payment.xsd src\main\resources\ws-addr.xsd src\main\resources\xmldsig-core-schema.xsd src\main\resources\xenc-schema.xsd" />
     <Exec Command="svcutil /namespace:*,LTQRWSNameSpace /directory:target\services src\main\resources\ltqr-ws\safe-online-ltqr.wsdl src\main\resources\ltqr-ws\safe-online-ltqr.xsd" />
+    <Exec Command="svcutil /namespace:*,HawsWSNameSpace /directory:target\services src\main\resources\haws-ws\safe-online-haws.wsdl src\main\resources\haws-ws\safe-online-haws.xsd" />
   </Target>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

@@ -27,8 +27,8 @@
         <asp:HiddenField ID="SAMLRequest" runat="server" />
         <asp:HiddenField ID="LoginMode" runat="server" />
         <asp:HiddenField ID="StartPage" runat="server" />
-        
-        
+        <asp:HiddenField ID="LanguageField" runat="server" />
+    
         <noscript>
             <input type="submit" value="Continue" />
         </noscript>

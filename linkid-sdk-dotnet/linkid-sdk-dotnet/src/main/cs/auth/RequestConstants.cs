@@ -30,6 +30,7 @@ namespace safe_online_sdk_dotnet
 		public static readonly String THEME_REQUEST_PARAM = "ThemeName";
         public static readonly String LOGIN_MODE_REQUEST_PARAM = "login_mode";
         public static readonly String TARGET_URI_REQUEST_PARAM = "return_uri";
+        public static readonly String FORCE_AUTH_REQUEST_PARAM = "force";
 
         // Device context parameters supported by linkID devices
         public static readonly String DEVICE_CONTEXT_TITLE = "linkID.contextTitle";
@@ -40,6 +41,9 @@ namespace safe_online_sdk_dotnet
         // Long term QR notification page parameters
         public static readonly String ﻿LTQR_SESSION_ID_PARAM = "id";
         public static readonly String ﻿﻿LTQR_CLIENT_SESSION_ID_PARAM = "clientSessionId";
+
+        // HAWS session ID param
+        public static readonly String ﻿HAWS_SESSION_ID_PARAM = "hawsId";
 		
 		private RequestConstants()
 		{
