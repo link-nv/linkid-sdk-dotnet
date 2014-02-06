@@ -8,7 +8,7 @@
     <title>linkID Mobile Login Demo</title>
     
     <script type="text/javascript" id="linkid-login-script" 
-        src="http://192.168.5.14:8080/linkid-static/js/linkid-min.js"></script>
+        src="https://demo.linkid.be/linkid-static/js/linkid-min.js"></script>
 
     <style type="text/css">
         .linkid-login {
