@@ -62,6 +62,7 @@ namespace safe_online_sdk_dotnet
                 paymentContext.amount = paymentContextDO.amount;
                 paymentContext.currency = convert(paymentContextDO.currency);
                 paymentContext.description = paymentContextDO.description;
+                paymentContext.orderReference = paymentContextDO.orderReference;
                 paymentContext.paymentProfile = paymentContextDO.paymentProfile;
                 paymentContext.validationTime = paymentContextDO.paymentValidationTime;
                 paymentContext.validationTimeSpecified = true;
@@ -99,19 +100,19 @@ namespace safe_online_sdk_dotnet
                 // convert base64 encoded QR image
                 byte[] qrCodeImage = Convert.FromBase64String(response.success.encodedQR);
 
-                return new LTQRSession(qrCodeImage, response.success.qrContent, response.success.sessionId);
+                return new LTQRSession(qrCodeImage, response.success.qrContent, response.success.orderReference);
             }
 
             throw new RuntimeException("No success nor error element in the response ?!");
         }
 
-        public LTQRClientSession[] pull(String[] sessionIds, String[] clientSessionIds)
+        public LTQRClientSession[] pull(String[] orderReferences, String[] clientSessionIds)
         {
             PullRequest request = new PullRequest();
 
-            if (null != sessionIds)
+            if (null != orderReferences)
             {
-                request.sessionIds = sessionIds;
+                request.orderReferences = orderReferences;
             }
 
             if (null != clientSessionIds)
@@ -135,7 +136,7 @@ namespace safe_online_sdk_dotnet
                 int i = 0;
                 foreach(ClientSession clientSession in response.success)
                 {
-                    clientSessions[i++] = new LTQRClientSession(clientSession.sessionId, clientSession.clientSessionId, clientSession.userId, 
+                    clientSessions[i++] = new LTQRClientSession(clientSession.orderReference, clientSession.clientSessionId, clientSession.userId, 
                         clientSession.created, clientSession.paymentStatus);
                 }
                 return clientSessions;
@@ -145,16 +146,16 @@ namespace safe_online_sdk_dotnet
             throw new RuntimeException("No success nor error element in the response ?!");
         }
 
-        public void remove(String[] sessionIds, String[] clientSessionIds)
+        public void remove(String[] orderReferences, String[] clientSessionIds)
         {
             RemoveRequest request = new RemoveRequest();
 
-            if (null == sessionIds || 0 == sessionIds.Length)
+            if (null == orderReferences || 0 == orderReferences.Length)
             {
-                throw new RuntimeException("SessionIDs list cannot be empty");
+                throw new RuntimeException("orderReferences list cannot be empty");
             }
 
-            request.sessionIds = sessionIds;
+            request.orderReferences = orderReferences;
             
             if (null != clientSessionIds)
             {

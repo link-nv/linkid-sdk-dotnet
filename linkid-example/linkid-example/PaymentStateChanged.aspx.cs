@@ -16,8 +16,8 @@ namespace linkid_example
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            String transactionId = Request[RequestConstants.PAYMENT_CHANGED_ID_PARAM];
-            if (null == transactionId)
+            String orderReference = Request[RequestConstants.PAYMENT_CHANGED_ORDER_REF_PARAM];
+            if (null == orderReference)
             {
                 return;
             }
@@ -25,12 +25,12 @@ namespace linkid_example
             // get the latesst state of this payment transaction from linkID
             PaymentClient paymentClient = new PaymentClientImpl(LinkIDLogin.LINKID_HOST);
 
-            PaymentState paymentState = paymentClient.getStatus(transactionId);
+            PaymentState paymentState = paymentClient.getStatus(orderReference);
 
             this.OutputLabel.Text = "<h1>Payment Status</h1>";
 
-            this.OutputLabel.Text += "  * Transaction ID : " + transactionId + "<br />";
-            this.OutputLabel.Text += "  * Payment State  : " + paymentState + "<br />";
+            this.OutputLabel.Text += "  * Order reference : " + orderReference + "<br />";
+            this.OutputLabel.Text += "  * Payment State   : " + paymentState + "<br />";
 
         }
     }

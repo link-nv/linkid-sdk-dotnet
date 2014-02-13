@@ -11,6 +11,7 @@ namespace safe_online_sdk_dotnet
         public static readonly String AMOUNT_KEY           = "PaymentContext.amount";
         public static readonly String CURRENCY_KEY         = "PaymentContext.currency";
         public static readonly String DESCRIPTION_KEY      = "PaymentContext.description";
+        public static readonly String ORDER_REFERENCE_KEY  = "PaymentContext.orderReference";
         public static readonly String PROFILE_KEY          = "PaymentContext.profile";
         public static readonly String VALIDATION_TIME_KEY  = "PaymentContext.validationTime";
         public static readonly String ADD_LINK_KEY         = "PaymentContext.addLinkKey";
@@ -20,6 +21,9 @@ namespace safe_online_sdk_dotnet
         public Double amount { get; set; }
         public Currency currency { get; set; }
         public String description { get; set; }
+
+        // optional order reference, if not specified linkID will generate one in UUID format
+        public String orderReference { get; set; }
 
         // optional payment profile
         public String paymentProfile { get; set; }
@@ -34,23 +38,25 @@ namespace safe_online_sdk_dotnet
         // linkID can allow for the user to make a deferred payment which he can complete later on from this browser.
         public Boolean allowDeferredPay;
 
-        public PaymentContext(Double amount, Currency currency, String description, 
+        public PaymentContext(Double amount, Currency currency, String description, String orderReference, 
             String paymentProfile, int paymentValidationTime, Boolean showAddPaymentMethodLink, Boolean allowDeferredPay)
         {
             this.amount = amount;
             this.currency = currency;
             this.description = description;
+            this.orderReference = orderReference;
             this.paymentProfile = paymentProfile;
             this.paymentValidationTime = paymentValidationTime;
             this.showAddPaymentMethodLink = showAddPaymentMethodLink;
             this.allowDeferredPay = allowDeferredPay;
         }
 
-        public PaymentContext(double amount, Currency currency, String description, String paymentProfile)
+        public PaymentContext(double amount, Currency currency, String description, String orderReference, String paymentProfile)
         {
             this.amount = amount;
             this.currency = currency;
             this.description = description;
+            this.orderReference = orderReference;
             this.paymentProfile = paymentProfile;
             this.paymentValidationTime = 5;
             this.showAddPaymentMethodLink = true;
@@ -73,6 +79,8 @@ namespace safe_online_sdk_dotnet
             dictionary.Add(CURRENCY_KEY, currency.ToString());
             if (null != description)
                 dictionary.Add(DESCRIPTION_KEY, description);
+            if (null != orderReference)
+                dictionary.Add(ORDER_REFERENCE_KEY, orderReference);
             if (null != paymentProfile)
                 dictionary.Add(PROFILE_KEY, paymentProfile);
             dictionary.Add(VALIDATION_TIME_KEY, paymentValidationTime.ToString());

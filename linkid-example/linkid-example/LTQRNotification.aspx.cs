@@ -26,11 +26,11 @@ namespace linkid_example
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            String sessionId = Request[RequestConstants.LTQR_SESSION_ID_PARAM];
+            String orderReference = Request[RequestConstants.LTQR_ORDER_REF_PARAM];
             String clientSessionId = Request[RequestConstants.LTQR_CLIENT_SESSION_ID_PARAM];
-            if (null == sessionId)
+            if (null == orderReference)
             {
-                // no sessionId in notification, ignoring...
+                // no orderReference in notification, ignoring...
                 return;
             }
 
@@ -40,7 +40,7 @@ namespace linkid_example
             // fetch session
             LTQRClient client = new LTQRClientImpl(LinkIDLoginHaws.LINKID_HOST,
                 LinkIDLoginHaws.wsUsername, LinkIDLoginHaws.wsPassword);
-            LTQRClientSession[] clientSessions = client.pull(new string[]{sessionId}, new string[]{clientSessionId});
+            LTQRClientSession[] clientSessions = client.pull(new string[] { orderReference }, new string[] { clientSessionId });
             String output = "";
             foreach (LTQRClientSession clientSession in clientSessions)
             {

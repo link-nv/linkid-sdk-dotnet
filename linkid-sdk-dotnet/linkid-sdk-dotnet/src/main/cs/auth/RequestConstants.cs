@@ -35,11 +35,11 @@ namespace safe_online_sdk_dotnet
         // Device context parameters supported by linkID devices
         public static readonly String DEVICE_CONTEXT_TITLE = "linkID.contextTitle";
 
-        // Payment state changed page transaction ID param
-        public static readonly String PAYMENT_CHANGED_ID_PARAM = "txn_id";
+        // Payment state changed page order reference param
+        public static readonly String PAYMENT_CHANGED_ORDER_REF_PARAM = "orderRef";
 
         // Long term QR notification page parameters
-        public static readonly String ﻿LTQR_SESSION_ID_PARAM = "id";
+        public static readonly String ﻿﻿LTQR_ORDER_REF_PARAM = "orderRef";
         public static readonly String ﻿﻿LTQR_CLIENT_SESSION_ID_PARAM = "clientSessionId";
 
         // HAWS session ID param

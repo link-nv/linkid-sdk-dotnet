@@ -27,7 +27,8 @@ namespace safe_online_sdk_dotnet.test.cs
         [Test]
         public void testPush()
         {
-            PaymentContext paymentContext = new PaymentContext(20000, Currency.EUR, ".NET Test", null, 10, false, true);
+            String orderReference = "DOTNET-LTQR-" + Guid.NewGuid().ToString();
+            PaymentContext paymentContext = new PaymentContext(20000, Currency.EUR, ".NET Test", orderReference, null, 10, false, true);
             DateTime expiryDate = DateTime.Now.AddMonths(3);
 
             LTQRSession session = client.push(paymentContext, false, expiryDate, null);
@@ -38,13 +39,13 @@ namespace safe_online_sdk_dotnet.test.cs
         [Test]
         public void testPull()
         {
-            string[] sessionIds = new string[] { "c7353cd2-a3e3-41a7-9a31-d7b659d5cce1" };
-            string[] clientSessionIds = new string[] { "011e9a4e-7e3c-4c49-b0fd-ae2572e1ebb3", "38e5a9f1-7094-4257-9010-515922394f65" };
+            string[] orderReferences = new string[] { "DOTNET-LTQR-7a9218c0-f559-4e89-9cb6-14f9a9bfe4d7" };
+            string[] clientSessionIds = new string[] { };
 
-            LTQRClientSession[] clientSessions = client.pull(sessionIds, clientSessionIds);
+            LTQRClientSession[] clientSessions = client.pull(orderReferences, clientSessionIds);
 
             Assert.NotNull(clientSessions);
-            Assert.AreEqual(2, clientSessions.Length);
+            //Assert.AreEqual(1, clientSessions.Length);
 
             foreach (LTQRClientSession clientSession in clientSessions)
             {
@@ -55,19 +56,23 @@ namespace safe_online_sdk_dotnet.test.cs
         [Test]
         public void testRemove()
         {
-            string[] sessionIds = new string[] { "c7353cd2-a3e3-41a7-9a31-d7b659d5cce1" };
-            string[] clientSessionIds = new string[] { "011e9a4e-7e3c-4c49-b0fd-ae2572e1ebb3", "38e5a9f1-7094-4257-9010-515922394f65" };
+            string[] orderReferences = new string[] { "DOTNET-LTQR-7a9218c0-f559-4e89-9cb6-14f9a9bfe4d7" };
+            string[] clientSessionIds = new string[] { };
 
             // operate: fetch
-            LTQRClientSession[] clientSessions = client.pull(sessionIds, clientSessionIds);
+            LTQRClientSession[] clientSessions = client.pull(orderReferences, clientSessionIds);
             Assert.NotNull(clientSessions);
-            Assert.AreEqual(2, clientSessions.Length);
+            //Assert.AreEqual(2, clientSessions.Length);
+            foreach (LTQRClientSession clientSession in clientSessions)
+            {
+                Console.WriteLine("Client session: " + clientSession.ToString());
+            }
 
             // operate: remove
-            client.remove(sessionIds, clientSessionIds);
+            client.remove(orderReferences, clientSessionIds);
 
             // operate: fetch again
-            clientSessions = client.pull(sessionIds, clientSessionIds);
+            clientSessions = client.pull(orderReferences, clientSessionIds);
             Assert.AreEqual(0, clientSessions.Length);
         }
     }

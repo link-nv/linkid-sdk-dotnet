@@ -5,15 +5,15 @@ namespace safe_online_sdk_dotnet
 {
     public class LTQRClientSession
     {
-        public String sessionId { get; private set; }
+        public String orderReference { get; private set; }
         public String clientSessionId { get; private set; }
         public String userId { get; private set; }
         public DateTime created { get; private set; }
         public LTQRPaymentStatusType paymentState { get; private set; }
 
-        public LTQRClientSession(String sessionId, String clientSessionId, String userId, DateTime created, LTQRPaymentStatusType paymentState)
+        public LTQRClientSession(String orderReference, String clientSessionId, String userId, DateTime created, LTQRPaymentStatusType paymentState)
         {
-            this.sessionId = sessionId;
+            this.orderReference = orderReference;
             this.clientSessionId = clientSessionId;
             this.userId = userId;
             this.created = created;
@@ -22,7 +22,7 @@ namespace safe_online_sdk_dotnet
 
         public override String ToString()
         {
-            return "SessionID: \"" + sessionId + "\", ClientSessionID: \"" + clientSessionId + "\", userId: \"" + userId + "\", created: \"" + created + "\", paymentState: \"" + paymentState + "\"";                
+            return "OrderReference: \"" + orderReference + "\", ClientSessionID: \"" + clientSessionId + "\", userId: \"" + userId + "\", created: \"" + created + "\", paymentState: \"" + paymentState + "\"";                
         }
     }
 }
