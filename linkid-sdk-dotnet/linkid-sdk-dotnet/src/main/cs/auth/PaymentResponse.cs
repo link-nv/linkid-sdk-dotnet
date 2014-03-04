@@ -36,10 +36,16 @@ namespace safe_online_sdk_dotnet
         {
             if (paymentStateString.Equals(PaymentState.STARTED.ToString()))
                 return PaymentState.STARTED;
+            if (paymentStateString.Equals(PaymentState.DEFERRED.ToString()))
+                return PaymentState.DEFERRED;
             if (paymentStateString.Equals(PaymentState.WAITING_FOR_UPDATE.ToString()))
                 return PaymentState.WAITING_FOR_UPDATE;
             if (paymentStateString.Equals(PaymentState.FAILED.ToString()))
                 return PaymentState.FAILED;
+            if (paymentStateString.Equals(PaymentState.REFUNDED.ToString()))
+                return PaymentState.REFUNDED;
+            if (paymentStateString.Equals(PaymentState.REFUND_STARTED.ToString()))
+                return PaymentState.REFUND_STARTED;
             if (paymentStateString.Equals(PaymentState.PAYED.ToString()))
                 return PaymentState.PAYED;
 
