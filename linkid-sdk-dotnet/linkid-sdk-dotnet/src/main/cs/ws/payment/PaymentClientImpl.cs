@@ -41,11 +41,11 @@ namespace safe_online_sdk_dotnet
             this.client.Endpoint.Behaviors.Add(new LoggingBehavior());
         }
 		
-		public PaymentState getStatus(String transactionId) {
+		public PaymentState getStatus(String orderReference) {
 
-            PaymentStatusRequest request = new PaymentStatusRequest();
-            request.transactionId = transactionId;
-			PaymentStatusResponse response = this.client.status(request);
+            PaymentGetStatusRequest request = new PaymentGetStatusRequest();
+            request.orderReference = orderReference;
+			PaymentStatusResponse response = this.client.getStatus(request);
 
             switch (response.paymentStatus)
             {
