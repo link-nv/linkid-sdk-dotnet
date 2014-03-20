@@ -440,7 +440,7 @@ namespace safe_online_sdk_dotnet
                                                                   X509Certificate2 appCertificate, X509Certificate2 linkidCertificate)
         {
             STSClient stsClient = new STSClientImpl(wsLocation, appCertificate, linkidCertificate);
-            bool result = stsClient.validateToken(samlResponse, TrustDomainType.NODE);
+            bool result = stsClient.validateToken(samlResponse, TrustDomainType.LINK_ID);
             if (false == result)
             {
                 return null;

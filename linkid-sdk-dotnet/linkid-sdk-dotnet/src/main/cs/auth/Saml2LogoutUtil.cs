@@ -140,7 +140,7 @@ namespace safe_online_sdk_dotnet
             DateTime now = DateTime.UtcNow;
 
             STSClient stsClient = new STSClientImpl(wsLocation, appCertificate, linkidCertificate);
-            bool result = stsClient.validateToken(logoutResponse, TrustDomainType.NODE);
+            bool result = stsClient.validateToken(logoutResponse, TrustDomainType.LINK_ID);
             if (false == result)
             {
                 return false;
@@ -204,7 +204,7 @@ namespace safe_online_sdk_dotnet
             DateTime now = DateTime.UtcNow;
 
             STSClient stsClient = new STSClientImpl(wsLocation, appCertificate, linkidCertificate);
-            bool result = stsClient.validateToken(logoutRequest, TrustDomainType.NODE);
+            bool result = stsClient.validateToken(logoutRequest, TrustDomainType.LINK_ID);
             if (false == result)
             {
                 return null;

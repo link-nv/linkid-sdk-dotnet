@@ -11,10 +11,8 @@ namespace safe_online_sdk_dotnet
 {
 	public enum TrustDomainType {
 		
-		NODE,
-	
 		APPLICATION,
-		
-		DEVICE,
+		LINK_ID,
+		SSL
 	}
 }
