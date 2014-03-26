@@ -62,19 +62,17 @@ namespace safe_online_sdk_dotnet
         /// <param name="applicationFriendlyName">Optional friendly name to be displayed in LinkID authentication pages</param>
         /// <param name="serviceProviderUrl">The URL that will handle the returned SAML response</param>
         /// <param name="identityProviderUrl">The LinkID authentication entry URL</param>
-        /// <param name="devices">Option device restriction list</param>
         /// <param name="ssoEnabled"></param>
         /// <param name="deviceContextMap">Optional device context, e.g. the context title for the QR device</param>
         /// <param name="attributeSuggestions">Optional attribute suggestions for certain attributes. Key is the internal linkID attributeName. The type of the values must be of the correct datatype</param>
         /// <param name="paymentContext">Optional payment context</param>
         /// <returns>Base64 encoded SAML request</returns>
         public string generateEncodedAuthnRequest(string applicationName, List<string> applicationPools, string applicationFriendlyName,
-                                          string serviceProviderUrl, string identityProviderUrl, List<string> devices,
-                                          bool ssoEnabled, Dictionary<string,string> deviceContextMap,
+                                          string serviceProviderUrl, string identityProviderUrl, bool ssoEnabled, Dictionary<string, string> deviceContextMap,
                                           Dictionary<string, List<Object>> attributeSuggestions, PaymentContext paymentContext)
         {
             string samlRequest = generateAuthnRequest(applicationName, applicationPools, applicationFriendlyName, serviceProviderUrl,
-                  identityProviderUrl, devices, ssoEnabled, deviceContextMap, attributeSuggestions, paymentContext);
+                  identityProviderUrl, ssoEnabled, deviceContextMap, attributeSuggestions, paymentContext);
             return Convert.ToBase64String(Encoding.ASCII.GetBytes(samlRequest));
         }
 
@@ -87,15 +85,13 @@ namespace safe_online_sdk_dotnet
         /// <param name="applicationFriendlyName">Optional friendly name to be displayed in LinkID authentication pages</param>
         /// <param name="serviceProviderUrl">The URL that will handle the returned SAML response</param>
         /// <param name="identityProviderUrl">The LinkID authentication entry URL</param>
-        /// <param name="devices">Option device restriction list</param>
         /// <param name="ssoEnabled"></param>
         /// <param name="deviceContextMap">Optional device context, e.g. the context title for the QR device</param>
         /// <param name="attributeSuggestions">Optional attribute suggestions for certain attributes. Key is the internal linkID attributeName. The type of the values must be of the correct datatype</param>
         /// <param name="paymentContext">Optional payment context</param>
         /// <returns>SAML request</returns>
         public AuthnRequestType generateAuthnRequestObject(string applicationName, List<string> applicationPools, string applicationFriendlyName,
-                                           string serviceProviderUrl, string identityProviderUrl, List<string> devices,
-                                           bool ssoEnabled, Dictionary<string, string> deviceContextMap,
+                                           string serviceProviderUrl, string identityProviderUrl, bool ssoEnabled, Dictionary<string, string> deviceContextMap,
                                            Dictionary<string, List<Object>> attributeSuggestions, PaymentContext paymentContext)
         {
             this.expectedChallenge = Guid.NewGuid().ToString();
@@ -129,13 +125,6 @@ namespace safe_online_sdk_dotnet
             nameIdPolicy.AllowCreate = true;
             nameIdPolicy.AllowCreateSpecified = true;
             authnRequest.NameIDPolicy = nameIdPolicy;
-
-            if (null != devices)
-            {
-                RequestedAuthnContextType requestedAuthnContext = new RequestedAuthnContextType();
-                requestedAuthnContext.Items = devices.ToArray();
-                authnRequest.RequestedAuthnContext = requestedAuthnContext;
-            }
 
             if (null != applicationPools)
             {
@@ -222,19 +211,18 @@ namespace safe_online_sdk_dotnet
         /// <param name="applicationFriendlyName">Optional friendly name to be displayed in LinkID authentication pages</param>
         /// <param name="serviceProviderUrl">The URL that will handle the returned SAML response</param>
         /// <param name="identityProviderUrl">The LinkID authentication entry URL</param>
-        /// <param name="devices">Option device restriction list</param>
         /// <param name="ssoEnabled"></param>
         /// <param name="deviceContextMap">Optional device context, e.g. the context title for the QR device</param>
         /// <param name="attributeSuggestions">Optional attribute suggestions for certain attributes. Key is the internal linkID attributeName. The type of the values must be of the correct datatype</param>
         /// <param name="paymentContext">Optional payment context</param>
         /// <returns>SAML request</returns>
         public string generateAuthnRequest(string applicationName, List<string> applicationPools, string applicationFriendlyName,
-                                           string serviceProviderUrl, string identityProviderUrl, List<string> devices,
-                                           bool ssoEnabled, Dictionary<string, string> deviceContextMap, 
+                                           string serviceProviderUrl, string identityProviderUrl, 
+                                           bool ssoEnabled, Dictionary<string, string> deviceContextMap,
                                            Dictionary<string, List<Object>> attributeSuggestions, PaymentContext paymentContext)
         {
-            AuthnRequestType authnRequest = generateAuthnRequestObject(applicationName, applicationPools, applicationFriendlyName, 
-                serviceProviderUrl, identityProviderUrl, devices, ssoEnabled, deviceContextMap, attributeSuggestions, paymentContext );
+            AuthnRequestType authnRequest = generateAuthnRequestObject(applicationName, applicationPools, applicationFriendlyName,
+                serviceProviderUrl, identityProviderUrl, ssoEnabled, deviceContextMap, attributeSuggestions, paymentContext);
 
             XmlDocument document = toXmlDocument(authnRequest);
 
@@ -311,7 +299,7 @@ namespace safe_online_sdk_dotnet
             memoryStream.Seek(0, SeekOrigin.Begin);
             document.Load(memoryStream);
 
-            foreach(XmlNode node in document.ChildNodes)
+            foreach (XmlNode node in document.ChildNodes)
             {
                 if (node is XmlElement)
                     return (XmlElement)node;

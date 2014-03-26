@@ -56,7 +56,6 @@
     <Compile Include="src\main\cs\auth\AuthenticationExceptionInvalidInResponseTo.cs" />
     <Compile Include="src\main\cs\auth\AuthenticationExceptionNoAudiences.cs" />
     <Compile Include="src\main\cs\auth\LoginConfig.cs" />
-    <Compile Include="src\main\cs\auth\LoginMode.cs" />
     <Compile Include="src\main\cs\auth\LoginUtil.cs" />
     <Compile Include="src\main\cs\auth\PaymentResponse.cs" />
     <Compile Include="src\main\cs\auth\PaymentContext.cs" />
@@ -65,7 +64,6 @@
     <Compile Include="src\main\cs\auth\RequestConstants.cs" />
     <Compile Include="src\main\cs\auth\Saml2LogoutUtil.cs" />
     <Compile Include="src\main\cs\auth\Saml2Util.cs" />
-    <Compile Include="src\main\cs\auth\StartPage.cs" />
     <Compile Include="src\main\cs\KeyStoreUtil.cs" />
     <Compile Include="src\main\cs\ws\attrib\AttributeClient.cs" />
     <Compile Include="src\main\cs\ws\attrib\AttributeClientImpl.cs" />
@@ -112,9 +110,6 @@
     <Compile Include="src\main\cs\ws\payment\PaymentClient.cs" />
     <Compile Include="src\main\cs\ws\ping\PingClient.cs" />
     <Compile Include="src\main\cs\ws\ping\PingClientImpl.cs" />
-    <Compile Include="src\main\cs\ws\session\SessionAssertion.cs" />
-    <Compile Include="src\main\cs\ws\session\SessionTrackingClient.cs" />
-    <Compile Include="src\main\cs\ws\session\SessionTrackingClientImpl.cs" />
     <Compile Include="src\main\cs\ws\sts\TrustDomainType.cs" />
     <Compile Include="src\main\cs\ws\sts\STSClient.cs" />
     <Compile Include="src\main\cs\ws\sts\STSClientImpl.cs" />
@@ -152,10 +147,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="target\services\SafeOnlineSessionTrackingWebService.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="target\services\SafeOnlinePaymentWebService.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -176,7 +167,6 @@
     <None Include="src\main\resources\ping-ws\*" />
     <None Include="src\main\resources\idmapping-ws\*" />
     <None Include="src\main\resources\notification-ws\*" />
-    <None Include="src\main\resources\session-ws\*" />
     <None Include="src\main\resources\payment-ws\*" />
     <None Include="src\main\resources\ltqr-ws\*" />
     <None Include="src\main\resources\haws-ws\*" />
@@ -191,7 +181,6 @@
     <Exec Command="svcutil /namespace:*,NotificationConsumerWSNameSpace /directory:target\services src\main\resources\notification-ws\notification-consumer.wsdl src\main\resources\notification-ws\b-2.xsd src\main\resources\notification-ws\bf-2.xsd src\main\resources\ws-addr.xsd src\main\resources\notification-ws\t-1.xsd" />
     <Exec Command="svcutil /namespace:*,NotificationProducerWSNameSpace /directory:target\services src\main\resources\notification-ws\notification-producer.wsdl src\main\resources\notification-ws\b-2.xsd src\main\resources\notification-ws\bf-2.xsd src\main\resources\ws-addr.xsd src\main\resources\notification-ws\t-1.xsd" />
     <Exec Command="svcutil /namespace:*,NotificationSubscriptionManagerWSNameSpace /directory:target\services src\main\resources\notification-ws\notification-subscription-manager.wsdl src\main\resources\notification-ws\b-2.xsd src\main\resources\notification-ws\bf-2.xsd src\main\resources\ws-addr.xsd src\main\resources\notification-ws\t-1.xsd" />
-    <Exec Command="svcutil /namespace:*,SessionWSNameSpace /directory:target\services src\main\resources\session-ws\safe-online-session.wsdl src\main\resources\session-ws\safe-online-session.xsd" />
     <Exec Command="svcutil /namespace:*,PaymentWSNameSpace /directory:target\services src\main\resources\payment-ws\safe-online-payment.wsdl src\main\resources\payment-ws\safe-online-payment.xsd src\main\resources\ws-addr.xsd src\main\resources\xmldsig-core-schema.xsd src\main\resources\xenc-schema.xsd" />
     <Exec Command="svcutil /namespace:*,LTQRWSNameSpace /directory:target\services src\main\resources\ltqr-ws\safe-online-ltqr.wsdl src\main\resources\ltqr-ws\safe-online-ltqr.xsd" />
     <Exec Command="svcutil /namespace:*,HawsWSNameSpace /directory:target\services src\main\resources\haws-ws\safe-online-haws.wsdl src\main\resources\haws-ws\safe-online-haws.xsd" />

@@ -17,12 +17,9 @@ namespace safe_online_sdk_dotnet
         /// </summary>
         /// <param name="authnRequest">SAML v2.0 authentication request</param>
         /// <param name="language">﻿ISO 639 alpha-2 or alpha-3 language code. Optional, default is en</param>
-        /// <param name="theme">optional theme</param>
-        /// <param name="loginMode">optional login mode</param>
-        /// <param name="startPage">optional start page</param>
         /// <returns>the sessionId to be used in the redirect</returns>
         /// <exception cref="HawsPushException">something went wrong, check the error code and extra info in the exception</exception>
-        String push(AuthnRequestType authnRequest, String language, String theme, LoginMode loginMode, StartPage startPage);
+        String push(AuthnRequestType authnRequest, String language);
 
         /// <summary>
         /// Fetch the SAML v2.0 authentication response for specified sessionId.

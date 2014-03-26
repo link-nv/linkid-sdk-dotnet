@@ -25,8 +25,6 @@
     <form id="form1" runat="server" method="post" autocomplete="off" target="_self">
     
         <asp:HiddenField ID="SAMLRequest" runat="server" />
-        <asp:HiddenField ID="LoginMode" runat="server" />
-        <asp:HiddenField ID="StartPage" runat="server" />
         <asp:HiddenField ID="LanguageField" runat="server" />
     
         <noscript>

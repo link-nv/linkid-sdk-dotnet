@@ -62,7 +62,7 @@ namespace linkid_example
 
             LoginConfig.handleLinkIDWithPOST(Request, Response, Session, SESSION_AUTH_CONTEXT, LINKID_HOST,
                 APP_NAME, language, LOGINPAGE_LOCATION, KEY_APP, CERT_APP, CERT_LINKID,
-                this.form1, this.SAMLRequest, this.LoginMode, this.StartPage, this.LanguageField);
+                this.form1, this.SAMLRequest, this.LanguageField);
             
         }
     }

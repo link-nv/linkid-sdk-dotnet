@@ -55,20 +55,17 @@ namespace safe_online_sdk_dotnet
             this.client.Endpoint.Behaviors.Add(new LoggingBehavior());
         }
 
-        public string push(AttributeWSNamespace.AuthnRequestType authnRequest, string language, string theme, LoginMode loginMode, StartPage startPage)
+        public string push(AttributeWSNamespace.AuthnRequestType authnRequest, string language)
         {
-            PushRequest request = new PushRequest();
+            PushRequestV2 request = new PushRequestV2();
 
             XmlDocument authnRequestDocument = Saml2AuthUtil.toXmlDocument(authnRequest);
             request.Any = authnRequestDocument.DocumentElement;
 
             request.language = language;
-            request.theme = theme;
-            request.loginMode = loginMode.ToString();
-            request.startPage = startPage.ToString();
 
             // operate
-            PushResponse response = this.client.push(request);
+            PushResponse response = this.client.pushV2(request);
 
             // parse response
             if (null != response.error)
