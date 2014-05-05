@@ -39,8 +39,8 @@ namespace safe_online_sdk_dotnet
 
         public LoginConfig(HttpRequest request, HttpSessionState session, String linkIDHost)
         {
-            string LINKID_MOBILE_MINIMAL_ENTRY = "https://" + linkIDHost + "/linkid-mobile/auth-min";
-            string LINKID_MOBILE_REG_MINIMAL_ENTRY = "https://" + linkIDHost + "/linkid-mobile/reg-min";
+            string LINKID_MOBILE_MINIMAL_ENTRY = "https://" + linkIDHost + "/linkid-qr/auth-min";
+            string LINKID_MOBILE_REG_MINIMAL_ENTRY = "https://" + linkIDHost + "/linkid-qr/reg-min";
 
             mobileForceRegistration = null != request[RequestConstants.MOBILE_FORCE_REG_REQUEST_PARAM];
             targetURI = request[RequestConstants.TARGET_URI_REQUEST_PARAM];
