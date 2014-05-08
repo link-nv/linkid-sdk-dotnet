@@ -37,10 +37,20 @@ namespace safe_online_sdk_dotnet
             return (LoginConfig)session[SESSION_LOGIN_CONFIG];
         }
 
+        public static string getMobileMinimalPath(string linkIDHost)
+        {
+            return "https://" + linkIDHost + "/linkid-qr/auth-min";
+        }
+
+        public static string getMobileMinimalRegPath(string linkIDHost)
+        {
+            return "https://" + linkIDHost + "/linkid-qr/reg-min";
+        }
+
         public LoginConfig(HttpRequest request, HttpSessionState session, String linkIDHost)
         {
-            string LINKID_MOBILE_MINIMAL_ENTRY = "https://" + linkIDHost + "/linkid-qr/auth-min";
-            string LINKID_MOBILE_REG_MINIMAL_ENTRY = "https://" + linkIDHost + "/linkid-qr/reg-min";
+            string LINKID_MOBILE_MINIMAL_ENTRY = getMobileMinimalPath(linkIDHost);
+            string LINKID_MOBILE_REG_MINIMAL_ENTRY = getMobileMinimalRegPath(linkIDHost);
 
             mobileForceRegistration = null != request[RequestConstants.MOBILE_FORCE_REG_REQUEST_PARAM];
             targetURI = request[RequestConstants.TARGET_URI_REQUEST_PARAM];
@@ -151,7 +161,10 @@ namespace safe_online_sdk_dotnet
                 form.Action = loginConfig.linkIDLandingPage;
 
                 // device context
-                Dictionary<string, string> deviceContextMap = LoginUtil.getDeviceContext(session);
+                string deviceContext = LoginUtil.getDeviceContext(session);
+                Dictionary<string, string> deviceContextMap = new Dictionary<string, string>();
+                deviceContextMap.Add(RequestConstants.DEVICE_CONTEXT_TITLE, deviceContext);
+
 
                 // attribute suggestions
                 Dictionary<string, List<Object>> attributeSuggestions = LoginUtil.getAttributeSuggestions(session);
@@ -230,7 +243,9 @@ namespace safe_online_sdk_dotnet
                 LoginConfig.storeSaml2AuthUtil(session, saml2AuthUtil);
 
                 // device context
-                Dictionary<string, string> deviceContextMap = LoginUtil.getDeviceContext(session);
+                string deviceContext = LoginUtil.getDeviceContext(session);
+                Dictionary<string, string> deviceContextMap = new Dictionary<string, string>();
+                deviceContextMap.Add(RequestConstants.DEVICE_CONTEXT_TITLE, deviceContext);
 
                 // attribute suggestions
                 Dictionary<string, List<Object>> attributeSuggestions = LoginUtil.getAttributeSuggestions(session);

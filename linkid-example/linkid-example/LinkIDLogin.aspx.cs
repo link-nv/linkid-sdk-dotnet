@@ -25,34 +25,8 @@ namespace linkid_example
         /*
          * Application specific configuration...
          */
-        // linkID host to be used
-        //public static string LINKID_HOST = "192.168.5.14:8443";
-        public static string LINKID_HOST = "demo.linkid.be";
-
         // location of this page, linkID will post its authentication response back to this location.
         private static string LOGINPAGE_LOCATION = "http://localhost:53825/LinkIDLogin.aspx";
-
-        // application details
-        public static string APP_NAME = "demo-test";
-
-        // set the language to be used in the linkID iFrame
-        public static string language = "nl";
-
-        // certificates and key locations case SAML Post / WS-Security X509 profile is used
-        public static string KEY_DIR = "C:\\cygwin\\home\\devel\\keystores\\";
-        public static string CERT_LINKID = KEY_DIR + "linkid.crt";
-        public static string CERT_APP = KEY_DIR + "demotest.crt";
-        public static string KEY_APP = KEY_DIR + "demotest.key";
-
-        /*
-         * linkID authentication context session attribute
-         * 
-         * After a successfull authentication with linkID this will hold the returned   
-         * AuthenticationProtocolContext object which contains the linkID user ID,
-         * used authentication device(s) and optionally the returned linkID attributes
-         * for the application.
-         */
-        public static string SESSION_AUTH_CONTEXT = "linkID.authContext";
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -60,8 +34,9 @@ namespace linkid_example
             ServicePointManager.ServerCertificateValidationCallback =
                 new RemoteCertificateValidationCallback(WCFUtil.AnyCertificateValidationCallback);
 
-            LoginConfig.handleLinkIDWithPOST(Request, Response, Session, SESSION_AUTH_CONTEXT, LINKID_HOST,
-                APP_NAME, language, LOGINPAGE_LOCATION, KEY_APP, CERT_APP, CERT_LINKID,
+            LoginConfig.handleLinkIDWithPOST(Request, Response, Session, TestUtil.SESSION_AUTH_CONTEXT,
+                TestUtil.LINKID_HOST, TestUtil.APP_NAME, TestUtil.language,
+                LOGINPAGE_LOCATION, TestUtil.KEY_APP, TestUtil.CERT_APP, TestUtil.CERT_LINKID,
                 this.form1, this.SAMLRequest, this.LanguageField);
             
         }

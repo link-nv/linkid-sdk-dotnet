@@ -22,7 +22,7 @@ namespace linkid_example
         protected void Page_Load(object sender, EventArgs e)
         {
             AuthenticationProtocolContext authContext =
-                (AuthenticationProtocolContext)Session[LinkIDLogin.SESSION_AUTH_CONTEXT];
+                (AuthenticationProtocolContext)Session[TestUtil.SESSION_AUTH_CONTEXT];
             if (null != authContext && null != authContext.getAttributes())
             {
                 // parse DocData tokens

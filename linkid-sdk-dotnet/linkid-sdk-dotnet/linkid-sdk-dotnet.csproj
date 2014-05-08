@@ -67,6 +67,13 @@
     <Compile Include="src\main\cs\KeyStoreUtil.cs" />
     <Compile Include="src\main\cs\ws\attrib\AttributeClient.cs" />
     <Compile Include="src\main\cs\ws\attrib\AttributeClientImpl.cs" />
+    <Compile Include="src\main\cs\ws\auth\AuthClient.cs" />
+    <Compile Include="src\main\cs\ws\auth\AuthnSession.cs" />
+    <Compile Include="src\main\cs\ws\auth\AuthClientImpl.cs" />
+    <Compile Include="src\main\cs\ws\auth\exception\AuthnException.cs" />
+    <Compile Include="src\main\cs\ws\auth\exception\PollException.cs" />
+    <Compile Include="src\main\cs\ws\auth\PollResponse.cs" />
+    <Compile Include="src\main\cs\ws\auth\WSLoginUtil.cs" />
     <Compile Include="src\main\cs\ws\data\DataServiceConstants.cs" />
     <Compile Include="src\main\cs\ws\exception\ApplicationPoolNotFoundException.cs" />
     <Compile Include="src\main\cs\ws\exception\AttributeNotFoundException.cs" />
@@ -159,6 +166,10 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="target\services\SafeOnlineAuthWebService.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="src\main\cs\AssemblyInfo.cs" />
     <None Include="src\main\resources\*" />
     <None Include="src\main\resources\attrib-ws\*" />
@@ -170,6 +181,7 @@
     <None Include="src\main\resources\payment-ws\*" />
     <None Include="src\main\resources\ltqr-ws\*" />
     <None Include="src\main\resources\haws-ws\*" />
+    <None Include="src\main\resources\auth-ws\*" />
   </ItemGroup>
   <Target Name="BeforeBuild">
     <MakeDir Directories="target\services" />
@@ -184,6 +196,7 @@
     <Exec Command="svcutil /namespace:*,PaymentWSNameSpace /directory:target\services src\main\resources\payment-ws\safe-online-payment.wsdl src\main\resources\payment-ws\safe-online-payment.xsd src\main\resources\ws-addr.xsd src\main\resources\xmldsig-core-schema.xsd src\main\resources\xenc-schema.xsd" />
     <Exec Command="svcutil /namespace:*,LTQRWSNameSpace /directory:target\services src\main\resources\ltqr-ws\safe-online-ltqr.wsdl src\main\resources\ltqr-ws\safe-online-ltqr.xsd" />
     <Exec Command="svcutil /namespace:*,HawsWSNameSpace /directory:target\services src\main\resources\haws-ws\safe-online-haws.wsdl src\main\resources\haws-ws\safe-online-haws.xsd" />
+    <Exec Command="svcutil /namespace:*,AuthWSNameSpace /directory:target\services src\main\resources\auth-ws\safe-online-auth.wsdl src\main\resources\auth-ws\safe-online-auth.xsd" />
   </Target>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

@@ -23,7 +23,7 @@ namespace linkid_example
             }
 
             // get the latesst state of this payment transaction from linkID
-            PaymentClient paymentClient = new PaymentClientImpl(LinkIDLogin.LINKID_HOST);
+            PaymentClient paymentClient = new PaymentClientImpl(TestUtil.LINKID_HOST);
 
             PaymentState paymentState = paymentClient.getStatus(orderReference);
 

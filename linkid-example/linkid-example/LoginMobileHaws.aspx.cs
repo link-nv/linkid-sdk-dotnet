@@ -14,9 +14,7 @@ namespace linkid_example
         protected void Page_Load(object sender, EventArgs e)
         {
             // device context
-            Dictionary<string, string> deviceContextMap = new Dictionary<string, string>();
-            deviceContextMap.Add(RequestConstants.DEVICE_CONTEXT_TITLE, "Test .NET HAWS context");
-            LoginUtil.setDeviceContext(Session, deviceContextMap);
+            LoginUtil.setDeviceContext(Session, "Test .NET HAWS context");
 
             // attribute suggestions
             Dictionary<string, List<Object>> attributeSuggestions = new Dictionary<string, List<object>>();

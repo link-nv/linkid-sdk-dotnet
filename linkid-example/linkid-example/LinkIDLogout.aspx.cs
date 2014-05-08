@@ -24,7 +24,7 @@ namespace linkid_example
         /*
          * All code below should not be modified.
          */
-        private static string LINKID_LOGOUT_ENTRY = "https://" + LinkIDLogin.LINKID_HOST + "/linkid-auth/logoutentry";
+        private static string LINKID_LOGOUT_ENTRY = "https://" + TestUtil.LINKID_HOST + "/linkid-auth/logoutentry";
 
         /*
          * linkID logout utility class session attribute
@@ -36,22 +36,22 @@ namespace linkid_example
         protected void Page_Load(object sender, EventArgs e)
         {
             // Load applications's keypair and linkID's certificate
-            RSACryptoServiceProvider applicationKey = KeyStoreUtil.GetPrivateKeyFromPem(LinkIDLogin.KEY_APP, true);
-            X509Certificate2 applicationCert = new X509Certificate2(LinkIDLogin.CERT_APP);
+            RSACryptoServiceProvider applicationKey = KeyStoreUtil.GetPrivateKeyFromPem(TestUtil.KEY_APP, true);
+            X509Certificate2 applicationCert = new X509Certificate2(TestUtil.CERT_APP);
             applicationCert.PrivateKey = applicationKey;
-            X509Certificate2 linkidCert = new X509Certificate2(LinkIDLogin.CERT_LINKID);
+            X509Certificate2 linkidCert = new X509Certificate2(TestUtil.CERT_LINKID);
 
             string[] responses = Page.Request.Form.GetValues(RequestConstants.SAML2_POST_BINDING_RESPONSE_PARAM);
 
             AuthenticationProtocolContext authContext =
-                (AuthenticationProtocolContext)Session[LinkIDLogin.SESSION_AUTH_CONTEXT];
+                (AuthenticationProtocolContext)Session[TestUtil.SESSION_AUTH_CONTEXT];
 
             // Single logout response received from linkID
             if (null != responses && null != authContext)
             {
                 Saml2LogoutUtil saml2LogoutUtil = (Saml2LogoutUtil)Session[SESSION_SAML2_LOGOUT_UTIL];
                 string encodedLogoutResponse = responses[0];
-                bool result = saml2LogoutUtil.validateEncodedLogoutResponse(encodedLogoutResponse, LinkIDLogin.LINKID_HOST,
+                bool result = saml2LogoutUtil.validateEncodedLogoutResponse(encodedLogoutResponse, TestUtil.LINKID_HOST,
                                                                             applicationCert, linkidCert);
                 if (false == result)
                 {
@@ -59,7 +59,7 @@ namespace linkid_example
                 }
                 else
                 {
-                    Session[LinkIDLogin.SESSION_AUTH_CONTEXT] = null;
+                    Session[TestUtil.SESSION_AUTH_CONTEXT] = null;
                     this.LogoutButton.Visible = false;
                     this.ErrorLabel.Text = "Successfully logged out...";
                 }
@@ -73,7 +73,7 @@ namespace linkid_example
                     this.form1.Action = LINKID_LOGOUT_ENTRY;
                     this.HiddenField1.ID = RequestConstants.SAML2_POST_BINDING_REQUEST_PARAM;
                     this.HiddenField1.Value = saml2LogoutUtil.generateEncodedLogoutRequest(authContext.getUserId(),
-                        LinkIDLogin.APP_NAME, LINKID_LOGOUT_ENTRY);
+                        TestUtil.APP_NAME, LINKID_LOGOUT_ENTRY);
                 }
                 else
                 {

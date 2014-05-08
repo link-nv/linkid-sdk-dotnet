@@ -38,8 +38,8 @@ namespace linkid_example
 //            ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(WCFUtil.AnyCertificateValidationCallback);
 
             // fetch session
-            LTQRClient client = new LTQRClientImpl(LinkIDLoginHaws.LINKID_HOST,
-                LinkIDLoginHaws.wsUsername, LinkIDLoginHaws.wsPassword);
+            LTQRClient client = new LTQRClientImpl(TestUtil.LINKID_HOST,
+                TestUtil.wsUsername, TestUtil.wsPassword);
             LTQRClientSession[] clientSessions = client.pull(new string[] { orderReference }, new string[] { clientSessionId });
             String output = "";
             foreach (LTQRClientSession clientSession in clientSessions)
