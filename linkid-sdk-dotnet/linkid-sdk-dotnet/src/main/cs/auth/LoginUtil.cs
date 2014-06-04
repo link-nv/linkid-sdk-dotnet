@@ -9,18 +9,29 @@ namespace safe_online_sdk_dotnet
 {
     public class LoginUtil
     {
-        public static String SESSION_DEVICE_CONTEXT = "AuthnRequest.DeviceContext";
+        public static String SESSION_DEVICE_AUTHN_MESSAGE = "AuthnRequest.DeviceAuthnMessage";
+        public static String SESSION_DEVICE_FINISHED_MESSAGE = "AuthnRequest.DeviceFinishedMessage";
         public static String SESSION_ATTRIBUTE_SUGGESTIONS = "AuthnRequest.AttributeSuggestions";
         public static String SESSION_PAYMENT_CONTEXT = "AuthnRequest.PaymentContext";
 
-        public static void setDeviceContext(HttpSessionState session, string deviceContext)
+        public static void setDeviceAuthnMessage(HttpSessionState session, string deviceAuthnMessage)
         {
-            session.Add(SESSION_DEVICE_CONTEXT, deviceContext);
+            session.Add(SESSION_DEVICE_AUTHN_MESSAGE, deviceAuthnMessage);
         }
 
-        public static string getDeviceContext(HttpSessionState session)
+        public static string getDeviceAuthnMessage(HttpSessionState session)
         {
-            return (string)session[SESSION_DEVICE_CONTEXT];
+            return (string)session[SESSION_DEVICE_AUTHN_MESSAGE];
+        }
+
+        public static void setDeviceFinishedMessage(HttpSessionState session, string deviceFinishedMessage)
+        {
+            session.Add(SESSION_DEVICE_FINISHED_MESSAGE, deviceFinishedMessage);
+        }
+
+        public static string getDeviceFinishedMessage(HttpSessionState session)
+        {
+            return (string)session[SESSION_DEVICE_FINISHED_MESSAGE];
         }
 
         public static void setAttriuteSuggestions(HttpSessionState session, Dictionary<string, List<Object>> attributeSuggestions)

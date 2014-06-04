@@ -15,7 +15,8 @@ namespace linkid_example
         protected void Page_Load(object sender, EventArgs e)
         {
             // device context
-            LoginUtil.setDeviceContext(Session, "Test .NET context");
+            LoginUtil.setDeviceAuthnMessage(Session, ".NET Authn Msg");
+            LoginUtil.setDeviceFinishedMessage(Session, ".NET Finished Msg");
 
             // attribute suggestions
             Dictionary<string, List<Object>> attributeSuggestions = new Dictionary<string, List<object>>();

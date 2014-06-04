@@ -27,7 +27,8 @@ namespace safe_online_sdk_dotnet
         public static readonly String FORCE_AUTH_REQUEST_PARAM = "force";
 
         // Device context parameters supported by linkID devices
-        public static readonly String DEVICE_CONTEXT_TITLE = "linkID.contextTitle";
+        public static readonly String AUTHENTICATION_MESSAGE = "linkID.authenticationMessage";
+        public static readonly String FINISHED_MESSAGE = "linkID.finishedMessage";
 
         // Payment state changed page order reference param
         public static readonly String PAYMENT_CHANGED_ORDER_REF_PARAM = "orderRef";

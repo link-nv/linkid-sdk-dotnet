@@ -13,8 +13,6 @@ namespace linkid_example
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            // device context
-            LoginUtil.setDeviceContext(Session, "Test .NET context");
         }
     }
 }

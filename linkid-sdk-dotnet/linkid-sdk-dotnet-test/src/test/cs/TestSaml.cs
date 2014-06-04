@@ -126,7 +126,8 @@ namespace safe_online_sdk_dotnet.test.cs
 
             // device context
             Dictionary<string, string> deviceContextMap = new Dictionary<string, string>();
-            deviceContextMap.Add(RequestConstants.DEVICE_CONTEXT_TITLE, "Test device context");
+            deviceContextMap.Add(RequestConstants.AUTHENTICATION_MESSAGE, "Test authn message");
+            deviceContextMap.Add(RequestConstants.FINISHED_MESSAGE, "Test finished message");
 
             // attribute suggestions
             Dictionary<string, List<Object>> attributeSuggestions = new Dictionary<string, List<object>>();
