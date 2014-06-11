@@ -161,11 +161,9 @@ namespace safe_online_sdk_dotnet
                 form.Action = loginConfig.linkIDLandingPage;
 
                 // device context
-                string deviceAuthnMessage = LoginUtil.getDeviceAuthnMessage(session);
-                string deviceFinishedMessage = LoginUtil.getDeviceFinishedMessage(session);
-                Dictionary<string, string> deviceContextMap = new Dictionary<string, string>();
-                deviceContextMap.Add(RequestConstants.AUTHENTICATION_MESSAGE, deviceAuthnMessage);
-                deviceContextMap.Add(RequestConstants.FINISHED_MESSAGE, deviceFinishedMessage);
+                Dictionary<string, string> deviceContextMap = LoginUtil.generateDeviceContextMap(
+                     LoginUtil.getDeviceAuthnMessage(session), LoginUtil.getDeviceFinishedMessage(session),
+                     LoginUtil.getIdentityProfiles(session));
 
                 // attribute suggestions
                 Dictionary<string, List<Object>> attributeSuggestions = LoginUtil.getAttributeSuggestions(session);
@@ -244,11 +242,9 @@ namespace safe_online_sdk_dotnet
                 LoginConfig.storeSaml2AuthUtil(session, saml2AuthUtil);
 
                 // device context
-                string deviceAuthnMessage = LoginUtil.getDeviceAuthnMessage(session);
-                string deviceFinishedMessage = LoginUtil.getDeviceFinishedMessage(session);
-                Dictionary<string, string> deviceContextMap = new Dictionary<string, string>();
-                deviceContextMap.Add(RequestConstants.AUTHENTICATION_MESSAGE, deviceAuthnMessage);
-                deviceContextMap.Add(RequestConstants.FINISHED_MESSAGE, deviceFinishedMessage);
+                Dictionary<string, string> deviceContextMap = LoginUtil.generateDeviceContextMap(
+                     LoginUtil.getDeviceAuthnMessage(session), LoginUtil.getDeviceFinishedMessage(session),
+                     LoginUtil.getIdentityProfiles(session));
 
                 // attribute suggestions
                 Dictionary<string, List<Object>> attributeSuggestions = LoginUtil.getAttributeSuggestions(session);

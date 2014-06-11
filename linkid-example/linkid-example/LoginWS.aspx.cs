@@ -27,7 +27,7 @@ namespace linkid_example
                 // start a linkID authentication
                 authnSession = WSLoginUtil.startLinkIDAuthentication(TestUtil.LINKID_HOST,
                     TestUtil.wsUsername, TestUtil.wsPassword, TestUtil.APP_NAME,
-                    "WS Authn Message", "WS Finished Message", null, null, TestUtil.language, null, false);
+                    "WS Authn Message", "WS Finished Message", null, null, null, TestUtil.language, null, false);
 
                 qr.Src = "data:image/png;base64," + authnSession.qrCodeImageEncoded;
 

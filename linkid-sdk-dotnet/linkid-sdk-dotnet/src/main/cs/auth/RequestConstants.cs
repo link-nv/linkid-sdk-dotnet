@@ -30,6 +30,9 @@ namespace safe_online_sdk_dotnet
         public static readonly String AUTHENTICATION_MESSAGE = "linkID.authenticationMessage";
         public static readonly String FINISHED_MESSAGE = "linkID.finishedMessage";
 
+        // Optional identity profiles
+        public static readonly String IDENTITY_PROFILE_PREFIX = "linkID.identityProfile";
+
         // Payment state changed page order reference param
         public static readonly String PAYMENT_CHANGED_ORDER_REF_PARAM = "orderRef";
 

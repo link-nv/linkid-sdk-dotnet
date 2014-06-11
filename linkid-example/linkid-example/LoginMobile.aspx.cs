@@ -18,6 +18,12 @@ namespace linkid_example
             LoginUtil.setDeviceAuthnMessage(Session, ".NET Authn Msg");
             LoginUtil.setDeviceFinishedMessage(Session, ".NET Finished Msg");
 
+            // Identity profiles
+            List<String> identityProfiles = new List<String>();
+            identityProfiles.Add("linkid_basic");
+            identityProfiles.Add("linkid_payment");
+            LoginUtil.setIdentityProfiles(Session, identityProfiles);
+
             // attribute suggestions
             Dictionary<string, List<Object>> attributeSuggestions = new Dictionary<string, List<object>>();
             attributeSuggestions.Add("test.attribute.string", new List<Object> { "test" });

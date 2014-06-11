@@ -9,14 +9,13 @@ namespace safe_online_sdk_dotnet
     {
 
         public static AuthnSession startLinkIDAuthentication(string linkIDHost, string username, string password,
-            string applicationName, string authenticationMessage, string finishesMessage, 
+            string applicationName, string authenticationMessage, string finishesMessage, List<String> identityProfiles,
             Dictionary<string, List<Object>> attributeSuggestions, PaymentContext paymentContext, 
             string language, string userAgent, bool forceRegistration)
         {
 
-            Dictionary<string, string> deviceContextMap = new Dictionary<string, string>();
-            deviceContextMap.Add(RequestConstants.AUTHENTICATION_MESSAGE, authenticationMessage);
-            deviceContextMap.Add(RequestConstants.FINISHED_MESSAGE, finishesMessage);
+            Dictionary<string, string> deviceContextMap = LoginUtil.generateDeviceContextMap(
+                authenticationMessage, finishesMessage, identityProfiles);
 
             // generate SAML v2.0 authentication request
             Saml2AuthUtil saml2AuthUtil = new Saml2AuthUtil();
