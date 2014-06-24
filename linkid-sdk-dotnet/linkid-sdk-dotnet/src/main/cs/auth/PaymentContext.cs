@@ -16,6 +16,9 @@ namespace safe_online_sdk_dotnet
         public static readonly String VALIDATION_TIME_KEY  = "PaymentContext.validationTime";
         public static readonly String ADD_LINK_KEY         = "PaymentContext.addLinkKey";
         public static readonly String DEFERRED_PAY_KEY     = "PaymentContext.deferredPay";
+        public static readonly String MANDATE_KEY = "PaymentContext.mandate";
+        public static readonly String MANDATE_DESCRIPTION_KEY = "PaymentContext.mandateDescription";
+        public static readonly String MANDATE_REFERENCE_KEY = "PaymentContext.mandateReference";
 
         // amount to pay, carefull amount is in cents!!
         public Double amount { get; set; }
@@ -36,10 +39,16 @@ namespace safe_online_sdk_dotnet
 
         // whether or not deferred payments are allowed, if a user has no payment token attached to the linkID account
         // linkID can allow for the user to make a deferred payment which he can complete later on from this browser.
-        public Boolean allowDeferredPay;
+        public Boolean allowDeferredPay {get; set;}
 
-        public PaymentContext(Double amount, Currency currency, String description, String orderReference, 
-            String paymentProfile, int paymentValidationTime, Boolean showAddPaymentMethodLink, Boolean allowDeferredPay)
+        // mandates
+        public Boolean mandate { get; set; }
+        public String mandateDescription { get; set; }
+        public String mandateReference { get; set; }
+
+        public PaymentContext(Double amount, Currency currency, String description, String orderReference,
+            String paymentProfile, int paymentValidationTime, Boolean showAddPaymentMethodLink, Boolean allowDeferredPay,
+            Boolean mandate, String mandateDescription, String mandateReference)
         {
             this.amount = amount;
             this.currency = currency;
@@ -49,28 +58,21 @@ namespace safe_online_sdk_dotnet
             this.paymentValidationTime = paymentValidationTime;
             this.showAddPaymentMethodLink = showAddPaymentMethodLink;
             this.allowDeferredPay = allowDeferredPay;
+            this.mandate = mandate;
+            this.mandateDescription = mandateDescription;
+            this.mandateReference = mandateReference;
         }
+
+        public PaymentContext(Double amount, Currency currency, String description, String orderReference, 
+            String paymentProfile, int paymentValidationTime, Boolean showAddPaymentMethodLink, Boolean allowDeferredPay)
+            : this(amount, currency, description, orderReference, paymentProfile, paymentValidationTime,
+                showAddPaymentMethodLink, allowDeferredPay, false, null, null) {}
 
         public PaymentContext(double amount, Currency currency, String description, String orderReference, String paymentProfile)
-        {
-            this.amount = amount;
-            this.currency = currency;
-            this.description = description;
-            this.orderReference = orderReference;
-            this.paymentProfile = paymentProfile;
-            this.paymentValidationTime = 5;
-            this.showAddPaymentMethodLink = true;
-            this.allowDeferredPay = false;
-        }
+            : this(amount, currency, description, orderReference, paymentProfile, 5, true, false) {}
 
         public PaymentContext(double amount, Currency currency)
-        {
-            this.amount = amount;
-            this.currency = currency;
-            this.paymentValidationTime = 5;
-            this.showAddPaymentMethodLink = true;
-            this.allowDeferredPay = false;
-        }
+            : this(amount, currency, null, null, null) {}
 
         public Dictionary<string, string> toDictionary()
         {
@@ -86,6 +88,14 @@ namespace safe_online_sdk_dotnet
             dictionary.Add(VALIDATION_TIME_KEY, paymentValidationTime.ToString());
             dictionary.Add(ADD_LINK_KEY, showAddPaymentMethodLink.ToString());
             dictionary.Add(DEFERRED_PAY_KEY, allowDeferredPay.ToString());
+
+            // mandates
+            dictionary.Add(MANDATE_KEY, mandate.ToString());
+            if (null != mandateDescription)
+                dictionary.Add(MANDATE_DESCRIPTION_KEY, mandateDescription);
+            if (null != mandateReference)
+                dictionary.Add(MANDATE_REFERENCE_KEY, mandateReference);
+
             return dictionary;
         }
     }

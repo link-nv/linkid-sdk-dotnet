@@ -457,19 +457,7 @@ namespace safe_online_sdk_dotnet
             if (xmlElement.LocalName.Equals(PaymentResponse.LOCAL_NAME))
             {
                 PaymentResponseType paymentResponseType = deserialize(xmlElement);
-
-                String txnId = null;
-                String paymentStateString = null;
-                foreach (object item in paymentResponseType.Items)
-                {
-                    AttributeType attributeType = (AttributeType)item;
-                    if (attributeType.Name.Equals(PaymentResponse.TXN_ID_KEY))
-                        txnId = (String)attributeType.AttributeValue[0];
-                    if (attributeType.Name.Equals(PaymentResponse.STATE_KEY))
-                        paymentStateString = (String)attributeType.AttributeValue[0];
-                }
-
-                return new PaymentResponse(txnId, PaymentResponse.parse(paymentStateString));
+                return PaymentResponse.fromSaml(paymentResponseType);
             }
 
             return null;
