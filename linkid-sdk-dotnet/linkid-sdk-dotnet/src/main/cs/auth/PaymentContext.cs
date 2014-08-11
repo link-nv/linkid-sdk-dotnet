@@ -15,10 +15,17 @@ namespace safe_online_sdk_dotnet
         public static readonly String PROFILE_KEY          = "PaymentContext.profile";
         public static readonly String VALIDATION_TIME_KEY  = "PaymentContext.validationTime";
         public static readonly String ADD_LINK_KEY         = "PaymentContext.addLinkKey";
+        ﻿public static readonly String RETURN_MENU_URL_KEY  = "PaymentContext.returnMenuURL";
         public static readonly String DEFERRED_PAY_KEY     = "PaymentContext.deferredPay";
         public static readonly String MANDATE_KEY = "PaymentContext.mandate";
         public static readonly String MANDATE_DESCRIPTION_KEY = "PaymentContext.mandateDescription";
         public static readonly String MANDATE_REFERENCE_KEY = "PaymentContext.mandateReference";
+
+        public static readonly String MENU_RESULT_SUCCESS_KEY  = "PaymentContext.menuResultSuccess";
+        public static readonly String MENU_RESULT_CANCELED_KEY = "PaymentContext.menuResultCanceled";
+        public static readonly String MENU_RESULT_PENDING_KEY  = "PaymentContext.menuResultPending";
+        public static readonly String MENU_RESULT_ERROR_KEY    = "PaymentContext.menuResultError";
+
 
         // amount to pay, carefull amount is in cents!!
         public Double amount { get; set; }
@@ -37,6 +44,10 @@ namespace safe_online_sdk_dotnet
         // whether or not to display a link to linkID's payment method page if the linkID user has no payment methods added, default is true
         public Boolean showAddPaymentMethodLink { get; set; }
 
+        // if so and linkID user selects add payment method, the payment menu URL to redirect to will be returned in the payment response
+        // this is an alternative to "showAddPaymentMethodLink" where the payment menu is loaded via the iframe/popup. popup blockers...
+        public Boolean returnPaymentMenuURL { get; set; }
+
         // whether or not deferred payments are allowed, if a user has no payment token attached to the linkID account
         // linkID can allow for the user to make a deferred payment which he can complete later on from this browser.
         public Boolean allowDeferredPay {get; set;}
@@ -46,8 +57,15 @@ namespace safe_online_sdk_dotnet
         public String mandateDescription { get; set; }
         public String mandateReference { get; set; }
 
+        // optional payment menu return URLs (returnPaymentMenuURL)
+        public String paymentMenuResultSuccess { get; set; }
+        public String paymentMenuResultCanceled { get; set; }
+        public String paymentMenuResultPending { get; set; }
+        public String paymentMenuResultError { get; set; }
+
         public PaymentContext(Double amount, Currency currency, String description, String orderReference,
-            String paymentProfile, int paymentValidationTime, Boolean showAddPaymentMethodLink, Boolean allowDeferredPay,
+            String paymentProfile, int paymentValidationTime, 
+            Boolean showAddPaymentMethodLink, Boolean returnPaymentMenuURL, Boolean allowDeferredPay,
             Boolean mandate, String mandateDescription, String mandateReference)
         {
             this.amount = amount;
@@ -57,6 +75,7 @@ namespace safe_online_sdk_dotnet
             this.paymentProfile = paymentProfile;
             this.paymentValidationTime = paymentValidationTime;
             this.showAddPaymentMethodLink = showAddPaymentMethodLink;
+            this.returnPaymentMenuURL = returnPaymentMenuURL;
             this.allowDeferredPay = allowDeferredPay;
             this.mandate = mandate;
             this.mandateDescription = mandateDescription;
@@ -66,7 +85,7 @@ namespace safe_online_sdk_dotnet
         public PaymentContext(Double amount, Currency currency, String description, String orderReference, 
             String paymentProfile, int paymentValidationTime, Boolean showAddPaymentMethodLink, Boolean allowDeferredPay)
             : this(amount, currency, description, orderReference, paymentProfile, paymentValidationTime,
-                showAddPaymentMethodLink, allowDeferredPay, false, null, null) {}
+                showAddPaymentMethodLink, allowDeferredPay, false, false, null, null) {}
 
         public PaymentContext(double amount, Currency currency, String description, String orderReference, String paymentProfile)
             : this(amount, currency, description, orderReference, paymentProfile, 5, true, false) {}
@@ -87,6 +106,7 @@ namespace safe_online_sdk_dotnet
                 dictionary.Add(PROFILE_KEY, paymentProfile);
             dictionary.Add(VALIDATION_TIME_KEY, paymentValidationTime.ToString());
             dictionary.Add(ADD_LINK_KEY, showAddPaymentMethodLink.ToString());
+            dictionary.Add(RETURN_MENU_URL_KEY, returnPaymentMenuURL.ToString());
             dictionary.Add(DEFERRED_PAY_KEY, allowDeferredPay.ToString());
 
             // mandates
@@ -95,6 +115,16 @@ namespace safe_online_sdk_dotnet
                 dictionary.Add(MANDATE_DESCRIPTION_KEY, mandateDescription);
             if (null != mandateReference)
                 dictionary.Add(MANDATE_REFERENCE_KEY, mandateReference);
+
+            // payment menu URLs
+            if (null != paymentMenuResultSuccess)
+                dictionary.Add(MENU_RESULT_SUCCESS_KEY, paymentMenuResultSuccess);
+            if (null != paymentMenuResultCanceled)
+                dictionary.Add(MENU_RESULT_CANCELED_KEY, paymentMenuResultCanceled);
+            if (null != paymentMenuResultPending)
+                dictionary.Add(MENU_RESULT_PENDING_KEY, paymentMenuResultPending);
+            if (null != paymentMenuResultError)
+                dictionary.Add(MENU_RESULT_ERROR_KEY, paymentMenuResultError);
 
             return dictionary;
         }

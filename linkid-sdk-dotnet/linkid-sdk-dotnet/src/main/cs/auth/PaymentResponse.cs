@@ -15,6 +15,8 @@ namespace safe_online_sdk_dotnet
         public static readonly String STATE_KEY     = "PaymentResponse.state";
         public static readonly String MANDATE_REF_KEY = "PaymentResponse.mandateRef";
 
+        ﻿public static readonly String MENU_URL_KEY     = "PaymentResponse.menuURL";
+
         public static readonly String DOCDATA_REF_KEY = "PaymentResponse.docdataRef";
 
         public String orderReference { get; set; }
@@ -22,12 +24,16 @@ namespace safe_online_sdk_dotnet
         public String mandateReference { get; set; }
         public String docdataReference { get; set; }
 
-        public PaymentResponse(String orderReference, PaymentState paymentState, String mandateReference, String docdataReference)
+        ﻿public String paymentMenuURL { get; set; }
+
+        public PaymentResponse(String orderReference, PaymentState paymentState, 
+            String mandateReference, String docdataReference, String paymentMenuURL)
         {
             this.orderReference = orderReference;
             this.paymentState = paymentState;
             this.mandateReference = mandateReference;
             this.docdataReference = docdataReference;
+            this.paymentMenuURL = paymentMenuURL;
         }
 
         public static PaymentResponse fromDictionary(Dictionary<string, string> dictionary)
@@ -43,7 +49,11 @@ namespace safe_online_sdk_dotnet
             String docdataReference = null;
             if (null != dictionary[DOCDATA_REF_KEY]) docdataReference = dictionary[DOCDATA_REF_KEY];
 
-            return new PaymentResponse(dictionary[ORDER_REF_KEY], parse(dictionary[STATE_KEY]), mandateReference, docdataReference); 
+            String paymentMenuURL = null;
+            if (null != dictionary[MENU_URL_KEY]) paymentMenuURL = dictionary[MENU_URL_KEY];
+
+            return new PaymentResponse(dictionary[ORDER_REF_KEY], parse(dictionary[STATE_KEY]),
+                mandateReference, docdataReference, paymentMenuURL); 
         }
 
         public static PaymentResponse fromSaml(PaymentResponseType paymentResponseType)
@@ -52,6 +62,7 @@ namespace safe_online_sdk_dotnet
             String paymentStateString = null;
             String mandateReference = null;
             String docdataReference = null;
+            String paymentMenuURL = null;
             foreach (object item in paymentResponseType.Items)
             {
                 AttributeType attributeType = (AttributeType)item;
@@ -63,9 +74,12 @@ namespace safe_online_sdk_dotnet
                     mandateReference = (String)attributeType.AttributeValue[0];
                 if (attributeType.Name.Equals(DOCDATA_REF_KEY))
                     docdataReference = (String)attributeType.AttributeValue[0];
+                if (attributeType.Name.Equals(MENU_URL_KEY))
+                    paymentMenuURL = (String)attributeType.AttributeValue[0];
             }
 
-            return new PaymentResponse(orderReference, PaymentResponse.parse(paymentStateString), mandateReference, docdataReference);
+            return new PaymentResponse(orderReference, PaymentResponse.parse(paymentStateString),
+                mandateReference, docdataReference, paymentMenuURL);
 
         }
 
