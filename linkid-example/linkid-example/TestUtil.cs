@@ -8,8 +8,8 @@ namespace linkid_example
     public class TestUtil
     {
         // linkID host to be used
-        public static string LINKID_HOST = "192.168.5.14:8443";
-        //public static string LINKID_HOST = "demo.linkid.be";
+        //public static string LINKID_HOST = "192.168.5.14:8443";
+        public static string LINKID_HOST = "demo.linkid.be";
 
         // application details
         public static string APP_NAME = "example-mobile";
