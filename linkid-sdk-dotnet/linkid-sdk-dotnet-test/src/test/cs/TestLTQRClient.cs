@@ -37,9 +37,20 @@ namespace safe_online_sdk_dotnet.test.cs
         }
 
         [Test]
+        public void testChange()
+        {
+            String orderReference = "DOTNET-LTQR-5eddcdd6-eaa6-4552-b6f1-8fdeb14d44c0";
+
+            PaymentContext paymentContext = new PaymentContext(9999, Currency.EUR, ".NET Test Changed", orderReference, null, 10, false, true);
+            DateTime expiryDate = DateTime.Now.AddMonths(12);
+
+            client.change(orderReference, paymentContext, expiryDate, null);
+        }
+
+        [Test]
         public void testPull()
         {
-            string[] orderReferences = new string[] { "DOTNET-LTQR-7a9218c0-f559-4e89-9cb6-14f9a9bfe4d7" };
+            string[] orderReferences = new string[] { "DOTNET-LTQR-5eddcdd6-eaa6-4552-b6f1-8fdeb14d44c0" };
             string[] clientSessionIds = new string[] { };
 
             LTQRClientSession[] clientSessions = client.pull(orderReferences, clientSessionIds);

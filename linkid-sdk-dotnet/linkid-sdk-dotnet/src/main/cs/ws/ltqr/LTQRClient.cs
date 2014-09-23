@@ -26,6 +26,18 @@ namespace safe_online_sdk_dotnet
         LTQRSession push(PaymentContext paymentContext, bool oneTimeUse, Nullable<DateTime> expiryDate, Nullable<long> expiryDuration);
 
         /// <summary>
+        /// Change ﻿Change an existing long term QR code
+        /// </summary>
+        /// <param name="orderReference">Required order reference</param>
+        /// <param name="paymentContext">Optional payment context</param>
+        /// <param name="oneTimeUse">Long term QR session can only be used once</param>
+        /// <param name="expiryDate">Optional expiry date of the long term session</param>
+        /// <param name="expiryDuration">Optional expiry duration of the long term session. 
+        /// Expressed in number of seconds starting from the creation.
+        /// Do not mix this attribute with expiryDate. If so, expiryDate will be preferred</param>
+        void change(String orderReference, PaymentContext paymentContext, Nullable<DateTime> expiryDate, Nullable<long> expiryDuration);
+
+        /// <summary>
         /// Fetch a set of client sessions
         /// </summary>
         /// <param name="orderReferences">optional list of long term order references, if null all client sessions for all ltqr session will be returned</param>

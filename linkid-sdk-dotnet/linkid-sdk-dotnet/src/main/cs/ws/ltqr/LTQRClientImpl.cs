@@ -106,6 +106,57 @@ namespace safe_online_sdk_dotnet
             throw new RuntimeException("No success nor error element in the response ?!");
         }
 
+        public void change(String orderReference, PaymentContext paymentContextDO, Nullable<DateTime> expiryDate,
+            Nullable<long> expiryDuration)
+        {
+            ChangeRequest request = new ChangeRequest();
+            request.orderReference = orderReference;
+
+            // payment context
+            if (null != paymentContextDO)
+            {
+                LTQRWSNameSpace.PaymentContext paymentContext = new LTQRWSNameSpace.PaymentContext();
+                paymentContext.amount = paymentContextDO.amount;
+                paymentContext.currency = convert(paymentContextDO.currency);
+                paymentContext.description = paymentContextDO.description;
+                paymentContext.orderReference = paymentContextDO.orderReference;
+                paymentContext.paymentProfile = paymentContextDO.paymentProfile;
+                paymentContext.validationTime = paymentContextDO.paymentValidationTime;
+                paymentContext.validationTimeSpecified = true;
+                paymentContext.allowDeferredPay = paymentContextDO.allowDeferredPay;
+                paymentContext.allowDeferredPaySpecified = true;
+
+                request.paymentContext = paymentContext;
+            }
+
+            // configuration
+            if (null != expiryDate)
+            {
+                request.expiryDate = expiryDate.Value;
+                request.expiryDateSpecified = true;
+            }
+            if (null != expiryDuration)
+            {
+                request.expiryDuration = expiryDuration.Value;
+                request.expiryDurationSpecified = true;
+            }
+
+            // operate
+            ChangeResponse response = this.client.change(request);
+
+            // convert response
+            if (null != response.error)
+            {
+                throw new ChangeException(convert(response.error.errorCode));
+            }
+
+            if (null == response.success)
+            {
+                throw new RuntimeException("No success nor error element in the response ?!");
+            }
+        }
+
+
         public LTQRClientSession[] pull(String[] orderReferences, String[] clientSessionIds)
         {
             PullRequest request = new PullRequest();
@@ -187,6 +238,17 @@ namespace safe_online_sdk_dotnet
             switch (errorCode)
             {
                 case LTQRWSNameSpace.ErrorCode.errorcredentialsinvalid: return ErrorCode.ERROR_CREDENTIALS_INVALID;
+            }
+
+            throw new RuntimeException("Unexpected error code " + errorCode.ToString() + "!");
+        }
+
+        private ChangeErrorCode convert(LTQRWSNameSpace.ChangeErrorCode errorCode)
+        {
+            switch (errorCode)
+            {
+                case LTQRWSNameSpace.ChangeErrorCode.errorcredentialsinvalid: return ChangeErrorCode.ERROR_CREDENTIALS_INVALID;
+                case LTQRWSNameSpace.ChangeErrorCode.errornotfound: return ChangeErrorCode.ERROR_NOT_FOUND;
             }
 
             throw new RuntimeException("Unexpected error code " + errorCode.ToString() + "!");
