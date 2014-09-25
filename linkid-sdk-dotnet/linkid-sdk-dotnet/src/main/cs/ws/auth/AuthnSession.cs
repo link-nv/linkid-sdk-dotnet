@@ -8,18 +8,16 @@ namespace safe_online_sdk_dotnet
         public byte[] qrCodeImage { get; set; }
         public string qrCodeImageEncoded { get; set; }
         public string qrCodeURL { get; set; }
-        public string authenticationContext { get; set; }
 
         public Saml2AuthUtil saml2AuthUtil { get; set; }
 
         public AuthnSession(string sessionId, byte[] qrCodeImage, string qrCodeImageEncoded, 
-            string qrCodeURL, string authenticationContext, Saml2AuthUtil saml2AuthUtil)
+            string qrCodeURL, Saml2AuthUtil saml2AuthUtil)
         {
             this.sessionId = sessionId;
             this.qrCodeImage = qrCodeImage;
             this.qrCodeImageEncoded = qrCodeImageEncoded;
             this.qrCodeURL = qrCodeURL;
-            this.authenticationContext = authenticationContext;
 
             this.saml2AuthUtil = saml2AuthUtil;
         }

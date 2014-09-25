@@ -26,11 +26,12 @@ namespace linkid_example
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            String orderReference = Request[RequestConstants.LTQR_ORDER_REF_PARAM];
+            String ltqrReference = Request[RequestConstants.LTQR_REF_PARAM];
+            String paymentOrderReference = Request[RequestConstants.LTQR_PAYMENT_ORDER_REF_PARAM];
             String clientSessionId = Request[RequestConstants.LTQR_CLIENT_SESSION_ID_PARAM];
-            if (null == orderReference)
+            if (null == ltqrReference)
             {
-                // no orderReference in notification, ignoring...
+                // no ltqrReference in notification, ignoring...
                 return;
             }
 
@@ -40,7 +41,7 @@ namespace linkid_example
             // fetch session
             LTQRClient client = new LTQRClientImpl(TestUtil.LINKID_HOST,
                 TestUtil.wsUsername, TestUtil.wsPassword);
-            LTQRClientSession[] clientSessions = client.pull(new string[] { orderReference }, new string[] { clientSessionId });
+            LTQRClientSession[] clientSessions = client.pull(new string[] { ltqrReference }, null, new string[] { clientSessionId });
             String output = "";
             foreach (LTQRClientSession clientSession in clientSessions)
             {

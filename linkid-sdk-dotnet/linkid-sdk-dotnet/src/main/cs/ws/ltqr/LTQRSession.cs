@@ -13,13 +13,17 @@ namespace safe_online_sdk_dotnet
     {
         public byte[] qrCodeImage { get; set; }
         public String qrCodeURL { get; set; }
-        public String orderReference{ get; set; }
+        public String ltqrReference{ get; set; }
 
-        public LTQRSession(byte[] qrCodeImage, String qrCodeURL, String orderReference)
+        public String paymentOrderReference { get; set; }   // optional payment order ref, if applicable
+
+        public LTQRSession(byte[] qrCodeImage, String qrCodeURL, String ltqrReference, 
+            String paymentOrderReference)
         {
             this.qrCodeImage = qrCodeImage;
             this.qrCodeURL = qrCodeURL;
-            this.orderReference = orderReference;
+            this.ltqrReference = ltqrReference;
+            this.paymentOrderReference = paymentOrderReference;
         }
     }
 }

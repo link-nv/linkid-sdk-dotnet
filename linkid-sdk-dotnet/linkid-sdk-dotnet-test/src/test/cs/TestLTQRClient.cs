@@ -9,7 +9,7 @@ using safe_online_sdk_dotnet_test.test.cs;
 namespace safe_online_sdk_dotnet.test.cs
 {
     /// <summary>
-	/// Test class for the WS-Notification clients.
+	/// Test class for the LTQR WS client.
 	/// </summary>
     [TestFixture]
     public class TestLTQRClient
@@ -27,8 +27,8 @@ namespace safe_online_sdk_dotnet.test.cs
         [Test]
         public void testPush()
         {
-            String orderReference = "DOTNET-LTQR-" + Guid.NewGuid().ToString();
-            PaymentContext paymentContext = new PaymentContext(20000, Currency.EUR, ".NET Test", orderReference, null, 10, false, true);
+            String paymentOrderReference = "DOTNET-LTQR-" + Guid.NewGuid().ToString();
+            PaymentContext paymentContext = new PaymentContext(20000, Currency.EUR, ".NET Test", paymentOrderReference, null);
             DateTime expiryDate = DateTime.Now.AddMonths(3);
 
             LTQRSession session = client.push(paymentContext, false, expiryDate, null);
@@ -39,21 +39,23 @@ namespace safe_online_sdk_dotnet.test.cs
         [Test]
         public void testChange()
         {
-            String orderReference = "DOTNET-LTQR-5eddcdd6-eaa6-4552-b6f1-8fdeb14d44c0";
+            String ltqrReference = "fd42b4d2-4afe-48be-a14e-0f4ef29e9365";
+            String paymentOrderReference = "DOTNET-LTQR-" + Guid.NewGuid().ToString();
 
-            PaymentContext paymentContext = new PaymentContext(9999, Currency.EUR, ".NET Test Changed", orderReference, null, 10, false, true);
+            PaymentContext paymentContext = new PaymentContext(9999, Currency.EUR, ".NET Test Changed", paymentOrderReference, null);
             DateTime expiryDate = DateTime.Now.AddMonths(12);
 
-            client.change(orderReference, paymentContext, expiryDate, null);
+            client.change(ltqrReference, paymentContext, expiryDate, null);
         }
 
         [Test]
         public void testPull()
         {
-            string[] orderReferences = new string[] { "DOTNET-LTQR-5eddcdd6-eaa6-4552-b6f1-8fdeb14d44c0" };
+            string[] ltqrReferences = new string[] { "fd42b4d2-4afe-48be-a14e-0f4ef29e9365" };
+            string[] paymentOrderReferences = new string[] { "DOTNET-LTQR-638295bf-5478-4b87-8da0-0c2166f07c82" };
             string[] clientSessionIds = new string[] { };
 
-            LTQRClientSession[] clientSessions = client.pull(orderReferences, clientSessionIds);
+            LTQRClientSession[] clientSessions = client.pull(ltqrReferences, paymentOrderReferences, clientSessionIds);
 
             Assert.NotNull(clientSessions);
             //Assert.AreEqual(1, clientSessions.Length);
@@ -67,11 +69,12 @@ namespace safe_online_sdk_dotnet.test.cs
         [Test]
         public void testRemove()
         {
-            string[] orderReferences = new string[] { "DOTNET-LTQR-7a9218c0-f559-4e89-9cb6-14f9a9bfe4d7" };
+            string[] ltqrReferences = new string[] { "5eddcdd6-eaa6-4552-b6f1-8fdeb14d44c0" };
+            string[] paymentOrderReferences = new string[] { "DOTNET-LTQR-" };
             string[] clientSessionIds = new string[] { };
 
             // operate: fetch
-            LTQRClientSession[] clientSessions = client.pull(orderReferences, clientSessionIds);
+            LTQRClientSession[] clientSessions = client.pull(ltqrReferences, paymentOrderReferences, clientSessionIds);
             Assert.NotNull(clientSessions);
             //Assert.AreEqual(2, clientSessions.Length);
             foreach (LTQRClientSession clientSession in clientSessions)
@@ -80,10 +83,10 @@ namespace safe_online_sdk_dotnet.test.cs
             }
 
             // operate: remove
-            client.remove(orderReferences, clientSessionIds);
+            client.remove(ltqrReferences, paymentOrderReferences, clientSessionIds);
 
             // operate: fetch again
-            clientSessions = client.pull(orderReferences, clientSessionIds);
+            clientSessions = client.pull(ltqrReferences, paymentOrderReferences, clientSessionIds);
             Assert.AreEqual(0, clientSessions.Length);
         }
     }

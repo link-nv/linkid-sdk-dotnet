@@ -84,7 +84,7 @@ namespace safe_online_sdk_dotnet
 
                 return new AuthnSession(response.success.sessionId, qrCodeImage, 
                     response.success.encodedQRCode, response.success.qrCodeURL,
-                    response.success.authenticationContext, saml2AuthUtil);
+                    saml2AuthUtil);
             }
 
             throw new RuntimeException("No success nor error element in the response ?!");

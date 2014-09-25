@@ -37,7 +37,8 @@ namespace safe_online_sdk_dotnet
         public static readonly String PAYMENT_CHANGED_ORDER_REF_PARAM = "orderRef";
 
         // Long term QR notification page parameters
-        public static readonly String ﻿﻿LTQR_ORDER_REF_PARAM = "orderRef";
+        public static readonly String ﻿﻿LTQR_REF_PARAM = "ltqrRef";
+        public static readonly String LTQR_PAYMENT_ORDER_REF_PARAM = "paymentOrderRef";
         public static readonly String ﻿﻿LTQR_CLIENT_SESSION_ID_PARAM = "clientSessionId";
 
         // HAWS session ID param
