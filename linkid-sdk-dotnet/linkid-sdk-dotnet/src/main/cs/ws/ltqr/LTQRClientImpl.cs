@@ -51,9 +51,13 @@ namespace safe_online_sdk_dotnet
             this.client.Endpoint.Behaviors.Add(new LoggingBehavior());
         }
 
-        public LTQRSession push(PaymentContext paymentContextDO, bool oneTimeUse, Nullable<DateTime> expiryDate, Nullable<long> expiryDuration)
+        public LTQRSession push(String authenticationMessage, String finishedMessage, PaymentContext paymentContextDO, 
+            bool oneTimeUse, Nullable<DateTime> expiryDate, Nullable<long> expiryDuration)
         {
             PushRequest request = new PushRequest();
+
+            request.authenticationMessage = authenticationMessage;
+            request.finishedMessage = finishedMessage;
 
             // payment context
             if (null != paymentContextDO)
@@ -107,11 +111,14 @@ namespace safe_online_sdk_dotnet
             throw new RuntimeException("No success nor error element in the response ?!");
         }
 
-        public void change(String ltqrReference, PaymentContext paymentContextDO, Nullable<DateTime> expiryDate,
-            Nullable<long> expiryDuration)
+        public ChangeResponseDO change(String ltqrReference, String authenticationMessage, String finishedMessage, 
+            PaymentContext paymentContextDO, Nullable<DateTime> expiryDate, Nullable<long> expiryDuration)
         {
             ChangeRequest request = new ChangeRequest();
             request.ltqrReference = ltqrReference;
+
+            request.authenticationMessage = authenticationMessage;
+            request.finishedMessage = finishedMessage;
 
             // payment context
             if (null != paymentContextDO)
@@ -151,10 +158,12 @@ namespace safe_online_sdk_dotnet
                 throw new ChangeException(convert(response.error.errorCode));
             }
 
-            if (null == response.success)
+            if (null != response.success)
             {
-                throw new RuntimeException("No success nor error element in the response ?!");
+                return new ChangeResponseDO(response.success.paymentOrderReference);
             }
+
+            throw new RuntimeException("No success nor error element in the response ?!");
         }
 
 

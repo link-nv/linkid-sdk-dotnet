@@ -66,15 +66,15 @@ namespace safe_online_sdk_dotnet
             foreach (object item in paymentResponseType.Items)
             {
                 AttributeType attributeType = (AttributeType)item;
-                if (attributeType.Name.Equals(ORDER_REF_KEY))
+                if (attributeType.Name.Equals(ORDER_REF_KEY) && null != attributeType.AttributeValue)
                     orderReference = (String)attributeType.AttributeValue[0];
-                if (attributeType.Name.Equals(STATE_KEY))
+                if (attributeType.Name.Equals(STATE_KEY) && null != attributeType.AttributeValue)
                     paymentStateString = (String)attributeType.AttributeValue[0];
-                if (attributeType.Name.Equals(MANDATE_REF_KEY))
+                if (attributeType.Name.Equals(MANDATE_REF_KEY) && null != attributeType.AttributeValue)
                     mandateReference = (String)attributeType.AttributeValue[0];
-                if (attributeType.Name.Equals(DOCDATA_REF_KEY))
+                if (attributeType.Name.Equals(DOCDATA_REF_KEY) && null != attributeType.AttributeValue)
                     docdataReference = (String)attributeType.AttributeValue[0];
-                if (attributeType.Name.Equals(MENU_URL_KEY))
+                if (attributeType.Name.Equals(MENU_URL_KEY) && null != attributeType.AttributeValue)
                     paymentMenuURL = (String)attributeType.AttributeValue[0];
             }
 

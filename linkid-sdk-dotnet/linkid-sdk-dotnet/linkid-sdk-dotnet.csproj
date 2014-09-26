@@ -97,6 +97,7 @@
     <Compile Include="src\main\cs\ws\LinkIDUsernameBinding.cs" />
     <Compile Include="src\main\cs\ws\LoggingBehavior.cs" />
     <Compile Include="src\main\cs\ws\ltqr\ChangeErrorCode.cs" />
+    <Compile Include="src\main\cs\ws\ltqr\ChangeResponseDO.cs" />
     <Compile Include="src\main\cs\ws\ltqr\ErrorCode.cs" />
     <Compile Include="src\main\cs\ws\ltqr\exception\ChangeException.cs" />
     <Compile Include="src\main\cs\ws\ltqr\exception\PullException.cs" />

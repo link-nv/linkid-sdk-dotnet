@@ -30,6 +30,8 @@ namespace linkid_example
             attributeSuggestions.Add("test.attribute.integer", new List<Object> { 69 });
             attributeSuggestions.Add("test.attribute.double", new List<Object> { 3.14159 });
             LoginUtil.setAttriuteSuggestions(Session, attributeSuggestions);
+
+            //LoginUtil.setPaymentContext(Session, new PaymentContext(100, Currency.EUR));
         }
     }
 }

@@ -14,6 +14,8 @@ namespace safe_online_sdk_dotnet
         /// <summary>
         /// Push a long term QR session to linkID
         /// </summary>
+        /// <param name="authenticationMessage">Optional authentication message to be shown in the pin view in the mobile app. If there is a payment, this will be ignored.</param>
+        /// <param name="finishedMessage">Optional finished message on the final view in the mobile app.</param>
         /// <param name="paymentContext">Optional payment context</param>
         /// <param name="oneTimeUse">Long term QR session can only be used once</param>
         /// <param name="expiryDate">Optional expiry date of the long term session</param>
@@ -23,19 +25,23 @@ namespace safe_online_sdk_dotnet
         /// <returns>Success object containing the QR in PNG format, the content of the QR code and the LTQR reference of the created long term session
         /// This LTQR reference will be used in the notifications to the service provider.</returns>
         /// <exception cref="PushException">Something went wrong, check the error code what</exception>
-        LTQRSession push(PaymentContext paymentContext, bool oneTimeUse, Nullable<DateTime> expiryDate, Nullable<long> expiryDuration);
+        LTQRSession push(String authenticationMessage, String finishedMessage, PaymentContext paymentContext, 
+            bool oneTimeUse, Nullable<DateTime> expiryDate, Nullable<long> expiryDuration);
 
         /// <summary>
         /// Change ﻿Change an existing long term QR code
         /// </summary>
         /// <param name="orderReference">Required LTQR reference</param>
+        /// <param name="authenticationMessage">Optional authentication message to be shown in the pin view in the mobile app. If there is a payment, this will be ignored.</param>
+        /// <param name="finishedMessage">Optional finished message on the final view in the mobile app.</param>
         /// <param name="paymentContext">Optional payment context</param>
         /// <param name="oneTimeUse">Long term QR session can only be used once</param>
         /// <param name="expiryDate">Optional expiry date of the long term session</param>
         /// <param name="expiryDuration">Optional expiry duration of the long term session. 
         /// Expressed in number of seconds starting from the creation.
         /// Do not mix this attribute with expiryDate. If so, expiryDate will be preferred</param>
-        void change(String ltqrReference, PaymentContext paymentContext, Nullable<DateTime> expiryDate, Nullable<long> expiryDuration);
+        ChangeResponseDO change(String ltqrReference, String authenticationMessage, String finishedMessage, 
+            PaymentContext paymentContext, Nullable<DateTime> expiryDate, Nullable<long> expiryDuration);
 
         /// <summary>
         /// Fetch a set of client sessions

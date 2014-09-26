@@ -27,11 +27,12 @@ namespace safe_online_sdk_dotnet.test.cs
         [Test]
         public void testPush()
         {
+            String finishedMessage = "Custom finished msg";
             String paymentOrderReference = "DOTNET-LTQR-" + Guid.NewGuid().ToString();
             PaymentContext paymentContext = new PaymentContext(20000, Currency.EUR, ".NET Test", paymentOrderReference, null);
             DateTime expiryDate = DateTime.Now.AddMonths(3);
 
-            LTQRSession session = client.push(paymentContext, false, expiryDate, null);
+            LTQRSession session = client.push(null, finishedMessage, paymentContext, false, expiryDate, null);
 
             Assert.NotNull(session);
         }
@@ -39,20 +40,21 @@ namespace safe_online_sdk_dotnet.test.cs
         [Test]
         public void testChange()
         {
-            String ltqrReference = "fd42b4d2-4afe-48be-a14e-0f4ef29e9365";
+            String finishedMessage = "Changed custom finished msg";
+            String ltqrReference = "f077493e-badd-4f13-91f1-bd3fd58dbd82";
             String paymentOrderReference = "DOTNET-LTQR-" + Guid.NewGuid().ToString();
 
             PaymentContext paymentContext = new PaymentContext(9999, Currency.EUR, ".NET Test Changed", paymentOrderReference, null);
             DateTime expiryDate = DateTime.Now.AddMonths(12);
 
-            client.change(ltqrReference, paymentContext, expiryDate, null);
+            client.change(ltqrReference, null, finishedMessage, paymentContext, expiryDate, null);
         }
 
         [Test]
         public void testPull()
         {
-            string[] ltqrReferences = new string[] { "fd42b4d2-4afe-48be-a14e-0f4ef29e9365" };
-            string[] paymentOrderReferences = new string[] { "DOTNET-LTQR-638295bf-5478-4b87-8da0-0c2166f07c82" };
+            string[] ltqrReferences = new string[] { "f077493e-badd-4f13-91f1-bd3fd58dbd82" };
+            string[] paymentOrderReferences = new string[] {  };
             string[] clientSessionIds = new string[] { };
 
             LTQRClientSession[] clientSessions = client.pull(ltqrReferences, paymentOrderReferences, clientSessionIds);
