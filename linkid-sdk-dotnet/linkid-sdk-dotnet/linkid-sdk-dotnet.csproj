@@ -121,6 +121,10 @@
     <Compile Include="src\main\cs\ws\PasswordDigestBehavior.cs" />
     <Compile Include="src\main\cs\ws\payment\PaymentClientImpl.cs" />
     <Compile Include="src\main\cs\ws\payment\PaymentClient.cs" />
+    <Compile Include="src\main\cs\ws\reporting\ParkingSession.cs" />
+    <Compile Include="src\main\cs\ws\reporting\PaymentTransaction.cs" />
+    <Compile Include="src\main\cs\ws\reporting\ReportingClient.cs" />
+    <Compile Include="src\main\cs\ws\reporting\ReportingClientImpl.cs" />
     <Compile Include="src\main\cs\ws\sts\TrustDomainType.cs" />
     <Compile Include="src\main\cs\ws\sts\STSClient.cs" />
     <Compile Include="src\main\cs\ws\sts\STSClientImpl.cs" />
@@ -174,6 +178,10 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="target\services\SafeOnlineReportingtWebService.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="src\main\cs\AssemblyInfo.cs" />
     <None Include="src\main\resources\*" />
     <None Include="src\main\resources\attrib-ws\*" />
@@ -186,6 +194,7 @@
     <None Include="src\main\resources\haws-ws\*" />
     <None Include="src\main\resources\auth-ws\*" />
     <None Include="src\main\resources\mandate-ws\*" />
+    <None Include="src\main\resources\reporting-ws\*" />
   </ItemGroup>
   <Target Name="BeforeBuild">
     <MakeDir Directories="target\services" />
@@ -201,6 +210,7 @@
     <Exec Command="svcutil /namespace:*,HawsWSNameSpace /directory:target\services src\main\resources\haws-ws\safe-online-haws.wsdl src\main\resources\haws-ws\safe-online-haws.xsd" />
     <Exec Command="svcutil /namespace:*,AuthWSNameSpace /directory:target\services src\main\resources\auth-ws\safe-online-auth.wsdl src\main\resources\auth-ws\safe-online-auth.xsd" />
     <Exec Command="svcutil /namespace:*,MandateWSNameSpace /directory:target\services src\main\resources\mandate-ws\safe-online-mandate.wsdl src\main\resources\mandate-ws\safe-online-mandate.xsd src\main\resources\safe-online-common.xsd" />
+    <Exec Command="svcutil /namespace:*,ReportingWSNameSpace /directory:target\services src\main\resources\reporting-ws\safe-online-reporting.wsdl src\main\resources\reporting-ws\safe-online-reporting.xsd src\main\resources\safe-online-common.xsd" />
   </Target>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
