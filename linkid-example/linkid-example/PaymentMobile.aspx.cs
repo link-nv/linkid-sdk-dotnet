@@ -16,7 +16,7 @@ namespace linkid_example
         {
             // payment context
             LoginUtil.setPaymentContext(Session, new PaymentContext(100, Currency.EUR, "payment context", null, 
-                null, 10, true, false));
+                null, 10, PaymentAddBrowser.REDIRECT, false));
         }
     }
 }

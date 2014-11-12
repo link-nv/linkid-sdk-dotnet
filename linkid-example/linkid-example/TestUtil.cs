@@ -50,6 +50,9 @@ namespace linkid_example
                 output  += "<h2>Payment response</h2>";
                 output += "  * Order reference = " + authContext.getPaymentResponse().orderReference + "<br/>";
                 output += "  * Payment State = " + authContext.getPaymentResponse().paymentState + "<br/>";
+                output += "  * Payment Menu = " + authContext.getPaymentResponse().paymentMenuURL + "<br/>";
+                output += "  * DocData reference = " + authContext.getPaymentResponse().docdataReference + "<br/>";
+                output += "  * Mandate reference = " + authContext.getPaymentResponse().mandateReference + "<br/>";
             }
 
             if (null != authContext.getAttributes())
