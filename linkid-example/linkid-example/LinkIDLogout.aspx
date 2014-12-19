@@ -4,28 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head runat="server">
-    <title>linkID Single Logout Demo</title>
+    <title>Logout</title>
 </head>
 <body>    
-    <h1>linkID Single Logout Demo</h1>
-
-    <form id="form1" runat="server">
-        <div>
-            <p>
-                <asp:Label ID="OutputLabel" runat="server" Text=""></asp:Label>
-            </p>
-            <p>
-                <asp:Label ID="ErrorLabel" runat="server" Text=""></asp:Label>
-            </p>
-        </div>
-    
-         <asp:Button ID="LogoutButton" runat="server" Text="Log Out" onclick="Button1_Click" />
-            
-        <asp:HiddenField ID="HiddenField1" runat="server" />
-
-    </form>
-    
-    <a href="LoggedIn.aspx">Back</a>
+    <h1>Logout</h1>
+   
+    <a href="LoginMobileHaws.aspx">To HAWS Login</a>
     
 </body>
 </html>

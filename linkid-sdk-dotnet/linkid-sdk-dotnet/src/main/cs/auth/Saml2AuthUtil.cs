@@ -184,7 +184,7 @@ namespace safe_online_sdk_dotnet
                 }
 
             }
-
+            
             if (null != deviceContext || null != subjectAttributes || null != paymentContextType)
             {
                 ExtensionsType extensions = new ExtensionsType();
@@ -363,7 +363,7 @@ namespace safe_online_sdk_dotnet
         {
             if (!response.InResponseTo.Equals(this.expectedChallenge))
             {
-                throw new AuthenticationExceptionInvalidInResponseTo("SAML response " + response.InResponseTo + " is not a response belonging to the original request " + this.expectedChallenge);
+                throw new AuthenticationExceptionInvalidInResponseTo("SAML response "  + response.InResponseTo + "  is not a response belonging to the original request " + this.expectedChallenge);
             }
 
             if (!response.Status.StatusCode.Value.Equals(Saml2Constants.SAML2_STATUS_SUCCESS))
