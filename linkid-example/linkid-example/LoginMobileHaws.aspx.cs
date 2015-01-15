@@ -32,6 +32,8 @@ namespace linkid_example
             LoginUtil.setAttriuteSuggestions(Session, attributeSuggestions);
 
             //LoginUtil.setPaymentContext(Session, new PaymentContext(100, Currency.EUR));
+
+            //LoginUtil.setCallback(Session, new Callback("google.be", null, true);
         }
     }
 }

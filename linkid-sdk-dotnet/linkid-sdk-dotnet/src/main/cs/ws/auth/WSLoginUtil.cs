@@ -10,7 +10,7 @@ namespace safe_online_sdk_dotnet
 
         public static AuthnSession startLinkIDAuthentication(string linkIDHost, string username, string password,
             string applicationName, string authenticationMessage, string finishesMessage, List<String> identityProfiles,
-            Dictionary<string, List<Object>> attributeSuggestions, PaymentContext paymentContext, 
+            Dictionary<string, List<Object>> attributeSuggestions, PaymentContext paymentContext, Callback callback,
             string language, string userAgent, bool forceRegistration)
         {
 
@@ -21,7 +21,7 @@ namespace safe_online_sdk_dotnet
             Saml2AuthUtil saml2AuthUtil = new Saml2AuthUtil();
             AuthnRequestType authnRequest = saml2AuthUtil.generateAuthnRequestObject(applicationName, null, null,
                 "http://foo.bar", LoginConfig.getMobileMinimalPath(linkIDHost), false, deviceContextMap, 
-                attributeSuggestions, paymentContext);
+                attributeSuggestions, paymentContext, callback);
 
             // send request
             AuthClient client = new AuthClientImpl(linkIDHost, username, password);

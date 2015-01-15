@@ -28,7 +28,7 @@ namespace safe_online_sdk_dotnet
 
         public PaymentClientImpl(string location)
 		{			
-			string address = "https://" + location + "/linkid-ws/payment";
+			string address = "https://" + location + "/linkid-ws/payment20";
 			EndpointAddress remoteAddress = new EndpointAddress(address);
 
             BasicHttpBinding binding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
@@ -40,28 +40,35 @@ namespace safe_online_sdk_dotnet
         {
             this.client.Endpoint.Behaviors.Add(new LoggingBehavior());
         }
-		
-		public PaymentState getStatus(String orderReference) {
 
-            PaymentGetStatusRequest request = new PaymentGetStatusRequest();
+        public PaymentStatusDO getStatus(String orderReference)
+        {
+
+            PaymentStatusRequest request = new PaymentStatusRequest();
             request.orderReference = orderReference;
-			PaymentStatusResponse response = this.client.getStatus(request);
+			PaymentStatusResponse response = this.client.status(request);
 
+            PaymentState paymentState = PaymentState.STARTED;
             switch (response.paymentStatus)
             {
                 case PaymentStatusType.STARTED:
-                    return PaymentState.STARTED;
+                    paymentState = PaymentState.STARTED;
+                    break;
                 case PaymentStatusType.AUTHORIZED:
-                    return PaymentState.PAYED;
+                    paymentState = PaymentState.PAYED;
+                    break;
                 case PaymentStatusType.FAILED:
-                    return PaymentState.FAILED;
+                    paymentState = PaymentState.FAILED;
+                    break;
                 case PaymentStatusType.REFUNDED:
-                    return PaymentState.REFUNDED;
+                    paymentState = PaymentState.REFUNDED;
+                    break;
                 case PaymentStatusType.REFUND_STARTED:
-                    return PaymentState.REFUND_STARTED;
+                    paymentState = PaymentState.REFUND_STARTED;
+                    break;
             }
 
-            throw new RuntimeException("Payment state type " + response.paymentStatus + "is not supported!");
+            return new PaymentStatusDO(paymentState, response.captured);
 		}
 	}
 }

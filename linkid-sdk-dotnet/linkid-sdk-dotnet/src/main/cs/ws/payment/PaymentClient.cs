@@ -11,7 +11,7 @@ namespace safe_online_sdk_dotnet
 {
 	public interface PaymentClient
 	{
-        PaymentState getStatus(String orderReference);
+        PaymentStatusDO getStatus(String orderReference);
 
         // log incoming and outgoing soap messages to the console
         void enableLogging();

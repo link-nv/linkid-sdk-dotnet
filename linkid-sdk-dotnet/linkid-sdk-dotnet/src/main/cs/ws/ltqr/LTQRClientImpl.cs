@@ -7,6 +7,7 @@
 
 using LTQRWSNameSpace;
 using System;
+using System.Collections.Generic;
 using System.ServiceModel;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
@@ -20,7 +21,7 @@ namespace safe_online_sdk_dotnet
 
         public LTQRClientImpl(string location, string username, string password)
 		{			
-			string address = "https://" + location + "/linkid-ws-username/ltqr";
+			string address = "https://" + location + "/linkid-ws-username/ltqr20";
 			EndpointAddress remoteAddress = new EndpointAddress(address);
 
             BasicHttpBinding binding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
@@ -31,7 +32,7 @@ namespace safe_online_sdk_dotnet
 
         public LTQRClientImpl(string location, X509Certificate2 appCertificate, X509Certificate2 linkidCertificate)
         {
-            string address = "https://" + location + "/linkid-ws/ltqr";
+            string address = "https://" + location + "/linkid-ws/ltqr20";
             EndpointAddress remoteAddress = new EndpointAddress(address);
 
             this.client = new LTQRServicePortClient(new LinkIDBinding(linkidCertificate), remoteAddress);
@@ -52,7 +53,8 @@ namespace safe_online_sdk_dotnet
         }
 
         public LTQRSession push(String authenticationMessage, String finishedMessage, PaymentContext paymentContextDO, 
-            bool oneTimeUse, Nullable<DateTime> expiryDate, Nullable<long> expiryDuration)
+            bool oneTimeUse, Nullable<DateTime> expiryDate, Nullable<long> expiryDuration,
+            Callback callback, List<String> identityProfiles)
         {
             PushRequest request = new PushRequest();
 
@@ -74,6 +76,23 @@ namespace safe_online_sdk_dotnet
                 paymentContext.allowDeferredPaySpecified = true;
 
                 request.paymentContext = paymentContext;
+            }
+
+            // callback
+            if (null != callback)
+            {
+                LTQRWSNameSpace.Callback callbackType = new LTQRWSNameSpace.Callback();
+                callbackType.appSessionId = callback.appSessionId;
+                callbackType.location = callback.location;
+                callbackType.inApp = callback.inApp;
+                callbackType.inAppSpecified = true;
+                request.callback = callbackType;                
+            }
+
+            // identity profiles
+            if (null != identityProfiles && identityProfiles.Count > 0)
+            {
+                request.identityProfiles = identityProfiles.ToArray();
             }
 
             // configuration
@@ -111,8 +130,9 @@ namespace safe_online_sdk_dotnet
             throw new RuntimeException("No success nor error element in the response ?!");
         }
 
-        public ChangeResponseDO change(String ltqrReference, String authenticationMessage, String finishedMessage, 
-            PaymentContext paymentContextDO, Nullable<DateTime> expiryDate, Nullable<long> expiryDuration)
+        public LTQRSession change(String ltqrReference, String authenticationMessage, String finishedMessage, 
+            PaymentContext paymentContextDO, Nullable<DateTime> expiryDate, Nullable<long> expiryDuration,
+            Callback callback, List<String> identityProfiles)
         {
             ChangeRequest request = new ChangeRequest();
             request.ltqrReference = ltqrReference;
@@ -135,6 +155,23 @@ namespace safe_online_sdk_dotnet
                 paymentContext.allowDeferredPaySpecified = true;
 
                 request.paymentContext = paymentContext;
+            }
+
+            // callback
+            if (null != callback)
+            {
+                LTQRWSNameSpace.Callback callbackType = new LTQRWSNameSpace.Callback();
+                callbackType.appSessionId = callback.appSessionId;
+                callbackType.location = callback.location;
+                callbackType.inApp = callback.inApp;
+                callbackType.inAppSpecified = true;
+                request.callback = callbackType;
+            }
+
+            // identity profiles
+            if (null != identityProfiles && identityProfiles.Count > 0)
+            {
+                request.identityProfiles = identityProfiles.ToArray();
             }
 
             // configuration
@@ -160,7 +197,11 @@ namespace safe_online_sdk_dotnet
 
             if (null != response.success)
             {
-                return new ChangeResponseDO(response.success.paymentOrderReference);
+                // convert base64 encoded QR image
+                byte[] qrCodeImage = Convert.FromBase64String(response.success.encodedQR);
+
+                return new LTQRSession(qrCodeImage, response.success.qrContent, 
+                    response.success.ltqrReference, response.success.paymentOrderReference);
             }
 
             throw new RuntimeException("No success nor error element in the response ?!");

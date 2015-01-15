@@ -52,6 +52,7 @@
     <Compile Include="src\main\cs\auth\AuthenticationProtocolContext.cs" />
     <Compile Include="src\main\cs\auth\AuthenticationExceptionInvalidAudience.cs" />
     <Compile Include="src\main\cs\auth\AttributeSDK.cs" />
+    <Compile Include="src\main\cs\auth\Callback.cs" />
     <Compile Include="src\main\cs\auth\Compound.cs" />
     <Compile Include="src\main\cs\auth\AuthenticationExceptionInvalidInResponseTo.cs" />
     <Compile Include="src\main\cs\auth\AuthenticationExceptionNoAudiences.cs" />
@@ -78,6 +79,8 @@
     <Compile Include="src\main\cs\ws\exception\ApplicationPoolNotFoundException.cs" />
     <Compile Include="src\main\cs\ws\exception\AttributeNotFoundException.cs" />
     <Compile Include="src\main\cs\ws\exception\AttributeUnavailableException.cs" />
+    <Compile Include="src\main\cs\ws\exception\InvalidCallbackException.cs" />
+    <Compile Include="src\main\cs\ws\exception\InvalidPaymentContextException.cs" />
     <Compile Include="src\main\cs\ws\exception\RequestDeniedException.cs" />
     <Compile Include="src\main\cs\ws\exception\RuntimeException.cs" />
     <Compile Include="src\main\cs\ws\data\DataClient.cs" />
@@ -97,7 +100,6 @@
     <Compile Include="src\main\cs\ws\LinkIDUsernameBinding.cs" />
     <Compile Include="src\main\cs\ws\LoggingBehavior.cs" />
     <Compile Include="src\main\cs\ws\ltqr\ChangeErrorCode.cs" />
-    <Compile Include="src\main\cs\ws\ltqr\ChangeResponseDO.cs" />
     <Compile Include="src\main\cs\ws\ltqr\ErrorCode.cs" />
     <Compile Include="src\main\cs\ws\ltqr\exception\ChangeException.cs" />
     <Compile Include="src\main\cs\ws\ltqr\exception\PullException.cs" />
@@ -121,6 +123,7 @@
     <Compile Include="src\main\cs\ws\PasswordDigestBehavior.cs" />
     <Compile Include="src\main\cs\ws\payment\PaymentClientImpl.cs" />
     <Compile Include="src\main\cs\ws\payment\PaymentClient.cs" />
+    <Compile Include="src\main\cs\ws\payment\PaymentStatusDO.cs" />
     <Compile Include="src\main\cs\ws\reporting\ParkingSession.cs" />
     <Compile Include="src\main\cs\ws\reporting\PaymentTransaction.cs" />
     <Compile Include="src\main\cs\ws\reporting\ReportingClient.cs" />
@@ -162,7 +165,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="target\services\SafeOnlineLTQRWebService.cs">
+    <Compile Include="target\services\SafeOnlineLTQR20WebService.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -205,8 +208,8 @@
     <Exec Command="svcutil /namespace:*,NotificationConsumerWSNameSpace /directory:target\services src\main\resources\notification-ws\notification-consumer.wsdl src\main\resources\notification-ws\b-2.xsd src\main\resources\notification-ws\bf-2.xsd src\main\resources\ws-addr.xsd src\main\resources\notification-ws\t-1.xsd" />
     <Exec Command="svcutil /namespace:*,NotificationProducerWSNameSpace /directory:target\services src\main\resources\notification-ws\notification-producer.wsdl src\main\resources\notification-ws\b-2.xsd src\main\resources\notification-ws\bf-2.xsd src\main\resources\ws-addr.xsd src\main\resources\notification-ws\t-1.xsd" />
     <Exec Command="svcutil /namespace:*,NotificationSubscriptionManagerWSNameSpace /directory:target\services src\main\resources\notification-ws\notification-subscription-manager.wsdl src\main\resources\notification-ws\b-2.xsd src\main\resources\notification-ws\bf-2.xsd src\main\resources\ws-addr.xsd src\main\resources\notification-ws\t-1.xsd" />
-    <Exec Command="svcutil /namespace:*,PaymentWSNameSpace /directory:target\services src\main\resources\payment-ws\safe-online-payment.wsdl src\main\resources\payment-ws\safe-online-payment.xsd src\main\resources\ws-addr.xsd src\main\resources\xmldsig-core-schema.xsd src\main\resources\xenc-schema.xsd src\main\resources\safe-online-common.xsd" />
-    <Exec Command="svcutil /namespace:*,LTQRWSNameSpace /directory:target\services src\main\resources\ltqr-ws\safe-online-ltqr.wsdl src\main\resources\ltqr-ws\safe-online-ltqr.xsd src\main\resources\safe-online-common.xsd" />
+    <Exec Command="svcutil /namespace:*,PaymentWSNameSpace /directory:target\services src\main\resources\payment-ws\safe-online-payment-2.0.wsdl src\main\resources\payment-ws\safe-online-payment-2.0.xsd src\main\resources\ws-addr.xsd src\main\resources\xmldsig-core-schema.xsd src\main\resources\xenc-schema.xsd src\main\resources\safe-online-common.xsd" />
+    <Exec Command="svcutil /namespace:*,LTQRWSNameSpace /directory:target\services src\main\resources\ltqr-ws\safe-online-ltqr-2.0.wsdl src\main\resources\ltqr-ws\safe-online-ltqr-2.0.xsd src\main\resources\safe-online-common.xsd" />
     <Exec Command="svcutil /namespace:*,HawsWSNameSpace /directory:target\services src\main\resources\haws-ws\safe-online-haws.wsdl src\main\resources\haws-ws\safe-online-haws.xsd" />
     <Exec Command="svcutil /namespace:*,AuthWSNameSpace /directory:target\services src\main\resources\auth-ws\safe-online-auth.wsdl src\main\resources\auth-ws\safe-online-auth.xsd" />
     <Exec Command="svcutil /namespace:*,MandateWSNameSpace /directory:target\services src\main\resources\mandate-ws\safe-online-mandate.wsdl src\main\resources\mandate-ws\safe-online-mandate.xsd src\main\resources\safe-online-common.xsd" />

@@ -6,6 +6,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 
 namespace safe_online_sdk_dotnet
 {
@@ -22,11 +23,14 @@ namespace safe_online_sdk_dotnet
         /// <param name="expiryDuration">Optional expiry duration of the long term session. 
         /// Expressed in number of seconds starting from the creation.
         /// Do not mix this attribute with expiryDate. If so, expiryDate will be preferred</param>
+        /// <param name="callback">Optional callback config</param>
+        /// <param name="identityProfiles">Optional identity profiles</param>
         /// <returns>Success object containing the QR in PNG format, the content of the QR code and the LTQR reference of the created long term session
         /// This LTQR reference will be used in the notifications to the service provider.</returns>
         /// <exception cref="PushException">Something went wrong, check the error code what</exception>
         LTQRSession push(String authenticationMessage, String finishedMessage, PaymentContext paymentContext, 
-            bool oneTimeUse, Nullable<DateTime> expiryDate, Nullable<long> expiryDuration);
+            bool oneTimeUse, Nullable<DateTime> expiryDate, Nullable<long> expiryDuration, 
+            Callback callback, List<String> identityProfiles);
 
         /// <summary>
         /// Change ﻿Change an existing long term QR code
@@ -40,8 +44,10 @@ namespace safe_online_sdk_dotnet
         /// <param name="expiryDuration">Optional expiry duration of the long term session. 
         /// Expressed in number of seconds starting from the creation.
         /// Do not mix this attribute with expiryDate. If so, expiryDate will be preferred</param>
-        ChangeResponseDO change(String ltqrReference, String authenticationMessage, String finishedMessage, 
-            PaymentContext paymentContext, Nullable<DateTime> expiryDate, Nullable<long> expiryDuration);
+        /// <exception cref="ChangeException">Something went wrong, check the error code what</exception>
+        LTQRSession change(String ltqrReference, String authenticationMessage, String finishedMessage, 
+            PaymentContext paymentContext, Nullable<DateTime> expiryDate, Nullable<long> expiryDuration,
+            Callback callback, List<String> identityProfiles);
 
         /// <summary>
         /// Fetch a set of client sessions

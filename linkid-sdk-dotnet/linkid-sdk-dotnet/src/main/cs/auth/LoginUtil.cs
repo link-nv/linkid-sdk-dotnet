@@ -14,6 +14,7 @@ namespace safe_online_sdk_dotnet
         public static String SESSION_IDENTITY_PROFILES = "AuthnRequest.IdentityProfiles";
         public static String SESSION_ATTRIBUTE_SUGGESTIONS = "AuthnRequest.AttributeSuggestions";
         public static String SESSION_PAYMENT_CONTEXT = "AuthnRequest.PaymentContext";
+        public static String SESSION_CALLBACK = "AuthnRequest.Callback";
 
         public static void setDeviceAuthnMessage(HttpSessionState session, string deviceAuthnMessage)
         {
@@ -63,6 +64,16 @@ namespace safe_online_sdk_dotnet
         public static PaymentContext getPaymentContext(HttpSessionState session)
         {
             return (PaymentContext)session[SESSION_PAYMENT_CONTEXT];
+        }
+
+        public static void setCallback(HttpSessionState session, Callback callback)
+        {
+            session.Add(SESSION_CALLBACK, callback);
+        }
+
+        public static Callback getCallback(HttpSessionState session)
+        {
+            return (Callback)session[SESSION_CALLBACK];
         }
 
         public static Dictionary<string, string> generateDeviceContextMap(string authenticationMessage, 

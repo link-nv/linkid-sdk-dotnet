@@ -65,6 +65,11 @@ namespace safe_online_sdk_dotnet
             PaymentAddBrowser paymentAddBrowser, Boolean allowDeferredPay,
             Boolean mandate, String mandateDescription, String mandateReference)
         {
+            if (amount <= 0)
+            {
+                throw new InvalidPaymentContextException("Invalid payment context amount: " + amount);
+            }
+
             this.amount = amount;
             this.currency = currency;
             this.description = description;

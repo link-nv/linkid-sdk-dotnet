@@ -43,16 +43,6 @@ namespace safe_online_sdk_dotnet
             this.key = key;
         }
 
-        public string getChallenge()
-        {
-            return this.expectedChallenge;
-        }
-
-        public String getAudience()
-        {
-            return this.expectedAudience;
-        }
-
         /// <summary>
         /// Generates a SAML v2.0 Authentication Request with HTTP Browser Post Binding. The return string containing the request
         /// is already Base64 encoded.
@@ -66,13 +56,14 @@ namespace safe_online_sdk_dotnet
         /// <param name="deviceContextMap">Optional device context, e.g. the context title for the QR device</param>
         /// <param name="attributeSuggestions">Optional attribute suggestions for certain attributes. Key is the internal linkID attributeName. The type of the values must be of the correct datatype</param>
         /// <param name="paymentContext">Optional payment context</param>
+        /// <param name="callback">Optional callback</param>
         /// <returns>Base64 encoded SAML request</returns>
         public string generateEncodedAuthnRequest(string applicationName, List<string> applicationPools, string applicationFriendlyName,
                                           string serviceProviderUrl, string identityProviderUrl, bool ssoEnabled, Dictionary<string, string> deviceContextMap,
-                                          Dictionary<string, List<Object>> attributeSuggestions, PaymentContext paymentContext)
+                                          Dictionary<string, List<Object>> attributeSuggestions, PaymentContext paymentContext, Callback callback)
         {
             string samlRequest = generateAuthnRequest(applicationName, applicationPools, applicationFriendlyName, serviceProviderUrl,
-                  identityProviderUrl, ssoEnabled, deviceContextMap, attributeSuggestions, paymentContext);
+                  identityProviderUrl, ssoEnabled, deviceContextMap, attributeSuggestions, paymentContext, callback);
             return Convert.ToBase64String(Encoding.ASCII.GetBytes(samlRequest));
         }
 
@@ -89,10 +80,11 @@ namespace safe_online_sdk_dotnet
         /// <param name="deviceContextMap">Optional device context, e.g. the context title for the QR device</param>
         /// <param name="attributeSuggestions">Optional attribute suggestions for certain attributes. Key is the internal linkID attributeName. The type of the values must be of the correct datatype</param>
         /// <param name="paymentContext">Optional payment context</param>
+        /// <param name="callback">Optional callback</param>
         /// <returns>SAML request</returns>
         public AuthnRequestType generateAuthnRequestObject(string applicationName, List<string> applicationPools, string applicationFriendlyName,
                                            string serviceProviderUrl, string identityProviderUrl, bool ssoEnabled, Dictionary<string, string> deviceContextMap,
-                                           Dictionary<string, List<Object>> attributeSuggestions, PaymentContext paymentContext)
+                                           Dictionary<string, List<Object>> attributeSuggestions, PaymentContext paymentContext, Callback callback)
         {
             this.expectedChallenge = Guid.NewGuid().ToString();
             this.expectedAudience = applicationName;
@@ -182,10 +174,27 @@ namespace safe_online_sdk_dotnet
                     attributes.Add(attribute);
                     paymentContextType.Items = attributes.ToArray();
                 }
-
             }
-            
-            if (null != deviceContext || null != subjectAttributes || null != paymentContextType)
+
+            CallbackType callbackType = null;
+            if (null != callback)
+            {
+                Dictionary<String, String> callbackDict = callback.toDictionary();
+                callbackType = new CallbackType();
+                List<AttributeType> attributes = new List<AttributeType>();
+                foreach (string callbackKey in callbackDict.Keys)
+                {
+                    string value = callbackDict[callbackKey];
+                    AttributeType attribute = new AttributeType();
+                    attribute.Name = callbackKey;
+                    attribute.AttributeValue = new object[] { value };
+                    attributes.Add(attribute);
+                    callbackType.Items = attributes.ToArray();
+                }
+            }
+
+
+            if (null != deviceContext || null != subjectAttributes || null != paymentContextType || null != callbackType)
             {
                 ExtensionsType extensions = new ExtensionsType();
                 List<XmlElement> extensionsList = new List<XmlElement>();
@@ -195,6 +204,8 @@ namespace safe_online_sdk_dotnet
                     extensionsList.Add(toXmlElement(deviceContext));
                 if (null != paymentContextType)
                     extensionsList.Add(toXmlElement(paymentContextType));
+                if (null != callbackType)
+                    extensionsList.Add(toXmlElement(callbackType));
                 extensions.Any = extensionsList.ToArray();
                 authnRequest.Extensions = extensions;
             }
@@ -215,14 +226,16 @@ namespace safe_online_sdk_dotnet
         /// <param name="deviceContextMap">Optional device context, e.g. the context title for the QR device</param>
         /// <param name="attributeSuggestions">Optional attribute suggestions for certain attributes. Key is the internal linkID attributeName. The type of the values must be of the correct datatype</param>
         /// <param name="paymentContext">Optional payment context</param>
+        /// <param name="callback">Optional callback</param>
         /// <returns>SAML request</returns>
         public string generateAuthnRequest(string applicationName, List<string> applicationPools, string applicationFriendlyName,
                                            string serviceProviderUrl, string identityProviderUrl, 
                                            bool ssoEnabled, Dictionary<string, string> deviceContextMap,
-                                           Dictionary<string, List<Object>> attributeSuggestions, PaymentContext paymentContext)
+                                           Dictionary<string, List<Object>> attributeSuggestions, PaymentContext paymentContext,
+                                           Callback callback)
         {
             AuthnRequestType authnRequest = generateAuthnRequestObject(applicationName, applicationPools, applicationFriendlyName,
-                serviceProviderUrl, identityProviderUrl, ssoEnabled, deviceContextMap, attributeSuggestions, paymentContext);
+                serviceProviderUrl, identityProviderUrl, ssoEnabled, deviceContextMap, attributeSuggestions, paymentContext, callback);
 
             XmlDocument document = toXmlDocument(authnRequest);
 
@@ -250,6 +263,34 @@ namespace safe_online_sdk_dotnet
             xmlTextWriter.Close();
 
             return document;
+        }
+
+        private XmlElement toXmlElement(CallbackType callback)
+        {
+            XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
+            ns.Add("samlp", Saml2Constants.SAML2_PROTOCOL_NAMESPACE);
+            ns.Add("saml", Saml2Constants.SAML2_ASSERTION_NAMESPACE);
+            ns.Add("xs", "http://www.w3.org/2001/XMLSchema");
+
+            XmlRootAttribute xRoot = new XmlRootAttribute();
+            xRoot.ElementName = "Callback";
+            xRoot.Namespace = Saml2Constants.SAML2_ASSERTION_NAMESPACE;
+            XmlSerializer serializer = new XmlSerializer(typeof(CallbackType), xRoot);
+            MemoryStream memoryStream = new MemoryStream();
+            XmlTextWriter xmlTextWriter = new XmlTextWriter(memoryStream, Encoding.UTF8);
+            serializer.Serialize(xmlTextWriter, callback, ns);
+
+            XmlDocument document = new XmlDocument();
+            memoryStream.Seek(0, SeekOrigin.Begin);
+            document.Load(memoryStream);
+
+            foreach (XmlNode node in document.ChildNodes)
+            {
+                if (node is XmlElement)
+                    return (XmlElement)node;
+            }
+
+            return null;
         }
 
         private XmlElement toXmlElement(PaymentContextType paymentContext)

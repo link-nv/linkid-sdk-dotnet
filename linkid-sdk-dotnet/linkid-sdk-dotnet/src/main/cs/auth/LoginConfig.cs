@@ -171,10 +171,13 @@ namespace safe_online_sdk_dotnet
                 // payment context
                 PaymentContext paymentContext = LoginUtil.getPaymentContext(session);
 
+                // callback
+                Callback callback = LoginUtil.getCallback(session);
+
                 SAMLRequestField.ID = RequestConstants.SAML2_POST_BINDING_REQUEST_PARAM;
                 SAMLRequestField.Value = saml2AuthUtil.generateEncodedAuthnRequest(applicationName, null, null,
                     targetURL, loginConfig.linkIDLandingPage, false, deviceContextMap, attributeSuggestions,
-                    paymentContext);
+                    paymentContext, callback);
 
                 if (null != language)
                 {
@@ -214,6 +217,7 @@ namespace safe_online_sdk_dotnet
                 session[authnContextSessionParam] = context;
 
                 loginConfig.finalize(response);
+                return;
             }
 
             /*
@@ -252,10 +256,13 @@ namespace safe_online_sdk_dotnet
                 // payment context
                 PaymentContext paymentContext = LoginUtil.getPaymentContext(session);
 
+                // callback
+                Callback callback = LoginUtil.getCallback(session);
+
                 // generate authn request
                 AuthnRequestType authnRequest = saml2AuthUtil.generateAuthnRequestObject(applicationName, null, null,
                     targetURL, loginConfig.linkIDLandingPage, false, deviceContextMap,
-                    attributeSuggestions, paymentContext);
+                    attributeSuggestions, paymentContext, callback);
 
                 // push authn request to linkID
                 HawsClient hawsClient = new HawsClientImpl(linkIDHost, username, password);

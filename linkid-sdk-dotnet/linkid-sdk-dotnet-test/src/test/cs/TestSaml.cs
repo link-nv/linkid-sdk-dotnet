@@ -139,9 +139,12 @@ namespace safe_online_sdk_dotnet.test.cs
 
             // payment context
             PaymentContext paymentContext = new PaymentContext(1, Currency.EUR);
+            
+            // callback
+            Callback callback = new Callback("http://www.google.be", "1234", true);
 
             string result = testedInstance.generateAuthnRequest(applicationId, null, null, spUrl, idpUrl, false,
-                deviceContextMap, attributeSuggestions, paymentContext);
+                deviceContextMap, attributeSuggestions, paymentContext, callback);
             Console.WriteLine("result document: " + result);
 
             XmlDocument xmlDocument = new XmlDocument();
