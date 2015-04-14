@@ -23,20 +23,6 @@ namespace safe_online_sdk_dotnet.test.cs
         }
 
         [Test]
-        public void TestDataWSX509()
-        {
-            X509Certificate2 appCertificate = KeyStoreUtil.loadCertificate(TestConstants.testPfxPath, TestConstants.testPfxPassword, false);
-            X509Certificate2 linkidCertificate = new X509Certificate2(TestConstants.linkidCertPath);
-
-            IdMappingClient idMappingClient =
-                new IdMappingClientImpl(TestConstants.wsLocation, appCertificate, linkidCertificate);
-            DataClient dataClient = new DataClientImpl(TestConstants.wsLocation, appCertificate, linkidCertificate);
-            dataClient.enableLogging();
-
-            dataWSTest(idMappingClient, dataClient);
-        }
-
-        [Test]
         public void TestDataWSUsername()
         {
             IdMappingClient idMappingClient =
@@ -68,16 +54,16 @@ namespace safe_online_sdk_dotnet.test.cs
             // Get
             List<LinkIDAttribute> attributes = dataClient.getAttributes(userId, attributeName);
             Assert.AreEqual(1, attributes.Count);
-            Assert.AreEqual(value, (String)attributes[0].getValue());
+            Assert.AreEqual(value, (String)attributes[0].value);
 
             // Set
-            linkIDAttribute.setValue(value2);
+            linkIDAttribute.value = value2;
             dataClient.setAttributeValue(userId, linkIDAttribute);
 
             // Get
             attributes = dataClient.getAttributes(userId, attributeName);
             Assert.AreEqual(1, attributes.Count);
-            Assert.AreEqual(value2, (String)attributes[0].getValue());
+            Assert.AreEqual(value2, (String)attributes[0].value);
 
             // Delete
             dataClient.removeAttributes(userId, attributeName);

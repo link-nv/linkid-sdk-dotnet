@@ -29,8 +29,6 @@ namespace safe_online_sdk_dotnet
 		public static readonly string SAML2_STATUS_INVALID_NAMEID_POLICY = "urn:oasis:names:tc:SAML:2.0:status:InvalidNameIDPolicy";
 		public static readonly string SAML2_STATUS_ATTRIBUTE_UNAVAILABLE = "urn:net:lin-k:safe-online:SAML:2.0:status:AttributeUnavailable";
 		
-		public static readonly string SAML2_STATUS_PARTIAL_LOGOUT = "urn:oasis:names:tc:SAML:2.0:status;PartialLogout";
-		
 		public static readonly string SAML2_NAMEID_FORMAT_PERSISTENT = "urn:oasis:names:tc:SAML:2.0:nameid-format:persistent";
 		public static readonly string SAML2_NAMEID_FORMAT_ENTITY = "urn:oasis:names:tc:SAML:2.0:nameid-format:entity";
 		public static readonly string SAML2_BINDING_HTTP_POST = "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST";

@@ -6,12 +6,12 @@ namespace safe_online_sdk_dotnet
 {
     public class LinkIDAttribute
     {
-        private String attributeId;
-        private String attributeName;
+        public String attributeId { get; set; }
+        public String attributeName { get; set; }
 
-        private Boolean unavailable;
+        public Boolean unavailable { get; set; }
 
-        protected Object value;
+        public Object value { get; set; }
 
         public LinkIDAttribute(String attributeId, String attributeName, Object value)
         {
@@ -26,45 +26,23 @@ namespace safe_online_sdk_dotnet
             this.attributeName = attributeName;
         }
 
-        public String getAttributeId()
+        public override string ToString()
         {
-            return attributeId;
-        }
+            String output = "";
 
-        public void setAttributeId(String attributeId)
-        {
-            this.attributeId = attributeId;
-        }
+            output += "       Attribute: " + attributeName + "(ID=" + attributeId + ")\n";
+            if (value is LinkIDCompound)
+            {
+                LinkIDCompound compound = (LinkIDCompound)value;
+                output += "         Compound:\n";
+                output += compound.ToString();
+            }
+            else
+            {
+                output += "         value=" + value + "\n";
+            }
 
-        public String getAttributeName()
-        {
-            return this.attributeName;
+            return output;
         }
-
-        public void setAttributeName(String attributeName)
-        {
-            this.attributeName = attributeName;
-        }
-
-        public Object getValue()
-        {
-            return value;
-        }
-
-        public void setValue(Object value)
-        {
-            this.value = value;
-        }
-
-        public Boolean isUnavailable()
-        {
-            return this.unavailable;
-        }
-
-        public void setUnavailable(Boolean unavailable)
-        {
-            this.unavailable = unavailable;
-        }
-
     }
 }

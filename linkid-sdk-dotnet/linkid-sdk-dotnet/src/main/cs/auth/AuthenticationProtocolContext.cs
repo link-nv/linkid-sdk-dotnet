@@ -17,13 +17,10 @@ namespace safe_online_sdk_dotnet
 	/// </summary>
 	public class AuthenticationProtocolContext
 	{
-		private readonly string userId;
-		
-		private readonly List<String> authenticatedDevices;
-
-        private readonly Dictionary<String, List<LinkIDAttribute>> attributes;
-
-        private readonly LinkIDPaymentResponse paymentResponse;
+        public String userId { get; set; }
+        public List<String> authenticatedDevices { get; set; }
+        public Dictionary<String, List<LinkIDAttribute>> attributes { get; set; }
+        public LinkIDPaymentResponse paymentResponse { get; set; }
 
         public AuthenticationProtocolContext()
         {
@@ -41,23 +38,41 @@ namespace safe_online_sdk_dotnet
 			this.attributes = attributes;
             this.paymentResponse = paymentResponse;
 		}
-		
-		public string getUserId() {
-			return this.userId;
-		}
 
-		public List<String> getAuthenticatedDevices() {
-			return this.authenticatedDevices;
-		}
-
-        public Dictionary<String, List<LinkIDAttribute>> getAttributes()
+        public override string ToString()
         {
-			return this.attributes;
-		}
+            String output = "";
 
-        public LinkIDPaymentResponse getPaymentResponse()
-        {
-            return this.paymentResponse;
+            output += "AuthenticationContext:\n";
+            output += "  * UserID: " + userId + "\n";
+            foreach (String authenticatedDevice in authenticatedDevices)
+            {
+                output += "  * Authenticated device: " + authenticatedDevice + "\n";
+            }
+
+            if (null != paymentResponse)
+            {
+                output += "  * Payment response\n";
+                output += "      - orderReference: " + paymentResponse.orderReference + "\n";
+                output += "      - paymentState: " + paymentResponse.paymentState + "\n";
+                output += "      - paymentMenuURL: " + paymentResponse.paymentMenuURL + "\n";
+                output += "      - docdataReference: " + paymentResponse.docdataReference + "\n";
+                output += "      - mandateReference: " + paymentResponse.mandateReference + "\n";
+            }
+
+            if (null != attributes)
+            {
+                output += "  * Attributes\n";
+                foreach (String key in attributes.Keys)
+                {
+                    foreach(LinkIDAttribute attribute in attributes[key])
+                    {
+                        output += "    " + attribute.ToString();
+                    }
+                }
+            }
+
+            return output;
         }
 	}
 }

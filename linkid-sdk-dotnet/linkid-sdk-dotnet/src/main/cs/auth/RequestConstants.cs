@@ -15,9 +15,6 @@ namespace safe_online_sdk_dotnet
 	/// </summary>
 	public sealed class RequestConstants
 	{
-		public static readonly String SAML2_POST_BINDING_REQUEST_PARAM = "SAMLRequest";
-		public static readonly String SAML2_POST_BINDING_RESPONSE_PARAM = "SAMLResponse";
-
         public static readonly String LANGUAGE_REQUEST_PARAM = "Language";
         public static readonly String TARGET_URI_REQUEST_PARAM = "return_uri";
         public static readonly String FORCE_AUTH_REQUEST_PARAM = "force";

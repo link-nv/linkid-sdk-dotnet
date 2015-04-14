@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.ServiceModel;
 using System.Net.Security;
-using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel.Security;
 using ReportingWSNameSpace;
 
@@ -30,22 +29,6 @@ namespace safe_online_sdk_dotnet
             this.client = new ReportingServicePortClient(binding, remoteAddress);
             this.client.Endpoint.Behaviors.Add(new PasswordDigestBehavior(username, password));
 		}
-
-        public ReportingClientImpl(string location, X509Certificate2 appCertificate, X509Certificate2 linkidCertificate)
-        {
-            string address = "https://" + location + "/linkid-ws/reporting20";
-            EndpointAddress remoteAddress = new EndpointAddress(address);
-
-            this.client = new ReportingServicePortClient(new LinkIDBinding(linkidCertificate), remoteAddress);
-
-            this.client.ClientCredentials.ClientCertificate.Certificate = appCertificate;
-            this.client.ClientCredentials.ServiceCertificate.DefaultCertificate = linkidCertificate;
-            // To override the validation for our self-signed test certificates
-            this.client.ClientCredentials.ServiceCertificate.Authentication.CertificateValidationMode = X509CertificateValidationMode.None;
-
-            this.client.Endpoint.Contract.ProtectionLevel = ProtectionLevel.Sign;
-
-        }
 
         public void enableLogging()
         {

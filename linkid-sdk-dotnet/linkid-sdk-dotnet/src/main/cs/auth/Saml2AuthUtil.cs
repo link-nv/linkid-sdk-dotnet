@@ -6,8 +6,6 @@
  */
 
 using System;
-using System.Security.Cryptography;
-using System.Security.Cryptography.Xml;
 using System.Xml.Serialization;
 using System.IO;
 using System.Xml;
@@ -28,34 +26,12 @@ namespace safe_online_sdk_dotnet
     /// </summary>
     public class Saml2AuthUtil
     {
-        private readonly RSACryptoServiceProvider key;
-
         private string expectedChallenge;
 
         private string expectedAudience;
 
         public Saml2AuthUtil()
         {
-        }
-
-        public Saml2AuthUtil(RSACryptoServiceProvider key)
-        {
-            this.key = key;
-        }
-
-        /// <summary>
-        /// Generates a SAML v2.0 Authentication Request with HTTP Browser Post Binding. 
-        /// The return string containing the request is already Base64 encoded.
-        /// </summary>
-        /// <param name="linkIDContext">the linkID authentication/payment configuration</param>
-        /// <param name="serviceProviderUrl">The URL that will handle the returned SAML response</param>
-        /// <param name="identityProviderUrl">The LinkID authentication entry URL</param>
-        /// <returns>Base64 encoded SAML request</returns>
-        public string generateEncodedAuthnRequest(LinkIDAuthenticationContext linkIDContext,
-                                          string serviceProviderUrl, string identityProviderUrl)
-        {
-            string samlRequest = generateAuthnRequest(linkIDContext, serviceProviderUrl, identityProviderUrl);
-            return Convert.ToBase64String(Encoding.ASCII.GetBytes(samlRequest));
         }
 
         /// <summary>
@@ -186,31 +162,6 @@ namespace safe_online_sdk_dotnet
             }
 
             return authnRequest;
-        }
-
-        /// <summary>
-        /// Generates a SAML v2.0 Authentication Request with HTTP Browser Post Binding. The return string containing the request
-        /// is NOT Base64 encoded.
-        /// </summary>
-        /// <param name="applicationName"></param>
-        /// <param name="applicationPools">Optional list of application pools used for session tracking</param>
-        /// <param name="applicationFriendlyName">Optional friendly name to be displayed in LinkID authentication pages</param>
-        /// <param name="serviceProviderUrl">The URL that will handle the returned SAML response</param>
-        /// <param name="identityProviderUrl">The LinkID authentication entry URL</param>
-        /// <param name="ssoEnabled"></param>
-        /// <param name="deviceContextMap">Optional device context, e.g. the context title for the QR device</param>
-        /// <param name="attributeSuggestions">Optional attribute suggestions for certain attributes. Key is the internal linkID attributeName. The type of the values must be of the correct datatype</param>
-        /// <param name="paymentContext">Optional payment context</param>
-        /// <param name="callback">Optional callback</param>
-        /// <returns>SAML request</returns>
-        public string generateAuthnRequest(LinkIDAuthenticationContext linkIDContext, string serviceProviderUrl, string identityProviderUrl)
-        {
-            AuthnRequestType authnRequest = generateAuthnRequestObject(linkIDContext, serviceProviderUrl, identityProviderUrl);
-
-            XmlDocument document = toXmlDocument(authnRequest);
-
-            string signedAuthnRequest = Saml2Util.signDocument(document, key, authnRequest.ID);
-            return signedAuthnRequest;
         }
 
         public static XmlDocument toXmlDocument(AuthnRequestType authnRequest)
@@ -348,24 +299,6 @@ namespace safe_online_sdk_dotnet
         }
 
         /// <summary>
-        /// Validates a Base64 encoded SAML v2.0 Response.
-        /// </summary>
-        /// <param name="encodedSamlResponse"></param>
-        /// <param name="wsLocation"></param>
-        /// <param name="appCertificate"></param>
-        /// <param name="linkidCertificate"></param>
-        /// <returns>AuthenticationProtocolContext containing linkID userId, authenticated device(s) and optional dictionary of linkID attributes</returns>
-        public AuthenticationProtocolContext validateEncodedAuthnResponse(string encodedSamlResponse, string wsLocation,
-                                                                         X509Certificate2 appCertificate,
-                                                                         X509Certificate2 linkidCertificate)
-        {
-            ;
-            byte[] samlResponseData = Convert.FromBase64String(encodedSamlResponse);
-            string samlResponse = Encoding.UTF8.GetString(samlResponseData);
-            return validateAuthnResponse(samlResponse, wsLocation, appCertificate, linkidCertificate);
-        }
-
-        /// <summary>
         /// Parses the given SAML v2.0 authentication response
         /// </summary>
         /// <param name="response">tje SAML v2.0 authentication response</param>
@@ -427,36 +360,6 @@ namespace safe_online_sdk_dotnet
 
         }
 
-        /// <summary>
-        /// Validates a base64 decoded SAML v2.0 Response.
-        /// </summary>
-        /// <param name="encodedSamlResponse"></param>
-        /// <param name="wsLocation"></param>
-        /// <param name="appCertificate"></param>
-        /// <param name="linkidCertificate"></param>
-        /// <returns>AuthenticationProtocolContext containing linkID userId, authenticated device(s) and optional dictionary of linkID attributes</returns>
-        public AuthenticationProtocolContext validateAuthnResponse(string samlResponse, string wsLocation,
-                                                                  X509Certificate2 appCertificate, X509Certificate2 linkidCertificate)
-        {
-            STSClient stsClient = new STSClientImpl(wsLocation, appCertificate, linkidCertificate);
-            bool result = stsClient.validateToken(samlResponse, TrustDomainType.LINK_ID);
-            if (false == result)
-            {
-                return null;
-            }
-
-            XmlRootAttribute xRoot = new XmlRootAttribute();
-            xRoot.ElementName = "Response";
-            xRoot.Namespace = Saml2Constants.SAML2_PROTOCOL_NAMESPACE;
-
-            TextReader reader = new StringReader(samlResponse);
-            XmlSerializer serializer = new XmlSerializer(typeof(ResponseType), xRoot);
-            ResponseType response = (ResponseType)serializer.Deserialize(reader);
-            reader.Close();
-
-            return parseAuthnResponse(response);
-        }
-
         private LinkIDPaymentResponse findPaymentResponse(ResponseType response)
         {
             if (null == response.Extensions || null == response.Extensions.Any)
@@ -484,17 +387,17 @@ namespace safe_online_sdk_dotnet
                 LinkIDAttribute attribute = getAttribute(attributeType);
 
                 List<LinkIDAttribute> attributes;
-                if (!attributeMap.ContainsKey(attribute.getAttributeName()))
+                if (!attributeMap.ContainsKey(attribute.attributeName))
                 {
                     attributes = new List<LinkIDAttribute>();
                 }
                 else
                 {
-                    attributes = attributeMap[attribute.getAttributeName()];
+                    attributes = attributeMap[attribute.attributeName];
                 }
                 attributes.Add(attribute);
-                attributeMap.Remove(attribute.getAttributeName());
-                attributeMap.Add(attribute.getAttributeName(), attributes);
+                attributeMap.Remove(attribute.attributeName);
+                attributeMap.Add(attribute.attributeName, attributes);
             }
             return attributeMap;
         }
@@ -519,11 +422,11 @@ namespace safe_online_sdk_dotnet
                     {
                         LinkIDAttribute member = new LinkIDAttribute(attributeId,
                             getXmlAttribute(attributeNode, WebServiceConstants.ATTRIBUTE_NAME_ATTRIBUTE));
-                        member.setValue(attributeNode.InnerText);
+                        member.value = attributeNode.InnerText;
                         compoundMembers.Add(member);
                     }
                 }
-                attribute.setValue(new LinkIDCompound(compoundMembers));
+                attribute.value = new LinkIDCompound(compoundMembers);
             }
             else if (attributeType.AttributeValue[0] is AttributeType)
             {
@@ -536,12 +439,12 @@ namespace safe_online_sdk_dotnet
                     LinkIDAttribute member = new LinkIDAttribute(attributeId, memberType.Name, memberType.AttributeValue[0]);
                     compoundMembers.Add(member);
                 }
-                attribute.setValue(new LinkIDCompound(compoundMembers));
+                attribute.value = new LinkIDCompound(compoundMembers);
             }
             else
             {
                 // single/multi valued
-                attribute.setValue(attributeType.AttributeValue[0]);
+                attribute.value = attributeType.AttributeValue[0];
             }
             return attribute;
         }

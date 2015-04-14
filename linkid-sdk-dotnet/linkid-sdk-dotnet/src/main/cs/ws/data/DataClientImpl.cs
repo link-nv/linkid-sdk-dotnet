@@ -8,7 +8,6 @@
 using System;
 using System.Net;
 using System.Net.Security;
-using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
@@ -42,22 +41,6 @@ namespace safe_online_sdk_dotnet
             this.client = new DataServicePortClient(binding, remoteAddress);
             this.client.Endpoint.Behaviors.Add(new PasswordDigestBehavior(username, password));
 		}
-
-        public DataClientImpl(string location, X509Certificate2 appCertificate, X509Certificate2 linkidCertificate)
-        {
-            string address = "https://" + location + "/linkid-ws/data";
-            EndpointAddress remoteAddress = new EndpointAddress(address);
-
-            this.client = new DataServicePortClient(new LinkIDBinding(linkidCertificate), remoteAddress);
-
-            this.client.ClientCredentials.ClientCertificate.Certificate = appCertificate;
-            this.client.ClientCredentials.ServiceCertificate.DefaultCertificate = linkidCertificate;
-            // To override the validation for our self-signed test certificates
-            this.client.ClientCredentials.ServiceCertificate.Authentication.CertificateValidationMode = X509CertificateValidationMode.None;
-
-            this.client.Endpoint.Contract.ProtectionLevel = ProtectionLevel.Sign;
-            this.client.Endpoint.Contract.Behaviors.Add(new SignTargetIdentityBehavior());
-        }
 
         public void enableLogging()
         {
@@ -190,7 +173,7 @@ namespace safe_online_sdk_dotnet
             modifyItem.objectType = DataServiceConstants.ATTRIBUTE_OBJECT_TYPE;
 
             SelectType select = new SelectType();
-            select.Value = attribute.getAttributeName();
+            select.Value = attribute.attributeName;
             modifyItem.Select = select;
 
             AppDataType newData = new AppDataType();
@@ -218,9 +201,9 @@ namespace safe_online_sdk_dotnet
             DeleteItemType deleteItem = new DeleteItemType();
             deleteItem.objectType = DataServiceConstants.ATTRIBUTE_OBJECT_TYPE;
             SelectType select = new SelectType();
-            select.Value = attribute.getAttributeName();
-            if (null != attribute.getAttributeId())
-                setAttributeId(select, attribute.getAttributeId());
+            select.Value = attribute.attributeName;
+            if (null != attribute.attributeId)
+                setAttributeId(select, attribute.attributeId);
 
             return deleteItem;
         }
@@ -247,12 +230,12 @@ namespace safe_online_sdk_dotnet
                         memberType.AttributeValue[0]);
                     compoundMembers.Add(member);
                 }
-                attribute.setValue(new LinkIDCompound(compoundMembers));
+                attribute.value = new LinkIDCompound(compoundMembers);
             }
             else
             {
                 // single/multi valued
-                attribute.setValue(attributeType.AttributeValue[0]);
+                attribute.value = attributeType.AttributeValue[0];
             }
             return attribute;
         }
@@ -295,26 +278,26 @@ namespace safe_online_sdk_dotnet
         {
 
             AttributeType attributeType = new AttributeType();
-            attributeType.Name = attribute.getAttributeName();
-            if (null != attribute.getAttributeId())
-                setAttributeId(attributeType, attribute.getAttributeId());
+            attributeType.Name = attribute.attributeName;
+            if (null != attribute.attributeId)
+                setAttributeId(attributeType, attribute.attributeId);
 
-            if (null != attribute.getValue())
+            if (null != attribute.value)
             {
-                if (attribute.getValue() is LinkIDCompound)
+                if (attribute.value is LinkIDCompound)
                 {
                     // wrap members
                     AttributeType compoundValueAttribute = new AttributeType();
                     attributeType.AttributeValue = new AttributeType[] { compoundValueAttribute };
 
                     // compounded
-                    LinkIDCompound compound = (LinkIDCompound)attribute.getValue();
+                    LinkIDCompound compound = (LinkIDCompound)attribute.value;
                     List<AttributeType> members = new List<AttributeType>();
                     foreach (LinkIDAttribute member in compound.members)
                     {
                         AttributeType memberAttributeType = new AttributeType();
-                        memberAttributeType.Name = member.getAttributeName();
-                        memberAttributeType.AttributeValue = new Object[] { member.getValue() };
+                        memberAttributeType.Name = member.attributeName;
+                        memberAttributeType.AttributeValue = new Object[] { member.value };
                         members.Add(memberAttributeType);
                     }
                     compoundValueAttribute.AttributeValue = members.ToArray();
@@ -322,7 +305,7 @@ namespace safe_online_sdk_dotnet
                 else
                 {
                     // single/multi valued
-                    attributeType.AttributeValue = new Object[] { attribute.getValue() };
+                    attributeType.AttributeValue = new Object[] { attribute.value };
                 }
             }
             return attributeType;

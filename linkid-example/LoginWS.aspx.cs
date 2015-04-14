@@ -53,7 +53,7 @@ namespace linkid_example
                 if (null != pollResponse.authenticationContext)
                 {
                     // logged in, dump user data
-                    state.Text += TestUtil.dumpAuthenticationContext(pollResponse.authenticationContext);
+                    state.Text += pollResponse.authenticationContext.ToString();
                 }
 
                 // hide qr image

@@ -8,7 +8,6 @@
 using System;
 using System.Net;
 using System.Net.Security;
-using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
@@ -39,23 +38,6 @@ namespace safe_online_sdk_dotnet
             this.client = new SAMLAttributePortClient(binding, remoteAddress);
             this.client.Endpoint.Behaviors.Add(new PasswordDigestBehavior(username, password));
 		}
-
-        public AttributeClientImpl(string location, X509Certificate2 appCertificate, X509Certificate2 linkidCertificate)
-        {
-            string address = "https://" + location + "/linkid-ws/attrib";
-            EndpointAddress remoteAddress = new EndpointAddress(address);
-
-            this.client = new SAMLAttributePortClient(new LinkIDBinding(linkidCertificate), remoteAddress);
-
-
-            this.client.ClientCredentials.ClientCertificate.Certificate = appCertificate;
-            this.client.ClientCredentials.ServiceCertificate.DefaultCertificate = linkidCertificate;
-            // To override the validation for our self-signed test certificates
-            this.client.ClientCredentials.ServiceCertificate.Authentication.CertificateValidationMode = X509CertificateValidationMode.None;
-
-            this.client.Endpoint.Contract.ProtectionLevel = ProtectionLevel.Sign;
-
-        }
 
         public void enableLogging()
         {
@@ -170,17 +152,17 @@ namespace safe_online_sdk_dotnet
                 LinkIDAttribute attribute = Saml2AuthUtil.getAttribute(attributeType);
 
                 List<LinkIDAttribute> attributes;
-                if (!attributeMap.ContainsKey(attribute.getAttributeName()))
+                if (!attributeMap.ContainsKey(attribute.attributeName))
                 {
                     attributes = new List<LinkIDAttribute>();
                 }
                 else
                 {
-                    attributes = attributeMap[attribute.getAttributeName()];
+                    attributes = attributeMap[attribute.attributeName];
                 }
                 attributes.Add(attribute);
-                attributeMap.Remove(attribute.getAttributeName());
-                attributeMap.Add(attribute.getAttributeName(), attributes);
+                attributeMap.Remove(attribute.attributeName);
+                attributeMap.Add(attribute.attributeName, attributes);
             }
         }
     }

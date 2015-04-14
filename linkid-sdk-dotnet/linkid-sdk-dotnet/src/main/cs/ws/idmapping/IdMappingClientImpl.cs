@@ -37,21 +37,6 @@ namespace safe_online_sdk_dotnet
             this.client.Endpoint.Behaviors.Add(new PasswordDigestBehavior(username, password));
 		}
 
-        public IdMappingClientImpl(string location, X509Certificate2 appCertificate, X509Certificate2 linkidCertificate)
-		{			
-			string address = "https://" + location + "/linkid-ws/idmapping";
-			EndpointAddress remoteAddress = new EndpointAddress(address);
-					
-			this.client = new NameIdentifierMappingPortClient(new LinkIDBinding(linkidCertificate), remoteAddress);
-			
-			this.client.ClientCredentials.ClientCertificate.Certificate = appCertificate;
-			this.client.ClientCredentials.ServiceCertificate.DefaultCertificate = linkidCertificate;
-			// To override the validation for our self-signed test certificates
-			this.client.ClientCredentials.ServiceCertificate.Authentication.CertificateValidationMode = X509CertificateValidationMode.None;
-			
-			this.client.Endpoint.Contract.ProtectionLevel = ProtectionLevel.Sign;
-		}
-
         public void enableLogging()
         {
             this.client.Endpoint.Behaviors.Add(new LoggingBehavior());

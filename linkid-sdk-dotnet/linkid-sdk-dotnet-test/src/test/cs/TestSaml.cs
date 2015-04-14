@@ -117,7 +117,7 @@ namespace safe_online_sdk_dotnet.test.cs
         {
             RSACryptoServiceProvider key = new RSACryptoServiceProvider();
 
-            Saml2AuthUtil testedInstance = new Saml2AuthUtil(key);
+            Saml2AuthUtil testedInstance = new Saml2AuthUtil();
 
             string spUrl = "http://service.provider.com";
             string idpUrl = "http://identity.provider.com";
@@ -145,45 +145,8 @@ namespace safe_online_sdk_dotnet.test.cs
             LinkIDCallback callback = new LinkIDCallback("http://www.google.be", "1234", true);
             linkIDContext.callback = callback;
 
-            string result = testedInstance.generateAuthnRequest(linkIDContext, spUrl, idpUrl);
-            Console.WriteLine("result document: " + result);
-
-            XmlDocument xmlDocument = new XmlDocument();
-            xmlDocument.LoadXml(result);
-
-            SignedXml signedXml = new SignedXml(xmlDocument);
-            XmlNodeList nodeList = xmlDocument.GetElementsByTagName("Signature");
-            signedXml.LoadXml((XmlElement)nodeList[0]);
-
-            bool verificationResult = signedXml.CheckSignature(key);
-            Console.WriteLine("verification result: " + verificationResult);
-            Assert.IsTrue(verificationResult);
-        }
-
-        [Test]
-        public void TestSaml2LogoutUtil()
-        {
-            RSACryptoServiceProvider key = new RSACryptoServiceProvider();
-
-            Saml2LogoutUtil testedInstance = new Saml2LogoutUtil(key);
-
-            string idpUrl = "http://identity.provider.com";
-            string applicationId = "urn:application:id";
-            string subjectName = "test-subject";
-
-            string result = testedInstance.generateLogoutRequest(subjectName, applicationId, idpUrl);
-            Console.WriteLine("result document: " + result);
-
-            XmlDocument xmlDocument = new XmlDocument();
-            xmlDocument.LoadXml(result);
-
-            SignedXml signedXml = new SignedXml(xmlDocument);
-            XmlNodeList nodeList = xmlDocument.GetElementsByTagName("Signature");
-            signedXml.LoadXml((XmlElement)nodeList[0]);
-
-            bool verificationResult = signedXml.CheckSignature(key);
-            Console.WriteLine("verification result: " + verificationResult);
-            Assert.IsTrue(verificationResult);
+            AttributeWSNamespace.AuthnRequestType authnRequest = testedInstance.generateAuthnRequestObject(linkIDContext, spUrl, idpUrl);
+            Assert.NotNull(authnRequest);
         }
 
         [Test]

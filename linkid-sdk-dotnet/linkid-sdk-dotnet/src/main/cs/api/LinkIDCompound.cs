@@ -15,8 +15,20 @@ namespace safe_online_sdk_dotnet
             membersMap = new Dictionary<string, LinkIDAttribute>();
             foreach (LinkIDAttribute member in members)
             {
-                membersMap.Add(member.getAttributeName(), member);
+                membersMap.Add(member.attributeName, member);
             }
+        }
+
+        public override string ToString()
+        {
+            String output = "";
+
+            foreach (LinkIDAttribute member in members)
+            {
+                output += member.ToString();
+            }
+
+            return output;
         }
 
     }

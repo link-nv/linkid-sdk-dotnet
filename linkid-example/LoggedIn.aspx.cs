@@ -18,7 +18,7 @@ namespace linkid_example
                 (AuthenticationProtocolContext)Session[TestUtil.SESSION_AUTH_CONTEXT];
             if (null != authContext)
             {
-                this.OutputLabel.Text = TestUtil.dumpAuthenticationContext(authContext);
+                this.OutputLabel.Text = authContext.ToString();
             }
         }
     }
