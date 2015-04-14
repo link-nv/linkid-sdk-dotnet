@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" targetNamespace="urn:net:lin-k:safe-online:wallet"
+             xmlns:tns="urn:net:lin-k:safe-online:wallet" name="SafeOnlineWalletWebService">
+    <types>
+        <schema xmlns="http://www.w3.org/2001/XMLSchema">
+            <import namespace="urn:net:lin-k:safe-online:wallet" schemaLocation="safe-online-wallet.xsd" />
+        </schema>
+    </types>
+
+    <!-- =================== Enroll operation ========================= -->
+
+    <message name="enrollRequest">
+		<part name="request" element="tns:WalletEnrollRequest" />
+	</message>
+	<message name="enrollResponse">
+		<part name="response" element="tns:WalletEnrollResponse" />
+	</message>
+
+    <!-- =================== AddCredit operation ======================= -->
+
+    <message name="addCreditRequest">
+		<part name="request" element="tns:WalletAddCreditRequest" />
+	</message>
+	<message name="addCreditResponse">
+		<part name="response" element="tns:WalletAddCreditResponse" />
+	</message>
+
+    <!-- =================== RemoveCredit operation ======================= -->
+
+    <message name="removeCreditRequest">
+		<part name="request" element="tns:WalletRemoveCreditRequest" />
+	</message>
+	<message name="removeCreditResponse">
+		<part name="response" element="tns:WalletRemoveCreditResponse" />
+	</message>
+
+    <!-- =================== Remove  operation ======================= -->
+
+    <message name="removeRequest">
+		<part name="request" element="tns:WalletRemoveRequest" />
+	</message>
+	<message name="removeResponse">
+		<part name="response" element="tns:WalletRemoveResponse" />
+	</message>
+
+    <!-- =================== Commit operation ======================= -->
+
+    <message name="commitRequest">
+		<part name="request" element="tns:WalletCommitRequest" />
+	</message>
+	<message name="commitResponse">
+		<part name="response" element="tns:WalletCommitResponse" />
+	</message>
+
+    <!-- =========================== Ports ========================== -->
+
+    <portType name="WalletServicePort">
+		<operation name="enroll">
+			<input message="tns:enrollRequest" />
+			<output message="tns:enrollResponse" />
+		</operation>
+		<operation name="addCredit">
+			<input message="tns:addCreditRequest" />
+			<output message="tns:addCreditResponse" />
+		</operation>
+		<operation name="removeCredit">
+			<input message="tns:removeCreditRequest" />
+			<output message="tns:removeCreditResponse" />
+		</operation>
+		<operation name="remove">
+			<input message="tns:removeRequest" />
+			<output message="tns:removeResponse" />
+		</operation>
+		<operation name="commit">
+			<input message="tns:commitRequest" />
+			<output message="tns:commitResponse" />
+		</operation>
+    </portType>
+
+    <!-- ========================= Bindings ======================== -->
+
+    <binding name="WalletServiceBinding" type="tns:WalletServicePort">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+        <operation name="enroll">
+            <soap:operation soapAction="urn:net:lin-k:safe-online:wallet:enroll" />
+            <input>
+                <soap:body use="literal" />
+            </input>
+            <output>
+                <soap:body use="literal" />
+            </output>
+        </operation>
+        <operation name="addCredit">
+            <soap:operation soapAction="urn:net:lin-k:safe-online:wallet:addCredit" />
+            <input>
+                <soap:body use="literal" />
+            </input>
+            <output>
+                <soap:body use="literal" />
+            </output>
+        </operation>
+        <operation name="removeCredit">
+            <soap:operation soapAction="urn:net:lin-k:safe-online:wallet:removeCredit" />
+            <input>
+                <soap:body use="literal" />
+            </input>
+            <output>
+                <soap:body use="literal" />
+            </output>
+        </operation>
+        <operation name="remove">
+            <soap:operation soapAction="urn:net:lin-k:safe-online:wallet:remove" />
+            <input>
+                <soap:body use="literal" />
+            </input>
+            <output>
+                <soap:body use="literal" />
+            </output>
+        </operation>
+        <operation name="commit">
+            <soap:operation soapAction="urn:net:lin-k:safe-online:wallet:commit" />
+            <input>
+                <soap:body use="literal" />
+            </input>
+            <output>
+                <soap:body use="literal" />
+            </output>
+        </operation>
+    </binding>
+
+    <!-- ========================= Services ======================== -->
+
+    <service name="WalletService">
+        <port name="WalletServicePort" binding="tns:WalletServiceBinding">
+            <soap:address location="http://localhost:8080/${safe-online.ws.webapp.url}/wallet/" />
+        </port>
+    </service>
+</definitions>

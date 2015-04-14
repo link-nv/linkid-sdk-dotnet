@@ -124,10 +124,9 @@ namespace safe_online_sdk_dotnet.test.cs
             string applicationId = "urn:application:id";
             string[] devices = new string[] { "test-device-1", "test-device-2" };
 
-            // device context
-            Dictionary<string, string> deviceContextMap = new Dictionary<string, string>();
-            deviceContextMap.Add(RequestConstants.AUTHENTICATION_MESSAGE, "Test authn message");
-            deviceContextMap.Add(RequestConstants.FINISHED_MESSAGE, "Test finished message");
+            LinkIDAuthenticationContext linkIDContext = new LinkIDAuthenticationContext();
+            linkIDContext.authenticationMessage = "Test authn message";
+            linkIDContext.finishedMessage = "Test finished message";
 
             // attribute suggestions
             Dictionary<string, List<Object>> attributeSuggestions = new Dictionary<string, List<object>>();
@@ -136,15 +135,17 @@ namespace safe_online_sdk_dotnet.test.cs
             attributeSuggestions.Add("test.attribute.boolean", new List<Object> { true });
             attributeSuggestions.Add("test.attribute.integer", new List<Object> { 69 });
             attributeSuggestions.Add("test.attribute.double", new List<Object> { 3.14159 });
+            linkIDContext.attributeSuggestions = attributeSuggestions;
 
             // payment context
-            PaymentContext paymentContext = new PaymentContext(1, Currency.EUR);
-            
-            // callback
-            Callback callback = new Callback("http://www.google.be", "1234", true);
+            LinkIDPaymentContext paymentContext = new LinkIDPaymentContext(1, LinkIDCurrency.EUR);
+            linkIDContext.paymentContext = paymentContext;
 
-            string result = testedInstance.generateAuthnRequest(applicationId, null, null, spUrl, idpUrl, false,
-                deviceContextMap, attributeSuggestions, paymentContext, callback);
+            // callback
+            LinkIDCallback callback = new LinkIDCallback("http://www.google.be", "1234", true);
+            linkIDContext.callback = callback;
+
+            string result = testedInstance.generateAuthnRequest(linkIDContext, spUrl, idpUrl);
             Console.WriteLine("result document: " + result);
 
             XmlDocument xmlDocument = new XmlDocument();

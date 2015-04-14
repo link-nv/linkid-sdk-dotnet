@@ -9,23 +9,18 @@ namespace safe_online_sdk_dotnet
     {
 
         public static AuthnSession startLinkIDAuthentication(string linkIDHost, string username, string password,
-            string applicationName, string authenticationMessage, string finishesMessage, List<String> identityProfiles,
-            Dictionary<string, List<Object>> attributeSuggestions, PaymentContext paymentContext, Callback callback,
-            string language, string userAgent, bool forceRegistration)
+            LinkIDAuthenticationContext linkIDContext, string userAgent)
         {
-
-            Dictionary<string, string> deviceContextMap = LoginUtil.generateDeviceContextMap(
-                authenticationMessage, finishesMessage, identityProfiles);
 
             // generate SAML v2.0 authentication request
             Saml2AuthUtil saml2AuthUtil = new Saml2AuthUtil();
-            AuthnRequestType authnRequest = saml2AuthUtil.generateAuthnRequestObject(applicationName, null, null,
-                "http://foo.bar", LoginConfig.getMobileMinimalPath(linkIDHost), false, deviceContextMap, 
-                attributeSuggestions, paymentContext, callback);
+            AuthnRequestType authnRequest = saml2AuthUtil.generateAuthnRequestObject(linkIDContext, 
+                "http://foo.bar", LoginConfig.getMobileMinimalPath(linkIDHost));
 
             // send request
             AuthClient client = new AuthClientImpl(linkIDHost, username, password);
-            return client.start(saml2AuthUtil, authnRequest, language, userAgent, forceRegistration);
+            return client.start(saml2AuthUtil, authnRequest, linkIDContext.language, userAgent, 
+                linkIDContext.mobileForceRegistration);
         }
 
         public static PollResponse pollLinkIDAuthentication(string linkIDHost, string username, string password, 

@@ -29,9 +29,9 @@ namespace safe_online_sdk_dotnet.test.cs
         {
             String finishedMessage = "Custom finished msg";
             String paymentOrderReference = "DOTNET-LTQR-" + Guid.NewGuid().ToString();
-            PaymentContext paymentContext = new PaymentContext(20000, Currency.EUR, ".NET Test", paymentOrderReference, null);
+            LinkIDPaymentContext paymentContext = new LinkIDPaymentContext(20000, LinkIDCurrency.EUR, ".NET Test", paymentOrderReference, null);
             DateTime expiryDate = DateTime.Now.AddMonths(3);
-            Callback callback = new Callback("google.be", null, true);
+            LinkIDCallback callback = new LinkIDCallback("google.be", null, true);
 
             LTQRSession session = client.push(null, finishedMessage, paymentContext, false, expiryDate, null, callback, null);
 
@@ -45,7 +45,7 @@ namespace safe_online_sdk_dotnet.test.cs
             String ltqrReference = "f077493e-badd-4f13-91f1-bd3fd58dbd82";
             String paymentOrderReference = "DOTNET-LTQR-" + Guid.NewGuid().ToString();
 
-            PaymentContext paymentContext = new PaymentContext(9999, Currency.EUR, ".NET Test Changed", paymentOrderReference, null);
+            LinkIDPaymentContext paymentContext = new LinkIDPaymentContext(9999, LinkIDCurrency.EUR, ".NET Test Changed", paymentOrderReference, null);
             DateTime expiryDate = DateTime.Now.AddMonths(12);
 
             client.change(ltqrReference, null, finishedMessage, paymentContext, expiryDate, null, null, null);

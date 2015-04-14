@@ -54,16 +54,20 @@ namespace safe_online_sdk_dotnet
             this.client.Endpoint.Behaviors.Add(new LoggingBehavior());
         }
 
-        public String pay(String mandateReference, PaymentContext paymentContextDO, String language)
+        public String pay(String mandateReference, LinkIDPaymentContext linkIDPaymentContext, String language)
         {
             MandatePaymentRequest request = new MandatePaymentRequest();
 
             MandateWSNameSpace.PaymentContext paymentContext = new MandateWSNameSpace.PaymentContext();
-            paymentContext.amount = paymentContextDO.amount;
-            paymentContext.currency = convert(paymentContextDO.currency);
-            paymentContext.description = paymentContextDO.description;
-            paymentContext.orderReference = paymentContextDO.orderReference;
-            paymentContext.paymentProfile = paymentContextDO.paymentProfile;
+            paymentContext.amount = linkIDPaymentContext.amount;
+            paymentContext.currency = convert(linkIDPaymentContext.currency);
+            paymentContext.description = linkIDPaymentContext.description;
+            paymentContext.orderReference = linkIDPaymentContext.orderReference;
+            paymentContext.paymentProfile = linkIDPaymentContext.paymentProfile;
+            paymentContext.validationTime = linkIDPaymentContext.paymentValidationTime;
+            paymentContext.allowDeferredPay = linkIDPaymentContext.allowDeferredPay;
+            paymentContext.allowPartial = linkIDPaymentContext.allowPartial;
+            paymentContext.onlyWallets = linkIDPaymentContext.onlyWallets;
             request.paymentContext = paymentContext;
 
             request.mandateReference = mandateReference;
@@ -90,11 +94,11 @@ namespace safe_online_sdk_dotnet
 
         // helper methods
 
-        private MandateWSNameSpace.Currency convert(Currency currency)
+        private MandateWSNameSpace.Currency convert(LinkIDCurrency currency)
         {
             switch (currency)
             {
-                case Currency.EUR:
+                case LinkIDCurrency.EUR:
                     return MandateWSNameSpace.Currency.EUR;
             }
 

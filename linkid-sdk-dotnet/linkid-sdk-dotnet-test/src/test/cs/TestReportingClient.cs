@@ -32,12 +32,12 @@ namespace safe_online_sdk_dotnet.test.cs
             DateTime startDate = DateTime.Now.Subtract(new TimeSpan(30, 0, 0, 0));
             DateTime endDate = DateTime.Now;
 
-            List<PaymentTransaction> transactions = client.getPaymentReport(startDate, endDate);
+            List<LinkIDPaymentOrder> paymentOrders = client.getPaymentReport(startDate, endDate);
 
-            Assert.NotNull(transactions);
-            foreach (PaymentTransaction txn in transactions)
+            Assert.NotNull(paymentOrders);
+            foreach (LinkIDPaymentOrder paymentOrder in paymentOrders)
             {
-                Console.WriteLine("Txn: " + txn.orderReference + " - " + txn.amount);
+                Console.WriteLine(paymentOrder.ToString());
             }
         }
 
@@ -45,15 +45,15 @@ namespace safe_online_sdk_dotnet.test.cs
         public void testGetPaymentReportOrderReferences()
         {
             List<String> orderReferences = new List<string>();
-            orderReferences.Add("7a03effa07e1441fa0832a78f262bef2");
-            orderReferences.Add("9751acef-1f3c-45bc-aea7-a5e159e7b395");
+            orderReferences.Add("afc766fe-f091-4f8e-9dec-eed83422ca43");
+            orderReferences.Add("02a4e6c2-67d1-4f71-b262-a12b447c1435");
 
-            List<PaymentTransaction> transactions = client.getPaymentReportForOrderReferences(orderReferences);
+            List<LinkIDPaymentOrder> paymentOrders = client.getPaymentReportForOrderReferences(orderReferences);
 
-            Assert.NotNull(transactions);
-            foreach (PaymentTransaction txn in transactions)
+            Assert.NotNull(paymentOrders);
+            foreach (LinkIDPaymentOrder paymentOrder in paymentOrders)
             {
-                Console.WriteLine("Txn: " + txn.orderReference + " - " + txn.amount);
+                Console.WriteLine(paymentOrder.ToString());
             }
         }
 
@@ -63,12 +63,12 @@ namespace safe_online_sdk_dotnet.test.cs
             DateTime startDate = DateTime.Now.Subtract(new TimeSpan(30, 0, 0, 0));
             DateTime endDate = DateTime.Now;
 
-            List<ParkingSession> sessions = client.getParkingReport(startDate, endDate);
+            List<LinkIDParkingSession> sessions = client.getParkingReport(startDate, endDate);
 
             Assert.NotNull(sessions);
-            foreach (ParkingSession session in sessions)
+            foreach (LinkIDParkingSession session in sessions)
             {
-                Console.WriteLine("Session: " + session.parking + " - " + session.validated);
+                Console.WriteLine(session.ToString());
             }
         }
 
@@ -79,12 +79,12 @@ namespace safe_online_sdk_dotnet.test.cs
             barCodes.Add("10014905552275590459");
             barCodes.Add("foo");
 
-            List<ParkingSession> sessions = client.getParkingReportForBarCodes(barCodes);
+            List<LinkIDParkingSession> sessions = client.getParkingReportForBarCodes(barCodes);
 
             Assert.NotNull(sessions);
-            foreach (ParkingSession session in sessions)
+            foreach (LinkIDParkingSession session in sessions)
             {
-                Console.WriteLine("Session: " + session.parking + " - " + session.validated);
+                Console.WriteLine(session.ToString());
             }
         }
     }

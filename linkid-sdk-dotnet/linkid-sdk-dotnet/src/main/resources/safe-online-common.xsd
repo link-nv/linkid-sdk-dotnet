@@ -67,6 +67,19 @@
 		</restriction>
 	</simpleType>
 
+    <simpleType name="PaymentMethodType">
+		<annotation>
+			<documentation>Payment method types ( not wallets )</documentation>
+		</annotation>
+        <restriction base="string">
+            <enumeration value="UNKNOWN" />
+            <enumeration value="VISA" />
+            <enumeration value="MASTERCARD" />
+            <enumeration value="SEPA" />
+            <enumeration value="KLARNA" />
+        </restriction>
+    </simpleType>
+
     <complexType name="PaymentContext">
         <sequence>
             <element name="amount" type="double" minOccurs="1" maxOccurs="1">
@@ -102,8 +115,20 @@
                         linkID can allow for the user to make a deferred payment which he can complete later on from his browser.</documentation>
                 </annotation>
             </element>
+            <element name="allowPartial" type="boolean" minOccurs="0" maxOccurs="1">
+                <annotation>
+                    <documentation>allow partial payments via wallets, this flag does make sense if you allow normal payment methods</documentation>
+                </annotation>
+            </element>
+            <element name="onlyWallets" type="boolean" minOccurs="0" maxOccurs="1">
+                <annotation>
+                    <documentation>allow only wallets for this payment</documentation>
+                </annotation>
+            </element>
         </sequence>
     </complexType>
+
+    <!-- V1 payment transactions -->
 
     <complexType name="PaymentTransaction">
         <sequence>
@@ -113,7 +138,8 @@
             <element name="paymentMethod" type="string" minOccurs="1" maxOccurs="1" />
             <element name="description" type="string" minOccurs="1" maxOccurs="1" />
             <element name="paymentState" type="tns:PaymentStatusType" minOccurs="1" maxOccurs="1" />
-            <element name="paid" type="boolean" minOccurs="1" maxOccurs="1" />
+            <element name="authorized" type="boolean" minOccurs="1" maxOccurs="1" />
+            <element name="captured" type="boolean" minOccurs="1" maxOccurs="1" />
             <element name="orderReference" type="string" minOccurs="1" maxOccurs="1" />
             <element name="docdataReference" type="string" minOccurs="1" maxOccurs="1" />
             <element name="userId" type="string" minOccurs="1" maxOccurs="1" />
@@ -135,6 +161,30 @@
             <element name="validated" type="boolean" minOccurs="1" maxOccurs="1" />
             <element name="paymentOrderReference" type="string" minOccurs="1" maxOccurs="1" />
             <element name="paymentState" type="tns:PaymentStatusType" minOccurs="1" maxOccurs="1" />
+        </sequence>
+    </complexType>
+
+    <complexType name="PaymentTransactionV20">
+        <sequence>
+            <element name="paymentMethodType" type="tns:PaymentMethodType" minOccurs="1" maxOccurs="1" />
+            <element name="paymentMethod" type="string" minOccurs="1" maxOccurs="1" />
+            <element name="paymentState" type="tns:PaymentStatusType" minOccurs="1" maxOccurs="1" />
+            <element name="creationDate" type="dateTime" minOccurs="1" maxOccurs="1" />
+            <element name="authorizationDate" type="dateTime" minOccurs="0" maxOccurs="1" />
+            <element name="capturedDate" type="dateTime" minOccurs="0" maxOccurs="1" />
+            <element name="docdataReference" type="string" minOccurs="0" maxOccurs="1" />
+            <element name="amount" type="double" minOccurs="1" maxOccurs="1" />
+            <element name="currency" type="tns:Currency" minOccurs="1" maxOccurs="1" />
+        </sequence>
+    </complexType>
+
+    <complexType name="WalletTransactionV20">
+        <sequence>
+            <element name="walletId" type="string" minOccurs="1" maxOccurs="1" />
+            <element name="creationDate" type="dateTime" minOccurs="1" maxOccurs="1" />
+            <element name="transactionId" type="string" minOccurs="1" maxOccurs="1" />
+            <element name="amount" type="double" minOccurs="1" maxOccurs="1" />
+            <element name="currency" type="tns:Currency" minOccurs="1" maxOccurs="1" />
         </sequence>
     </complexType>
 

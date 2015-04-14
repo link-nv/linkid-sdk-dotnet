@@ -64,20 +64,20 @@ namespace safe_online_sdk_dotnet
             this.client.Endpoint.Behaviors.Add(new LoggingBehavior());
         }
 
-        public void setAttributeValue(string userId, AttributeSDK attribute)
+        public void setAttributeValue(string userId, LinkIDAttribute attribute)
         {
-            List<AttributeSDK> attributes = new List<AttributeSDK>();
+            List<LinkIDAttribute> attributes = new List<LinkIDAttribute>();
             attributes.Add(attribute);
             setAttributeValue(userId, attributes);
         }
 
-        public void setAttributeValue(String userId, List<AttributeSDK> attributes)
+        public void setAttributeValue(String userId, List<LinkIDAttribute> attributes)
         {
             setTargetIdentity(userId);
 
             ModifyType modify = new ModifyType();
             List<ModifyItemType> modifyItems = new List<ModifyItemType>();
-            foreach (AttributeSDK attribute in attributes)
+            foreach (LinkIDAttribute attribute in attributes)
             {
                 modifyItems.Add(getModifyItem(attribute));
             }
@@ -88,7 +88,7 @@ namespace safe_online_sdk_dotnet
             validateStatus(response.Status);
         }
 
-        public List<AttributeSDK> getAttributes(String userId, String attributeName)
+        public List<LinkIDAttribute> getAttributes(String userId, String attributeName)
         {
             setTargetIdentity(userId);
 
@@ -106,7 +106,7 @@ namespace safe_online_sdk_dotnet
             validateStatus(response.Status);
 
             // parse attributes
-            List<AttributeSDK> attributes = new List<AttributeSDK>();
+            List<LinkIDAttribute> attributes = new List<LinkIDAttribute>();
 
             foreach (DataType data in response.Data)
             {
@@ -116,20 +116,20 @@ namespace safe_online_sdk_dotnet
 
         }
 
-        public void createAttribute(String userId, AttributeSDK attribute)
+        public void createAttribute(String userId, LinkIDAttribute attribute)
         {
-            List<AttributeSDK> attributes = new List<AttributeSDK>();
+            List<LinkIDAttribute> attributes = new List<LinkIDAttribute>();
             attributes.Add(attribute);
             createAttribute(userId, attributes);
         }
 
-        public void createAttribute(String userId, List<AttributeSDK> attributes)
+        public void createAttribute(String userId, List<LinkIDAttribute> attributes)
         {
             setTargetIdentity(userId);
 
             CreateType create = new CreateType();
             List<CreateItemType> createItems = new List<CreateItemType>();
-            foreach (AttributeSDK attribute in attributes)
+            foreach (LinkIDAttribute attribute in attributes)
             {
                 createItems.Add(getCreateItem(attribute));
             }
@@ -142,33 +142,33 @@ namespace safe_online_sdk_dotnet
 
         public void removeAttributes(String userId, String attributeName)
         {
-            List<AttributeSDK> attributes = new List<AttributeSDK>();
-            attributes.Add(new AttributeSDK(null, attributeName));
+            List<LinkIDAttribute> attributes = new List<LinkIDAttribute>();
+            attributes.Add(new LinkIDAttribute(null, attributeName));
             removeAttributes(userId, attributes);
         }
 
         public void removeAttribute(String userId, String attributeName, String attributeId)
         {
-            List<AttributeSDK> attributes = new List<AttributeSDK>();
-            attributes.Add(new AttributeSDK(attributeId, attributeName));
+            List<LinkIDAttribute> attributes = new List<LinkIDAttribute>();
+            attributes.Add(new LinkIDAttribute(attributeId, attributeName));
             removeAttributes(userId, attributes);
         }
 
-        public void removeAttribute(String userId, AttributeSDK attribute)
+        public void removeAttribute(String userId, LinkIDAttribute attribute)
         {
-            List<AttributeSDK> attributes = new List<AttributeSDK>();
+            List<LinkIDAttribute> attributes = new List<LinkIDAttribute>();
             attributes.Add(attribute);
             removeAttributes(userId, attributes);
         }
 
-        public void removeAttributes(String userId, List<AttributeSDK> attributes)
+        public void removeAttributes(String userId, List<LinkIDAttribute> attributes)
         {
 
             setTargetIdentity(userId);
 
             DeleteType delete = new DeleteType();
             List<DeleteItemType> deleteItems = new List<DeleteItemType>();
-            foreach (AttributeSDK attribute in attributes)
+            foreach (LinkIDAttribute attribute in attributes)
             {
                 deleteItems.Add(getDeleteItem(attribute));
             }
@@ -184,7 +184,7 @@ namespace safe_online_sdk_dotnet
             this.client.Endpoint.Behaviors.Add(new TargetIdentityBehavior(userId));
         }
 
-        private static ModifyItemType getModifyItem(AttributeSDK attribute)
+        private static ModifyItemType getModifyItem(LinkIDAttribute attribute)
         {
             ModifyItemType modifyItem = new ModifyItemType();
             modifyItem.objectType = DataServiceConstants.ATTRIBUTE_OBJECT_TYPE;
@@ -200,7 +200,7 @@ namespace safe_online_sdk_dotnet
             return modifyItem;
         }
 
-        private static CreateItemType getCreateItem(AttributeSDK attribute)
+        private static CreateItemType getCreateItem(LinkIDAttribute attribute)
         {
 
             CreateItemType createItem = new CreateItemType();
@@ -212,7 +212,7 @@ namespace safe_online_sdk_dotnet
             return createItem;
         }
 
-        private static DeleteItemType getDeleteItem(AttributeSDK attribute)
+        private static DeleteItemType getDeleteItem(LinkIDAttribute attribute)
         {
 
             DeleteItemType deleteItem = new DeleteItemType();
@@ -225,13 +225,13 @@ namespace safe_online_sdk_dotnet
             return deleteItem;
         }
 
-        public static AttributeSDK getAttribute(AttributeType attributeType)
+        public static LinkIDAttribute getAttribute(AttributeType attributeType)
         {
             Boolean multivalued = isMultivalued(attributeType);
             String attributeId = getAttributeId(attributeType);
             String attributeName = attributeType.Name;
 
-            AttributeSDK attribute = new AttributeSDK(attributeId, attributeName);
+            LinkIDAttribute attribute = new LinkIDAttribute(attributeId, attributeName);
 
             if (attributeType.AttributeValue.Length == 0) return attribute;
 
@@ -239,14 +239,15 @@ namespace safe_online_sdk_dotnet
             {
                 // compound
                 AttributeType compoundValue = (AttributeType)attributeType.AttributeValue[0];
-                List<AttributeSDK> compoundMembers = new List<AttributeSDK>();
+                List<LinkIDAttribute> compoundMembers = new List<LinkIDAttribute>();
                 foreach (Object memberObject in compoundValue.AttributeValue)
                 {
                     AttributeType memberType = (AttributeType)memberObject;
-                    AttributeSDK member = new AttributeSDK(attributeId, memberType.Name, memberType.AttributeValue[0]);
+                    LinkIDAttribute member = new LinkIDAttribute(attributeId, memberType.Name, 
+                        memberType.AttributeValue[0]);
                     compoundMembers.Add(member);
                 }
-                attribute.setValue(new Compound(compoundMembers));
+                attribute.setValue(new LinkIDCompound(compoundMembers));
             }
             else
             {
@@ -290,7 +291,7 @@ namespace safe_online_sdk_dotnet
             return multivalued;
         }
 
-        private static AttributeType getAttributeType(AttributeSDK attribute)
+        private static AttributeType getAttributeType(LinkIDAttribute attribute)
         {
 
             AttributeType attributeType = new AttributeType();
@@ -300,16 +301,16 @@ namespace safe_online_sdk_dotnet
 
             if (null != attribute.getValue())
             {
-                if (attribute.getValue() is Compound)
+                if (attribute.getValue() is LinkIDCompound)
                 {
                     // wrap members
                     AttributeType compoundValueAttribute = new AttributeType();
                     attributeType.AttributeValue = new AttributeType[] { compoundValueAttribute };
 
                     // compounded
-                    Compound compound = (Compound)attribute.getValue();
+                    LinkIDCompound compound = (LinkIDCompound)attribute.getValue();
                     List<AttributeType> members = new List<AttributeType>();
-                    foreach (AttributeSDK member in compound.members)
+                    foreach (LinkIDAttribute member in compound.members)
                     {
                         AttributeType memberAttributeType = new AttributeType();
                         memberAttributeType.Name = member.getAttributeName();

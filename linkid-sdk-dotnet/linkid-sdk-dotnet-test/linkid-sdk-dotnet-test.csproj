@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="src\test\cs\AssemblyInfo.cs" />
+    <Compile Include="src\test\cs\TestPaymentClient.cs" />
     <Compile Include="src\test\cs\TestReportingClient.cs" />
     <Compile Include="src\test\cs\TestMandateClient.cs" />
     <Compile Include="src\test\cs\TestConstants.cs" />

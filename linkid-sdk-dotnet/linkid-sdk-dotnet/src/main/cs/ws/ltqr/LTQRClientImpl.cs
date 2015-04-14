@@ -52,9 +52,9 @@ namespace safe_online_sdk_dotnet
             this.client.Endpoint.Behaviors.Add(new LoggingBehavior());
         }
 
-        public LTQRSession push(String authenticationMessage, String finishedMessage, PaymentContext paymentContextDO, 
+        public LTQRSession push(String authenticationMessage, String finishedMessage, LinkIDPaymentContext paymentContextDO, 
             bool oneTimeUse, Nullable<DateTime> expiryDate, Nullable<long> expiryDuration,
-            Callback callback, List<String> identityProfiles)
+            LinkIDCallback callback, List<String> identityProfiles)
         {
             PushRequest request = new PushRequest();
 
@@ -130,9 +130,9 @@ namespace safe_online_sdk_dotnet
             throw new RuntimeException("No success nor error element in the response ?!");
         }
 
-        public LTQRSession change(String ltqrReference, String authenticationMessage, String finishedMessage, 
-            PaymentContext paymentContextDO, Nullable<DateTime> expiryDate, Nullable<long> expiryDuration,
-            Callback callback, List<String> identityProfiles)
+        public LTQRSession change(String ltqrReference, String authenticationMessage, String finishedMessage,
+            LinkIDPaymentContext paymentContextDO, Nullable<DateTime> expiryDate, Nullable<long> expiryDuration,
+            LinkIDCallback callback, List<String> identityProfiles)
         {
             ChangeRequest request = new ChangeRequest();
             request.ltqrReference = ltqrReference;
@@ -315,11 +315,11 @@ namespace safe_online_sdk_dotnet
             throw new RuntimeException("Unexpected error code " + errorCode.ToString() + "!");
         }
 
-        private LTQRWSNameSpace.Currency convert(Currency currency)
+        private LTQRWSNameSpace.Currency convert(LinkIDCurrency currency)
         {
             switch (currency)
             {
-                case Currency.EUR:
+                case LinkIDCurrency.EUR:
                     return LTQRWSNameSpace.Currency.EUR;
             }
 

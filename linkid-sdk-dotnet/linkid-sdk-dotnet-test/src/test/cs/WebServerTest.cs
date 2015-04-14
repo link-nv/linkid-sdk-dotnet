@@ -116,9 +116,11 @@ namespace safe_online_sdk_dotnet_test.test.cs
 
         public byte[] initiateAuthentication()
         {
-            string encodedSamlRequest = this.saml2AuthUtil.generateEncodedAuthnRequest(TestConstants.testApplicationName,
-                    null, null, "http://" + TestConstants.localhost + ":8080",
-                    TestConstants.linkidAuthEntry, false, null, null, null, null);
+            LinkIDAuthenticationContext linkIDContext = new LinkIDAuthenticationContext();
+            linkIDContext.applicationName = TestConstants.testApplicationName;
+
+            string encodedSamlRequest = this.saml2AuthUtil.generateEncodedAuthnRequest(linkIDContext, null,
+                    "http://" + TestConstants.localhost + ":8080");
             byte[] response = generateSamlRequestForm("Authenticate", TestConstants.linkidAuthEntry, encodedSamlRequest);
             Console.WriteLine("initiateAuthentication response: {0}", response);
             return response;
@@ -181,7 +183,7 @@ namespace safe_online_sdk_dotnet_test.test.cs
 
                 msg = "Successfully authenticated user \"" + context.getUserId().ToString() + "\" using device(s) \"" + devices + "\"";
 
-                Dictionary<String, List<AttributeSDK>> attributes = context.getAttributes();
+                Dictionary<String, List<LinkIDAttribute>> attributes = context.getAttributes();
                 if (null != attributes)
                 {
                     msg += "<p>Attributes:</p>";
@@ -189,7 +191,7 @@ namespace safe_online_sdk_dotnet_test.test.cs
                     {
                         msg += "Name : " + key + "<br/>";
 
-                        foreach (AttributeSDK attribute in attributes[key])
+                        foreach (LinkIDAttribute attribute in attributes[key])
                         {
                             msg += "Value: " + attribute.getValue() + "<br/>";
                         }

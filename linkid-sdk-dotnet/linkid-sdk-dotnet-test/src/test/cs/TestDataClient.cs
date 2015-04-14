@@ -62,17 +62,17 @@ namespace safe_online_sdk_dotnet.test.cs
             dataClient.removeAttributes(userId, attributeName); 
 
             // Create
-            AttributeSDK attributeSDK = new AttributeSDK(null, attributeName, value);
-            dataClient.createAttribute(userId, attributeSDK);
+            LinkIDAttribute linkIDAttribute = new LinkIDAttribute(null, attributeName, value);
+            dataClient.createAttribute(userId, linkIDAttribute);
 
             // Get
-            List<AttributeSDK> attributes = dataClient.getAttributes(userId, attributeName);
+            List<LinkIDAttribute> attributes = dataClient.getAttributes(userId, attributeName);
             Assert.AreEqual(1, attributes.Count);
             Assert.AreEqual(value, (String)attributes[0].getValue());
 
             // Set
-            attributeSDK.setValue(value2);
-            dataClient.setAttributeValue(userId, attributeSDK);
+            linkIDAttribute.setValue(value2);
+            dataClient.setAttributeValue(userId, linkIDAttribute);
 
             // Get
             attributes = dataClient.getAttributes(userId, attributeName);

@@ -18,20 +18,9 @@ namespace safe_online_sdk_dotnet
 		public static readonly String SAML2_POST_BINDING_REQUEST_PARAM = "SAMLRequest";
 		public static readonly String SAML2_POST_BINDING_RESPONSE_PARAM = "SAMLResponse";
 
-        // Mobile authentication flows
-        public static readonly String MOBILE_AUTHN_MINIMAL_REQUEST_PARAM = "mobileAuthnMinimal";
-        public static readonly String MOBILE_FORCE_REG_REQUEST_PARAM = "mobileForceReg";
-
         public static readonly String LANGUAGE_REQUEST_PARAM = "Language";
         public static readonly String TARGET_URI_REQUEST_PARAM = "return_uri";
         public static readonly String FORCE_AUTH_REQUEST_PARAM = "force";
-
-        // Device context parameters supported by linkID devices
-        public static readonly String AUTHENTICATION_MESSAGE = "linkID.authenticationMessage";
-        public static readonly String FINISHED_MESSAGE = "linkID.finishedMessage";
-
-        // Optional identity profiles
-        public static readonly String IDENTITY_PROFILE_PREFIX = "linkID.identityProfile";
 
         // Payment state changed page order reference param
         public static readonly String PAYMENT_CHANGED_ORDER_REF_PARAM = "orderRef";

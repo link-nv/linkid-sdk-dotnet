@@ -21,7 +21,7 @@ namespace safe_online_sdk_dotnet
 
         public ReportingClientImpl(string location, string username, string password)
 		{			
-			string address = "https://" + location + "/linkid-ws-username/reporting";
+			string address = "https://" + location + "/linkid-ws-username/reporting20";
 			EndpointAddress remoteAddress = new EndpointAddress(address);
 
             BasicHttpBinding binding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
@@ -33,7 +33,7 @@ namespace safe_online_sdk_dotnet
 
         public ReportingClientImpl(string location, X509Certificate2 appCertificate, X509Certificate2 linkidCertificate)
         {
-            string address = "https://" + location + "/linkid-ws/reporting";
+            string address = "https://" + location + "/linkid-ws/reporting20";
             EndpointAddress remoteAddress = new EndpointAddress(address);
 
             this.client = new ReportingServicePortClient(new LinkIDBinding(linkidCertificate), remoteAddress);
@@ -52,47 +52,47 @@ namespace safe_online_sdk_dotnet
             this.client.Endpoint.Behaviors.Add(new LoggingBehavior());
         }
 
-        public List<PaymentTransaction> getPaymentReport(DateTime startDate, DateTime endDate)
+        public List<LinkIDPaymentOrder> getPaymentReport(DateTime startDate, DateTime endDate)
         {
             return getPaymentReport(startDate, endDate, null, null);
         }
 
-        public List<PaymentTransaction> getPaymentReportForOrderReferences(List<String> orderReferences)
+        public List<LinkIDPaymentOrder> getPaymentReportForOrderReferences(List<String> orderReferences)
         {
             return getPaymentReport(null, null, orderReferences, null);
         }
 
-        public List<PaymentTransaction> ﻿getPaymentReportForMandates(List<String> mandateReferences)
+        public List<LinkIDPaymentOrder> ﻿getPaymentReportForMandates(List<String> mandateReferences)
         {
             return getPaymentReport(null, null, null, mandateReferences);
         }
 
-        public List<ParkingSession> getParkingReport(DateTime startDate, DateTime endDate)
+        public List<LinkIDParkingSession> getParkingReport(DateTime startDate, DateTime endDate)
         {
             return getParkingReport(startDate, endDate, null, null, null, null);
         }
 
-        public List<ParkingSession> getParkingReport(DateTime startDate, DateTime endDate, List<String> parkings)
+        public List<LinkIDParkingSession> getParkingReport(DateTime startDate, DateTime endDate, List<String> parkings)
         {
             return getParkingReport(startDate, endDate, null, null, null, parkings);
         }
 
-        public List<ParkingSession> getParkingReportForBarCodes(List<String> barCodes)
+        public List<LinkIDParkingSession> getParkingReportForBarCodes(List<String> barCodes)
         {
             return getParkingReport(null, null, barCodes, null, null, null);
         }
 
-        public List<ParkingSession> getParkingReportForTicketNumbers(List<String> ticketNumbers)
+        public List<LinkIDParkingSession> getParkingReportForTicketNumbers(List<String> ticketNumbers)
         {
             return getParkingReport(null, null, null, ticketNumbers, null, null);
         }
 
-        public List<ParkingSession> getParkingReportForDTAKeys(List<String> dtaKeys)
+        public List<LinkIDParkingSession> getParkingReportForDTAKeys(List<String> dtaKeys)
         {
             return getParkingReport(null, null, null, null, dtaKeys, null);
         }
 
-        public List<ParkingSession> getParkingReportForParkings(List<String> parkings)
+        public List<LinkIDParkingSession> getParkingReportForParkings(List<String> parkings)
         {
             return getParkingReport(null, null, null, null, null, parkings);
         }
@@ -100,7 +100,7 @@ namespace safe_online_sdk_dotnet
 
         // Helper methods
 
-        private List<ParkingSession> getParkingReport(Nullable<DateTime> startDate, Nullable<DateTime> endDate,
+        private List<LinkIDParkingSession> getParkingReport(Nullable<DateTime> startDate, Nullable<DateTime> endDate,
             List<String> barCodes, List<String> ticketNumbers, List<String> dtaKeys, List<String> parkings)
         {
             ParkingReportRequest request = new ParkingReportRequest();
@@ -139,7 +139,7 @@ namespace safe_online_sdk_dotnet
 
             ReportingWSNameSpace.ParkingSession[] wsParkingSessions = this.client.parkingReport(request);
 
-            List<ParkingSession> parkingSessions = new List<ParkingSession>();
+            List<LinkIDParkingSession> parkingSessions = new List<LinkIDParkingSession>();
             foreach (ReportingWSNameSpace.ParkingSession wsParkingSession in wsParkingSessions)
             {
                 parkingSessions.Add(convert(wsParkingSession));
@@ -148,7 +148,7 @@ namespace safe_online_sdk_dotnet
             return parkingSessions;
         }
 
-        private List<PaymentTransaction> getPaymentReport(Nullable<DateTime> startDate, Nullable<DateTime> endDate,
+        private List<LinkIDPaymentOrder> getPaymentReport(Nullable<DateTime> startDate, Nullable<DateTime> endDate,
             List<String> orderReferences, List<String> mandateReferences)
         {
             PaymentReportRequest request = new PaymentReportRequest();
@@ -175,63 +175,99 @@ namespace safe_online_sdk_dotnet
                 request.mandateReferences = mandateReferences.ToArray();
             }
 
-            ReportingWSNameSpace.PaymentTransaction[] wsTransactions = this.client.paymentReport(request);
+            ReportingWSNameSpace.PaymentOrder[] wsOrders= this.client.paymentReport(request);
 
-            List<PaymentTransaction> transactions = new List<PaymentTransaction>();
-            foreach(ReportingWSNameSpace.PaymentTransaction wsTransaction in wsTransactions)
+            List<LinkIDPaymentOrder> orders = new List<LinkIDPaymentOrder>();
+            foreach (ReportingWSNameSpace.PaymentOrder wsOrder in wsOrders)
             {
-                transactions.Add(convert(wsTransaction));
+                orders.Add(convert(wsOrder));
             }
 
-            return transactions;
+            return orders;
         }
 
-        private PaymentTransaction convert(ReportingWSNameSpace.PaymentTransaction wsTransaction)
+        private LinkIDPaymentOrder convert(ReportingWSNameSpace.PaymentOrder wsOrder)
         {
-            return new PaymentTransaction(wsTransaction.date, wsTransaction.amount, convert(wsTransaction.currency),
-                wsTransaction.paymentMethod, wsTransaction.description, convert(wsTransaction.paymentState),
-                wsTransaction.paid, wsTransaction.orderReference, wsTransaction.docdataReference,
-                wsTransaction.userId, wsTransaction.email, wsTransaction.givenName, wsTransaction.familyName);
+            List<LinkIDPaymentTransaction> transactions = new List<LinkIDPaymentTransaction>();
+            if (null != wsOrder.transactions)
+            {
+                foreach (PaymentTransactionV20 paymentTransaction in wsOrder.transactions)
+                {
+                    transactions.Add(new LinkIDPaymentTransaction(convert(paymentTransaction.paymentMethodType),
+                        paymentTransaction.paymentMethod, convert(paymentTransaction.paymentState),
+                        paymentTransaction.creationDate, paymentTransaction.authorizationDate, paymentTransaction.capturedDate,
+                        paymentTransaction.docdataReference, paymentTransaction.amount, convert(paymentTransaction.currency)));
+                }
+            }
+
+            List<LinkIDWalletTransaction> walletTransactions = new List<LinkIDWalletTransaction>();
+            if (null != wsOrder.walletTransactions)
+            {
+                foreach (WalletTransactionV20 walletTransaction in wsOrder.walletTransactions)
+                {
+                    walletTransactions.Add(new LinkIDWalletTransaction(walletTransaction.walletId, walletTransaction.creationDate,
+                        walletTransaction.transactionId, walletTransaction.amount, convert(walletTransaction.currency)));
+                }
+            }
+
+            return new LinkIDPaymentOrder(wsOrder.date, wsOrder.amount, convert(wsOrder.currency), wsOrder.description,
+                convert(wsOrder.paymentState), wsOrder.amountPayed, wsOrder.authorized, wsOrder.captured,
+                wsOrder.orderReference, wsOrder.userId, wsOrder.email, wsOrder.givenName, wsOrder.familyName,
+                transactions, walletTransactions);
         }
 
-        private Currency convert(ReportingWSNameSpace.Currency wsCurrency)
+        private LinkIDPaymentMethodType convert(ReportingWSNameSpace.PaymentMethodType wsPaymentMethodType)
+        {
+            switch (wsPaymentMethodType)
+            {
+                case PaymentMethodType.UNKNOWN: return LinkIDPaymentMethodType.UNKNOWN;
+                case PaymentMethodType.VISA: return LinkIDPaymentMethodType.VISA;
+                case PaymentMethodType.MASTERCARD: return LinkIDPaymentMethodType.MASTERCARD;
+                case PaymentMethodType.SEPA: return LinkIDPaymentMethodType.SEPA;
+                case PaymentMethodType.KLARNA: return LinkIDPaymentMethodType.KLARNA;
+            }
+
+            return LinkIDPaymentMethodType.UNKNOWN;
+        }
+
+        private LinkIDCurrency convert(ReportingWSNameSpace.Currency wsCurrency)
         {
             switch (wsCurrency)
             {
                 case ReportingWSNameSpace.Currency.EUR:
-                    return Currency.EUR;
+                    return LinkIDCurrency.EUR;
             }
 
             throw new RuntimeException("Unsupported currency " + wsCurrency + "!");
         }
 
-        private PaymentState convert(ReportingWSNameSpace.PaymentStatusType wsPaymentState)
+        private LinkIDPaymentState convert(ReportingWSNameSpace.PaymentStatusType wsPaymentState)
         {
             switch (wsPaymentState)
             {
                 case ReportingWSNameSpace.PaymentStatusType.STARTED:
-                    return PaymentState.STARTED;
+                    return LinkIDPaymentState.STARTED;
                 case ReportingWSNameSpace.PaymentStatusType.WAITING_FOR_UPDATE:
-                    return PaymentState.WAITING_FOR_UPDATE;
+                    return LinkIDPaymentState.WAITING_FOR_UPDATE;
                 case ReportingWSNameSpace.PaymentStatusType.FAILED:
-                    return PaymentState.FAILED;
+                    return LinkIDPaymentState.FAILED;
                 case ReportingWSNameSpace.PaymentStatusType.DEFERRED:
-                    return PaymentState.DEFERRED;
+                    return LinkIDPaymentState.DEFERRED;
                 case ReportingWSNameSpace.PaymentStatusType.AUTHORIZED:
-                    return PaymentState.PAYED;
+                    return LinkIDPaymentState.PAYED;
                 case ReportingWSNameSpace.PaymentStatusType.REFUND_STARTED:
-                    return PaymentState.REFUND_STARTED;
+                    return LinkIDPaymentState.REFUND_STARTED;
                 case ReportingWSNameSpace.PaymentStatusType.REFUNDED:
-                    return PaymentState.REFUNDED;
+                    return LinkIDPaymentState.REFUNDED;
             }
 
             throw new RuntimeException("Unsupported payment state " + wsPaymentState+ "!");
 
         }
 
-        private ParkingSession convert(ReportingWSNameSpace.ParkingSession wsParkingSession)
+        private LinkIDParkingSession convert(ReportingWSNameSpace.ParkingSession wsParkingSession)
         {
-            return new ParkingSession(wsParkingSession.date, wsParkingSession.barCode, wsParkingSession.parking,
+            return new LinkIDParkingSession(wsParkingSession.date, wsParkingSession.barCode, wsParkingSession.parking,
                 wsParkingSession.userId, wsParkingSession.turnover, wsParkingSession.validated,
                 wsParkingSession.paymentOrderReference, convert(wsParkingSession.paymentState));
         }

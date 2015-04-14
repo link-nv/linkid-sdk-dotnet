@@ -20,22 +20,22 @@ namespace safe_online_sdk_dotnet
         /// <param name="startDate">start date</param>
         /// <param name="endDate">optional end date, not specified means till now</param>
         /// <returns></returns>
-        List<PaymentTransaction> getPaymentReport(DateTime startDate, DateTime endDate);
+        List<LinkIDPaymentOrder> getPaymentReport(DateTime startDate, DateTime endDate);
 
-        List<PaymentTransaction> getPaymentReportForOrderReferences(List<String> orderReferences);
+        List<LinkIDPaymentOrder> getPaymentReportForOrderReferences(List<String> orderReferences);
 
-        List<PaymentTransaction> ﻿getPaymentReportForMandates(List<String> mandateReferences);
+        List<LinkIDPaymentOrder> ﻿getPaymentReportForMandates(List<String> mandateReferences);
 
-        List<ParkingSession> getParkingReport(DateTime startDate, DateTime endDate);
+        List<LinkIDParkingSession> getParkingReport(DateTime startDate, DateTime endDate);
 
-        List<ParkingSession> getParkingReport(DateTime startDate, DateTime endDate, List<String> parkings);
+        List<LinkIDParkingSession> getParkingReport(DateTime startDate, DateTime endDate, List<String> parkings);
 
-        List<ParkingSession> getParkingReportForBarCodes(List<String> barCodes);
+        List<LinkIDParkingSession> getParkingReportForBarCodes(List<String> barCodes);
 
-        List<ParkingSession> getParkingReportForTicketNumbers(List<String> ticketNumbers);
+        List<LinkIDParkingSession> getParkingReportForTicketNumbers(List<String> ticketNumbers);
 
-        List<ParkingSession> getParkingReportForDTAKeys(List<String> dtaKeys);
+        List<LinkIDParkingSession> getParkingReportForDTAKeys(List<String> dtaKeys);
 
-        List<ParkingSession> getParkingReportForParkings(List<String> parkings);
+        List<LinkIDParkingSession> getParkingReportForParkings(List<String> parkings);
     }
 }

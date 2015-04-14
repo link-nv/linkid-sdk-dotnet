@@ -137,5 +137,23 @@ namespace safe_online_sdk_dotnet
 
         }
 
+        public void cancel(String sessionId)
+        {
+            CancelRequest request = new CancelRequest();
+
+            // input
+            request.sessionId = sessionId;
+
+            // operate
+            CancelResponse response = this.client.cancel(request);
+
+            if (null != response.error)
+            {
+                throw new CancelException(response.error.error, response.error.info);
+            }
+
+            // all good
+        }
+
     }
 }

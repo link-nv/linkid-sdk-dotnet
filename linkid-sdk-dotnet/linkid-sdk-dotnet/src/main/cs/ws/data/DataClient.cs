@@ -17,14 +17,14 @@ namespace safe_online_sdk_dotnet
         /// </summary>
         /// <param name="userId"></param>
         /// <param name="attribute"></param>
-        void setAttributeValue(string userId, AttributeSDK attribute);
+        void setAttributeValue(string userId, LinkIDAttribute attribute);
 
         /// <summary>
         /// Sets multiple attribute for specified user. If not yet created will do so.
         /// </summary>
         /// <param name="userId"></param>
         /// <param name="attributes"></param>
-        void setAttributeValue(String userId, List<AttributeSDK> attributes);
+        void setAttributeValue(String userId, List<LinkIDAttribute> attributes);
 
         /// <summary>
         /// Gives back all attribute values for specified attribute
@@ -32,29 +32,29 @@ namespace safe_online_sdk_dotnet
         /// <param name="userId"></param>
         /// <param name="attributeName"></param>
         /// <returns></returns>
-        List<AttributeSDK> getAttributes(String userId, String attributeName);
+        List<LinkIDAttribute> getAttributes(String userId, String attributeName);
 
         /// <summary>
         /// Creates a new attribute for the given subject.
         /// </summary>
         /// <param name="userId"></param>
         /// <param name="attribute"></param>
-        void createAttribute(String userId, AttributeSDK attribute);
+        void createAttribute(String userId, LinkIDAttribute attribute);
 
         /// <summary>
         /// Create a new list of attributes for the given subject.
         /// </summary>
         /// <param name="userId"></param>
         /// <param name="attributes"></param>
-        void createAttribute(String userId, List<AttributeSDK> attributes);
+        void createAttribute(String userId, List<LinkIDAttribute> attributes);
 
         void removeAttributes(String userId, String attributeName);
 
         void removeAttribute(String userId, String attributeName, String attributeId);
 
-        void removeAttribute(String userId, AttributeSDK attribute);
+        void removeAttribute(String userId, LinkIDAttribute attribute);
 
-        void removeAttributes(String userId, List<AttributeSDK> attributes);
+        void removeAttributes(String userId, List<LinkIDAttribute> attributes);
         
         // log incoming and outgoing soap messages to the console
         void enableLogging();

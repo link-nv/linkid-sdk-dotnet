@@ -21,7 +21,7 @@ namespace safe_online_sdk_dotnet
 		/// <exception cref="AttributeNotFoundException">Attribute not found</exception>
 		/// <exception cref="RequestDeniedException">Attribute Request denied</exception>
 		/// <exception cref="AttributeUnavailableException">Attribute unavailable</exception>
-        List<AttributeSDK> getAttributes(String userId, String attributeName);
+        List<LinkIDAttribute> getAttributes(String userId, String attributeName);
 		
 		/// <summary>
 		/// Gives back the attribute values via the specified dictionary of attributes. 
@@ -34,7 +34,7 @@ namespace safe_online_sdk_dotnet
 		/// <exception cref="AttributeNotFoundException">Attribute not found</exception>
 		/// <exception cref="RequestDeniedException">Attribute Request denied</exception>
 		/// <exception cref="AttributeUnavailableException">Attribute unavailable</exception>
-        void getAttributes(String userId, Dictionary<String, List<AttributeSDK>> attributeMap);
+        void getAttributes(String userId, Dictionary<String, List<LinkIDAttribute>> attributeMap);
 		
 		/// <summary>
 		/// Gives back a dictionary of attributes for the given subject that this application is allowed to read.
@@ -45,7 +45,7 @@ namespace safe_online_sdk_dotnet
 		/// <exception cref="AttributeNotFoundException">Attribute not found</exception>
 		/// <exception cref="RequestDeniedException">Attribute Request denied</exception>
 		/// <exception cref="AttributeUnavailableException">Attribute unavailable</exception>
-		Dictionary<String, List<AttributeSDK>> getAttributes(String userId);
+        Dictionary<String, List<LinkIDAttribute>> getAttributes(String userId);
 
         // log incoming and outgoing soap messages to the console
         void enableLogging();

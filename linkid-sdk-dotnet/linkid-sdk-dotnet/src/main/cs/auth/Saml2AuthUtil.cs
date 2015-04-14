@@ -44,59 +44,42 @@ namespace safe_online_sdk_dotnet
         }
 
         /// <summary>
-        /// Generates a SAML v2.0 Authentication Request with HTTP Browser Post Binding. The return string containing the request
-        /// is already Base64 encoded.
+        /// Generates a SAML v2.0 Authentication Request with HTTP Browser Post Binding. 
+        /// The return string containing the request is already Base64 encoded.
         /// </summary>
-        /// <param name="applicationName"></param>
-        /// <param name="applicationPools">Optional list of application pools used for session tracking</param>
-        /// <param name="applicationFriendlyName">Optional friendly name to be displayed in LinkID authentication pages</param>
+        /// <param name="linkIDContext">the linkID authentication/payment configuration</param>
         /// <param name="serviceProviderUrl">The URL that will handle the returned SAML response</param>
         /// <param name="identityProviderUrl">The LinkID authentication entry URL</param>
-        /// <param name="ssoEnabled"></param>
-        /// <param name="deviceContextMap">Optional device context, e.g. the context title for the QR device</param>
-        /// <param name="attributeSuggestions">Optional attribute suggestions for certain attributes. Key is the internal linkID attributeName. The type of the values must be of the correct datatype</param>
-        /// <param name="paymentContext">Optional payment context</param>
-        /// <param name="callback">Optional callback</param>
         /// <returns>Base64 encoded SAML request</returns>
-        public string generateEncodedAuthnRequest(string applicationName, List<string> applicationPools, string applicationFriendlyName,
-                                          string serviceProviderUrl, string identityProviderUrl, bool ssoEnabled, Dictionary<string, string> deviceContextMap,
-                                          Dictionary<string, List<Object>> attributeSuggestions, PaymentContext paymentContext, Callback callback)
+        public string generateEncodedAuthnRequest(LinkIDAuthenticationContext linkIDContext,
+                                          string serviceProviderUrl, string identityProviderUrl)
         {
-            string samlRequest = generateAuthnRequest(applicationName, applicationPools, applicationFriendlyName, serviceProviderUrl,
-                  identityProviderUrl, ssoEnabled, deviceContextMap, attributeSuggestions, paymentContext, callback);
+            string samlRequest = generateAuthnRequest(linkIDContext, serviceProviderUrl, identityProviderUrl);
             return Convert.ToBase64String(Encoding.ASCII.GetBytes(samlRequest));
         }
 
         /// <summary>
-        /// Generates a SAML v2.0 Authentication Request with HTTP Browser Post Binding. The return string containing the request
-        /// is NOT Base64 encoded.
+        /// Generates a SAML v2.0 Authentication Request with HTTP Browser Post Binding. 
+        /// The return string containing the request is NOT Base64 encoded.
         /// </summary>
-        /// <param name="applicationName"></param>
-        /// <param name="applicationPools">Optional list of application pools used for session tracking</param>
-        /// <param name="applicationFriendlyName">Optional friendly name to be displayed in LinkID authentication pages</param>
+        /// <param name="linkIDContext">the linkID authentication/payment configuration</param>
         /// <param name="serviceProviderUrl">The URL that will handle the returned SAML response</param>
         /// <param name="identityProviderUrl">The LinkID authentication entry URL</param>
-        /// <param name="ssoEnabled"></param>
-        /// <param name="deviceContextMap">Optional device context, e.g. the context title for the QR device</param>
-        /// <param name="attributeSuggestions">Optional attribute suggestions for certain attributes. Key is the internal linkID attributeName. The type of the values must be of the correct datatype</param>
-        /// <param name="paymentContext">Optional payment context</param>
-        /// <param name="callback">Optional callback</param>
         /// <returns>SAML request</returns>
-        public AuthnRequestType generateAuthnRequestObject(string applicationName, List<string> applicationPools, string applicationFriendlyName,
-                                           string serviceProviderUrl, string identityProviderUrl, bool ssoEnabled, Dictionary<string, string> deviceContextMap,
-                                           Dictionary<string, List<Object>> attributeSuggestions, PaymentContext paymentContext, Callback callback)
+        public AuthnRequestType generateAuthnRequestObject(LinkIDAuthenticationContext linkIDContext,
+            string serviceProviderUrl, string identityProviderUrl)
         {
             this.expectedChallenge = Guid.NewGuid().ToString();
-            this.expectedAudience = applicationName;
+            this.expectedAudience = linkIDContext.applicationName;
 
             AuthnRequestType authnRequest = new AuthnRequestType();
-            authnRequest.ForceAuthn = !ssoEnabled;
+            authnRequest.ForceAuthn = linkIDContext.forceAuthentication;
             authnRequest.ID = this.expectedChallenge;
             authnRequest.Version = "2.0";
             authnRequest.IssueInstant = DateTime.UtcNow;
 
             NameIDType issuer = new NameIDType();
-            issuer.Value = applicationName;
+            issuer.Value = linkIDContext.applicationName;
             authnRequest.Issuer = issuer;
 
             authnRequest.AssertionConsumerServiceURL = serviceProviderUrl;
@@ -104,13 +87,13 @@ namespace safe_online_sdk_dotnet
 
             authnRequest.Destination = identityProviderUrl;
 
-            if (null != applicationFriendlyName)
+            if (null != linkIDContext.applicationFriendlyName)
             {
-                authnRequest.ProviderName = applicationFriendlyName;
+                authnRequest.ProviderName = linkIDContext.applicationFriendlyName;
             }
             else
             {
-                authnRequest.ProviderName = applicationName;
+                authnRequest.ProviderName = linkIDContext.applicationName;
             }
 
             NameIDPolicyType nameIdPolicy = new NameIDPolicyType();
@@ -118,15 +101,7 @@ namespace safe_online_sdk_dotnet
             nameIdPolicy.AllowCreateSpecified = true;
             authnRequest.NameIDPolicy = nameIdPolicy;
 
-            if (null != applicationPools)
-            {
-                ConditionsType conditions = new ConditionsType();
-                AudienceRestrictionType audienceRestriction = new AudienceRestrictionType();
-                audienceRestriction.Audience = applicationPools.ToArray();
-                conditions.Items = new ConditionAbstractType[] { audienceRestriction };
-                authnRequest.Conditions = conditions;
-            }
-
+            Dictionary<string, string> deviceContextMap = linkIDContext.getDeviceContextMap();
             DeviceContextType deviceContext = null;
             if (null != deviceContextMap && deviceContextMap.Count > 0)
             {
@@ -143,13 +118,13 @@ namespace safe_online_sdk_dotnet
                 }
             }
             SubjectAttributesType subjectAttributes = null;
-            if (null != attributeSuggestions && attributeSuggestions.Count > 0)
+            if (null != linkIDContext.attributeSuggestions && linkIDContext.attributeSuggestions.Count > 0)
             {
                 subjectAttributes = new SubjectAttributesType();
                 List<AttributeType> attributes = new List<AttributeType>();
-                foreach (string attributeName in attributeSuggestions.Keys)
+                foreach (string attributeName in linkIDContext.attributeSuggestions.Keys)
                 {
-                    List<object> values = attributeSuggestions[attributeName];
+                    List<object> values = linkIDContext.attributeSuggestions[attributeName];
 
                     AttributeType attribute = new AttributeType();
                     attribute.Name = attributeName;
@@ -160,9 +135,9 @@ namespace safe_online_sdk_dotnet
             }
 
             PaymentContextType paymentContextType = null;
-            if (null != paymentContext)
+            if (null != linkIDContext.paymentContext)
             {
-                Dictionary<String, String> paymentContextDict = paymentContext.toDictionary();
+                Dictionary<String, String> paymentContextDict = linkIDContext.paymentContext.toDictionary();
                 paymentContextType = new PaymentContextType();
                 List<AttributeType> attributes = new List<AttributeType>();
                 foreach (string paymentContextKey in paymentContextDict.Keys)
@@ -177,9 +152,9 @@ namespace safe_online_sdk_dotnet
             }
 
             CallbackType callbackType = null;
-            if (null != callback)
+            if (null != linkIDContext.callback)
             {
-                Dictionary<String, String> callbackDict = callback.toDictionary();
+                Dictionary<String, String> callbackDict = linkIDContext.callback.toDictionary();
                 callbackType = new CallbackType();
                 List<AttributeType> attributes = new List<AttributeType>();
                 foreach (string callbackKey in callbackDict.Keys)
@@ -228,14 +203,9 @@ namespace safe_online_sdk_dotnet
         /// <param name="paymentContext">Optional payment context</param>
         /// <param name="callback">Optional callback</param>
         /// <returns>SAML request</returns>
-        public string generateAuthnRequest(string applicationName, List<string> applicationPools, string applicationFriendlyName,
-                                           string serviceProviderUrl, string identityProviderUrl, 
-                                           bool ssoEnabled, Dictionary<string, string> deviceContextMap,
-                                           Dictionary<string, List<Object>> attributeSuggestions, PaymentContext paymentContext,
-                                           Callback callback)
+        public string generateAuthnRequest(LinkIDAuthenticationContext linkIDContext, string serviceProviderUrl, string identityProviderUrl)
         {
-            AuthnRequestType authnRequest = generateAuthnRequestObject(applicationName, applicationPools, applicationFriendlyName,
-                serviceProviderUrl, identityProviderUrl, ssoEnabled, deviceContextMap, attributeSuggestions, paymentContext, callback);
+            AuthnRequestType authnRequest = generateAuthnRequestObject(linkIDContext, serviceProviderUrl, identityProviderUrl);
 
             XmlDocument document = toXmlDocument(authnRequest);
 
@@ -432,7 +402,7 @@ namespace safe_online_sdk_dotnet
                 }
 
                 List<String> authenticatedDevices = new List<String>();
-                Dictionary<String, List<AttributeSDK>> attributes = null;
+                Dictionary<String, List<LinkIDAttribute>> attributes = null;
                 foreach (StatementAbstractType statement in assertion.Items)
                 {
                     if (statement is AttributeStatementType)
@@ -448,7 +418,7 @@ namespace safe_online_sdk_dotnet
                 }
 
                 // check for optional payment response extension
-                PaymentResponse paymentResponse = findPaymentResponse(response);
+                LinkIDPaymentResponse paymentResponse = findPaymentResponse(response);
 
                 return new AuthenticationProtocolContext(subjectName, authenticatedDevices, attributes, paymentResponse);
             }
@@ -487,7 +457,7 @@ namespace safe_online_sdk_dotnet
             return parseAuthnResponse(response);
         }
 
-        private PaymentResponse findPaymentResponse(ResponseType response)
+        private LinkIDPaymentResponse findPaymentResponse(ResponseType response)
         {
             if (null == response.Extensions || null == response.Extensions.Any)
                 return null;
@@ -495,28 +465,28 @@ namespace safe_online_sdk_dotnet
                 return null;
 
             XmlElement xmlElement = response.Extensions.Any[0];
-            if (xmlElement.LocalName.Equals(PaymentResponse.LOCAL_NAME))
+            if (xmlElement.LocalName.Equals(LinkIDPaymentResponse.LOCAL_NAME))
             {
                 PaymentResponseType paymentResponseType = deserialize(xmlElement);
-                return PaymentResponse.fromSaml(paymentResponseType);
+                return LinkIDPaymentResponse.fromSaml(paymentResponseType);
             }
 
             return null;
         }
 
-        private Dictionary<string, List<AttributeSDK>> getAttributes(AttributeStatementType attributeStatement)
+        private Dictionary<string, List<LinkIDAttribute>> getAttributes(AttributeStatementType attributeStatement)
         {
-            Dictionary<string, List<AttributeSDK>> attributeMap = new Dictionary<string, List<AttributeSDK>>();
+            Dictionary<string, List<LinkIDAttribute>> attributeMap = new Dictionary<string, List<LinkIDAttribute>>();
 
             foreach (object item in attributeStatement.Items)
             {
                 AttributeType attributeType = (AttributeType)item;
-                AttributeSDK attribute = getAttribute(attributeType);
+                LinkIDAttribute attribute = getAttribute(attributeType);
 
-                List<AttributeSDK> attributes;
+                List<LinkIDAttribute> attributes;
                 if (!attributeMap.ContainsKey(attribute.getAttributeName()))
                 {
-                    attributes = new List<AttributeSDK>();
+                    attributes = new List<LinkIDAttribute>();
                 }
                 else
                 {
@@ -529,44 +499,44 @@ namespace safe_online_sdk_dotnet
             return attributeMap;
         }
 
-        public static AttributeSDK getAttribute(AttributeType attributeType)
+        public static LinkIDAttribute getAttribute(AttributeType attributeType)
         {
             Boolean multivalued = isMultivalued(attributeType);
             String attributeId = getAttributeId(attributeType);
             String attributeName = attributeType.Name;
 
-            AttributeSDK attribute = new AttributeSDK(attributeId, attributeName);
+            LinkIDAttribute attribute = new LinkIDAttribute(attributeId, attributeName);
 
             if (attributeType.AttributeValue.Length == 0) return attribute;
 
             if (attributeType.AttributeValue[0] is XmlNode[])
             {
                 // compound
-                List<AttributeSDK> compoundMembers = new List<AttributeSDK>();
+                List<LinkIDAttribute> compoundMembers = new List<LinkIDAttribute>();
                 foreach (XmlNode attributeNode in (XmlNode[])attributeType.AttributeValue[0])
                 {
                     if (isAttributeElement(attributeNode))
                     {
-                        AttributeSDK member = new AttributeSDK(attributeId,
+                        LinkIDAttribute member = new LinkIDAttribute(attributeId,
                             getXmlAttribute(attributeNode, WebServiceConstants.ATTRIBUTE_NAME_ATTRIBUTE));
                         member.setValue(attributeNode.InnerText);
                         compoundMembers.Add(member);
                     }
                 }
-                attribute.setValue(new Compound(compoundMembers));
+                attribute.setValue(new LinkIDCompound(compoundMembers));
             }
             else if (attributeType.AttributeValue[0] is AttributeType)
             {
                 // also compound but through WS
                 AttributeType compoundValue = (AttributeType)attributeType.AttributeValue[0];
-                List<AttributeSDK> compoundMembers = new List<AttributeSDK>();
+                List<LinkIDAttribute> compoundMembers = new List<LinkIDAttribute>();
                 foreach (Object memberObject in compoundValue.AttributeValue)
                 {
                     AttributeType memberType = (AttributeType)memberObject;
-                    AttributeSDK member = new AttributeSDK(attributeId, memberType.Name, memberType.AttributeValue[0]);
+                    LinkIDAttribute member = new LinkIDAttribute(attributeId, memberType.Name, memberType.AttributeValue[0]);
                     compoundMembers.Add(member);
                 }
-                attribute.setValue(new Compound(compoundMembers));
+                attribute.setValue(new LinkIDCompound(compoundMembers));
             }
             else
             {

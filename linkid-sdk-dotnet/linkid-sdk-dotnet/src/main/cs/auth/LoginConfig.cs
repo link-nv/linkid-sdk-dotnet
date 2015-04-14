@@ -17,8 +17,6 @@ namespace safe_online_sdk_dotnet
         private static string SESSION_SAML2_AUTH_UTIL = "linkID.saml2AuthUtil";
         private static string SESSION_LOGIN_CONFIG = "linkID.loginConfig";
 
-        public bool mobileMinimal { get; set; }
-        public bool mobileForceRegistration { get; set; }
         public String targetURI { get; set; }
         public String linkIDLandingPage { get; set; }
 
@@ -47,15 +45,15 @@ namespace safe_online_sdk_dotnet
             return "https://" + linkIDHost + "/linkid-qr/reg-min";
         }
 
-        public LoginConfig(HttpRequest request, HttpSessionState session, String linkIDHost)
+        public LoginConfig(HttpRequest request, HttpSessionState session, String linkIDHost, 
+            LinkIDAuthenticationContext linkIDContext)
         {
             string LINKID_MOBILE_MINIMAL_ENTRY = getMobileMinimalPath(linkIDHost);
             string LINKID_MOBILE_REG_MINIMAL_ENTRY = getMobileMinimalRegPath(linkIDHost);
 
-            mobileForceRegistration = null != request[RequestConstants.MOBILE_FORCE_REG_REQUEST_PARAM];
             targetURI = request[RequestConstants.TARGET_URI_REQUEST_PARAM];
 
-            if (mobileForceRegistration)
+            if (linkIDContext.mobileForceRegistration)
                 linkIDLandingPage = LINKID_MOBILE_REG_MINIMAL_ENTRY;
             else
                 linkIDLandingPage = LINKID_MOBILE_MINIMAL_ENTRY;
@@ -86,7 +84,7 @@ namespace safe_online_sdk_dotnet
         }
 
         public static void handleLinkIDWithPOST(HttpRequest request, HttpResponse response, HttpSessionState session,
-            String authnContextSessionParam, String linkIDHost, String applicationName, String language,
+            String authnContextSessionParam, String linkIDHost, 
             String targetURL, String privateKeyPemFile, String appCertPemFile, String linkIDCertPemFile,
             HtmlForm form, HiddenField SAMLRequestField, HiddenField LanguageField)
         {
@@ -96,14 +94,13 @@ namespace safe_online_sdk_dotnet
             applicationCert.PrivateKey = applicationKey;
             X509Certificate2 linkidCert = new X509Certificate2(linkIDCertPemFile);
 
-            handleLinkIDWithPOST(request, response, session, authnContextSessionParam, linkIDHost, applicationName,
-                language, targetURL, applicationCert, linkidCert,
-                form, SAMLRequestField, LanguageField);
+            handleLinkIDWithPOST(request, response, session, authnContextSessionParam, linkIDHost, targetURL, 
+                applicationCert, linkidCert, form, SAMLRequestField, LanguageField);
         }
 
         public static void handleLinkIDWithPOST(HttpRequest request, HttpResponse response, HttpSessionState session,
-            String authnContextSessionParam, String linkIDHost, String applicationName, String language,
-            String targetURL, X509Certificate2 applicationCert, X509Certificate2 linkidCert,
+            String authnContextSessionParam, String linkIDHost, String targetURL, 
+            X509Certificate2 applicationCert, X509Certificate2 linkidCert,
             HtmlForm form, HiddenField SAMLRequestField, HiddenField LanguageField)
         {
             string[] responses = request.Form.GetValues(RequestConstants.SAML2_POST_BINDING_RESPONSE_PARAM);
@@ -146,13 +143,12 @@ namespace safe_online_sdk_dotnet
                     session[authnContextSessionParam] = null;
                 }
 
+                // linkID context
+                LinkIDAuthenticationContext linkIDContext = LinkIDAuthenticationContext.getLinkIDContext(session);
+
                 /*
-                 * Check page's request parameters.
-                 * They will contain e.g. 
-                 *   what linkID authentication mode (mobile, direct, ....), 
-                 *   optional target URL to redirect to after handling a linkID authentication response, ...
-                 */
-                LoginConfig loginConfig = new LoginConfig(request, session, linkIDHost);
+                 * Initialize the login configuration                 */
+                LoginConfig loginConfig = new LoginConfig(request, session, linkIDHost, linkIDContext);
 
                 // Construct the SAML v2.0 Authentication request and fill in the form parameters
                 Saml2AuthUtil saml2AuthUtil = new Saml2AuthUtil((RSACryptoServiceProvider)applicationCert.PrivateKey);
@@ -160,36 +156,20 @@ namespace safe_online_sdk_dotnet
 
                 form.Action = loginConfig.linkIDLandingPage;
 
-                // device context
-                Dictionary<string, string> deviceContextMap = LoginUtil.generateDeviceContextMap(
-                     LoginUtil.getDeviceAuthnMessage(session), LoginUtil.getDeviceFinishedMessage(session),
-                     LoginUtil.getIdentityProfiles(session));
-
-                // attribute suggestions
-                Dictionary<string, List<Object>> attributeSuggestions = LoginUtil.getAttributeSuggestions(session);
-
-                // payment context
-                PaymentContext paymentContext = LoginUtil.getPaymentContext(session);
-
-                // callback
-                Callback callback = LoginUtil.getCallback(session);
-
                 SAMLRequestField.ID = RequestConstants.SAML2_POST_BINDING_REQUEST_PARAM;
-                SAMLRequestField.Value = saml2AuthUtil.generateEncodedAuthnRequest(applicationName, null, null,
-                    targetURL, loginConfig.linkIDLandingPage, false, deviceContextMap, attributeSuggestions,
-                    paymentContext, callback);
+                SAMLRequestField.Value = saml2AuthUtil.generateEncodedAuthnRequest(linkIDContext, 
+                    targetURL, loginConfig.linkIDLandingPage);
 
-                if (null != language)
+                if (null != linkIDContext.language)
                 {
                     LanguageField.ID = RequestConstants.LANGUAGE_REQUEST_PARAM;
-                    LanguageField.Value = language;
+                    LanguageField.Value = linkIDContext.language;
                 }
             }
         }
 
         public static void handleLinkIDWithHAWS(HttpRequest request, HttpResponse response, HttpSessionState session,
-            String authnContextSessionParam, String linkIDHost, String applicationName, String language,
-            String targetURL, String username, String password)
+            String authnContextSessionParam, String linkIDHost, String targetURL, String username, String password)
         {
             String hawsSessionId = request[RequestConstants.HAWS_SESSION_ID_PARAM];
 
@@ -233,40 +213,22 @@ namespace safe_online_sdk_dotnet
                     session[authnContextSessionParam] = null;
                 }
 
-                /*
-                 * Check page's request parameters.
-                 * They will contain e.g. 
-                 *   what linkID authentication mode (mobile, direct, ....), 
-                 *   optional target URL to redirect to after handling a linkID authentication response, ...
-                 */
-                LoginConfig loginConfig = new LoginConfig(request, session, linkIDHost);
+                // linkID context
+                LinkIDAuthenticationContext linkIDContext = LinkIDAuthenticationContext.getLinkIDContext(session);
+
+                LoginConfig loginConfig = new LoginConfig(request, session, linkIDHost, linkIDContext);
 
                 // Construct the SAML v2.0 Authentication request and fill in the form parameters
                 Saml2AuthUtil saml2AuthUtil = new Saml2AuthUtil();
                 LoginConfig.storeSaml2AuthUtil(session, saml2AuthUtil);
 
-                // device context
-                Dictionary<string, string> deviceContextMap = LoginUtil.generateDeviceContextMap(
-                     LoginUtil.getDeviceAuthnMessage(session), LoginUtil.getDeviceFinishedMessage(session),
-                     LoginUtil.getIdentityProfiles(session));
-
-                // attribute suggestions
-                Dictionary<string, List<Object>> attributeSuggestions = LoginUtil.getAttributeSuggestions(session);
-
-                // payment context
-                PaymentContext paymentContext = LoginUtil.getPaymentContext(session);
-
-                // callback
-                Callback callback = LoginUtil.getCallback(session);
-
                 // generate authn request
-                AuthnRequestType authnRequest = saml2AuthUtil.generateAuthnRequestObject(applicationName, null, null,
-                    targetURL, loginConfig.linkIDLandingPage, false, deviceContextMap,
-                    attributeSuggestions, paymentContext, callback);
+                AuthnRequestType authnRequest = saml2AuthUtil.generateAuthnRequestObject(linkIDContext,
+                    targetURL, loginConfig.linkIDLandingPage);
 
                 // push authn request to linkID
                 HawsClient hawsClient = new HawsClientImpl(linkIDHost, username, password);
-                String sessionId = hawsClient.push(authnRequest, language);
+                String sessionId = hawsClient.push(authnRequest, linkIDContext.language);
 
                 // redirect
                 response.Redirect(loginConfig.generateHawsRedirectURL(sessionId));

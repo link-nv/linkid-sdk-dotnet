@@ -62,9 +62,9 @@ namespace safe_online_sdk_dotnet
             this.client.Endpoint.Behaviors.Add(new LoggingBehavior());
         }
 
-        public List<AttributeSDK> getAttributes(String userId, String attributeName)
+        public List<LinkIDAttribute> getAttributes(String userId, String attributeName)
         {
-            Dictionary<String, List<AttributeSDK>> attributeMap = new Dictionary<string, List<AttributeSDK>>();
+            Dictionary<String, List<LinkIDAttribute>> attributeMap = new Dictionary<string, List<LinkIDAttribute>>();
             AttributeQueryType request = getAttributeQuery(userId, new string[] { attributeName });
             ResponseType response = getResponse(request);
             checkStatus(response);
@@ -72,7 +72,7 @@ namespace safe_online_sdk_dotnet
             return attributeMap[attributeName];
         }
 
-        public void getAttributes(String userId, Dictionary<String, List<AttributeSDK>> attributeMap)
+        public void getAttributes(String userId, Dictionary<String, List<LinkIDAttribute>> attributeMap)
         {
             String[] attributeNames = new String[attributeMap.Keys.Count];
             attributeMap.Keys.CopyTo(attributeNames, 0);
@@ -82,9 +82,9 @@ namespace safe_online_sdk_dotnet
             getAttributeValues(response, attributeMap);
         }
 
-        public Dictionary<String, List<AttributeSDK>> getAttributes(String userId)
+        public Dictionary<String, List<LinkIDAttribute>> getAttributes(String userId)
         {
-            Dictionary<String, List<AttributeSDK>> attributeMap = new Dictionary<string, List<AttributeSDK>>();
+            Dictionary<String, List<LinkIDAttribute>> attributeMap = new Dictionary<string, List<LinkIDAttribute>>();
             AttributeQueryType request = getAttributeQuery(userId, new String[] { });
             ResponseType response = getResponse(request);
             checkStatus(response);
@@ -150,7 +150,7 @@ namespace safe_online_sdk_dotnet
             }
         }
 
-        private static void getAttributeValues(ResponseType response, Dictionary<String, List<AttributeSDK>> attributeMap)
+        private static void getAttributeValues(ResponseType response, Dictionary<String, List<LinkIDAttribute>> attributeMap)
         {
 
             if (null == response.Items || response.Items.Length == 0)
@@ -167,12 +167,12 @@ namespace safe_online_sdk_dotnet
             foreach (Object attributeObject in attributeStatement.Items)
             {
                 AttributeType attributeType = (AttributeType)attributeObject;
-                AttributeSDK attribute = Saml2AuthUtil.getAttribute(attributeType);
+                LinkIDAttribute attribute = Saml2AuthUtil.getAttribute(attributeType);
 
-                List<AttributeSDK> attributes;
+                List<LinkIDAttribute> attributes;
                 if (!attributeMap.ContainsKey(attribute.getAttributeName()))
                 {
-                    attributes = new List<AttributeSDK>();
+                    attributes = new List<LinkIDAttribute>();
                 }
                 else
                 {

@@ -20,6 +20,6 @@ namespace safe_online_sdk_dotnet
         /// <param name="language">Language</param>
         /// <returns>the order reference for this payment</returns>
         /// <exception cref="MandatePayException">something went wrong, check the error code and extra info in the exception</exception>
-        String pay(String mandateReference, PaymentContext paymentContext, String language);
+        String pay(String mandateReference, LinkIDPaymentContext paymentContext, String language);
     }
 }
