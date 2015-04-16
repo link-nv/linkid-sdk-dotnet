@@ -11,7 +11,9 @@
     
         <img id="qr" runat="server" />  
         
-        <asp:Label ID="state" runat="server" Text=""></asp:Label>
+        <pre>
+            <asp:Label ID="state" runat="server" Text=""></asp:Label>
+        </pre>
     
     </div>
 </body>
