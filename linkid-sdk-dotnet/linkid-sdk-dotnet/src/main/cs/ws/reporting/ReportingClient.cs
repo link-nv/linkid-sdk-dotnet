@@ -19,6 +19,7 @@ namespace safe_online_sdk_dotnet
         /// </summary>
         /// <param name="startDate">start date</param>
         /// <param name="endDate">optional end date, not specified means till now</param>
+        /// <exception cref="ReportingException">Something went wrong, check the error code</exception>
         /// <returns></returns>
         List<LinkIDPaymentOrder> getPaymentReport(DateTime startDate, DateTime endDate);
 
@@ -37,5 +38,11 @@ namespace safe_online_sdk_dotnet
         List<LinkIDParkingSession> getParkingReportForDTAKeys(List<String> dtaKeys);
 
         List<LinkIDParkingSession> getParkingReportForParkings(List<String> parkings);
+
+        List<LinkIDWalletReportTransaction> getWalletReport(String walletOrganizationId, LinkIDReportDateFilter dateFilter);
+
+        List<LinkIDWalletReportTransaction> getWalletReport(String walletOrganizationId, LinkIDReportApplicationFilter applicationFilter);
+
+        List<LinkIDWalletReportTransaction> getWalletReport(String walletOrganizationId, LinkIDReportWalletFilter walletFilter);
     }
 }

@@ -87,5 +87,54 @@ namespace safe_online_sdk_dotnet.test.cs
                 Console.WriteLine(session.ToString());
             }
         }
+
+        [Test]
+        public void testWalletReportDateFilter()
+        {
+            String walletOrganizationId = "f508212c-9189-4402-ab76-6e26110697b4";
+            DateTime startDate = DateTime.Now.Subtract(new TimeSpan(30, 0, 0, 0));
+
+            List<LinkIDWalletReportTransaction> transactions = client.getWalletReport(walletOrganizationId, 
+                new LinkIDReportDateFilter(startDate, null));
+
+            Assert.NotNull(transactions);
+            foreach(LinkIDWalletReportTransaction transaction in transactions)
+            {
+                Console.WriteLine(transaction.ToString());
+            }
+        }
+
+        [Test]
+        public void testWalletReportApplicationFilter()
+        {
+            String walletOrganizationId = "f508212c-9189-4402-ab76-6e26110697b4";
+            String applicationName = "test-shop";
+
+            List<LinkIDWalletReportTransaction> transactions = client.getWalletReport(walletOrganizationId,
+                new LinkIDReportApplicationFilter(applicationName));
+
+            Assert.NotNull(transactions);
+            foreach (LinkIDWalletReportTransaction transaction in transactions)
+            {
+                Console.WriteLine(transaction.ToString());
+            }
+        }
+
+        [Test]
+        public void testWalletReportWalletFilter()
+        {
+            String walletOrganizationId = "f508212c-9189-4402-ab76-6e26110697b4";
+            String walletId = "ff52177f-8f80-4640-9e86-558f6b1b24c3";
+            String userId = "e4269366-ddfb-43dc-838d-01569a8c4c22";
+
+            List<LinkIDWalletReportTransaction> transactions = client.getWalletReport(walletOrganizationId,
+                new LinkIDReportWalletFilter(walletId, userId));
+
+            Assert.NotNull(transactions);
+            foreach (LinkIDWalletReportTransaction transaction in transactions)
+            {
+                Console.WriteLine(transaction.ToString());
+            }
+        }
     }
 }

@@ -15,21 +15,11 @@ namespace safe_online_sdk_dotnet_test.test.cs
 {
 	public sealed class TestConstants
 	{
+        public static readonly string workDir = "C:\\cygwin\\home\\devel\\keystores";
+
         // constants for WS-Security PasswordToken profile
         public static readonly string testWsUsername = "example-mobile";
         public static readonly string testWsPassword = "6E6C1CB7-965C-48A0-B2B0-6B65674BE19F";
-
-        // constants for WS-Security X509Token profile
-        public static readonly string workDir = "C:\\cygwin\\home\\devel\\keystores";
-        public static readonly string testCrtIssuerName = "DemoTest";
-        public static readonly string testApplicationName = "demo-test";
-        public static readonly string testPfxPath = workDir + "\\demotest.p12";
-        public static readonly string linkidCertPath = workDir + "\\linkid-local.crt";
-//        public static readonly string linkidCertPath = workDir + "\\linkid.crt";
-        public static readonly string testPfxPassword = "secret";
-        public static readonly string testCrtPath = workDir + "\\demotest.crt";
-        public static readonly string testKeyPath = workDir + "\\demotest.key";
-        public static readonly string testFooPath = workDir + "\\foo.crt";
 
         public static readonly string linkidHost = "demo.linkid.be";
 //        public static readonly string linkidHost = "192.168.5.14";

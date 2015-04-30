@@ -56,6 +56,10 @@
     <Compile Include="src\main\cs\api\LinkIDPaymentState.cs" />
     <Compile Include="src\main\cs\api\LinkIDPaymentStatus.cs" />
     <Compile Include="src\main\cs\api\LinkIDPaymentTransaction.cs" />
+    <Compile Include="src\main\cs\api\LinkIDReportApplicationFilter.cs" />
+    <Compile Include="src\main\cs\api\LinkIDReportDateFilter.cs" />
+    <Compile Include="src\main\cs\api\LinkIDReportWalletFilter.cs" />
+    <Compile Include="src\main\cs\api\LinkIDWalletReportTransaction.cs" />
     <Compile Include="src\main\cs\api\LinkIDWalletTransaction.cs" />
     <Compile Include="src\main\cs\auth\AuthenticationProtocolContext.cs" />
     <Compile Include="src\main\cs\auth\AuthenticationExceptionInvalidAudience.cs" />
@@ -126,6 +130,7 @@
     <Compile Include="src\main\cs\api\LinkIDParkingSession.cs" />
     <Compile Include="src\main\cs\ws\reporting\ReportingClient.cs" />
     <Compile Include="src\main\cs\ws\reporting\ReportingClientImpl.cs" />
+    <Compile Include="src\main\cs\ws\reporting\ReportingException.cs" />
     <Compile Include="src\main\cs\ws\wallet\WalletCommitException.cs" />
     <Compile Include="src\main\cs\ws\wallet\WalletRemoveException.cs" />
     <Compile Include="src\main\cs\ws\wallet\WalletRemoveCreditException.cs" />

@@ -80,8 +80,77 @@ namespace safe_online_sdk_dotnet
             return getParkingReport(null, null, null, null, null, parkings);
         }
 
+        public List<LinkIDWalletReportTransaction> getWalletReport(String walletOrganizationId,
+            LinkIDReportDateFilter dateFilter)
+        {
+            return getWalletReport(walletOrganizationId, dateFilter, null, null);
+        }
+
+        public List<LinkIDWalletReportTransaction> getWalletReport(String walletOrganizationId, 
+            LinkIDReportApplicationFilter applicationFilter)
+        {
+            return getWalletReport(walletOrganizationId, null, applicationFilter, null);
+        }
+
+        public List<LinkIDWalletReportTransaction> getWalletReport(String walletOrganizationId, 
+            LinkIDReportWalletFilter walletFilter)
+        {
+            return getWalletReport(walletOrganizationId, null, null, walletFilter);
+        }
+
+
 
         // Helper methods
+
+        private List<LinkIDWalletReportTransaction> getWalletReport(String walletOrganizationId,
+            LinkIDReportDateFilter dateFilter, LinkIDReportApplicationFilter applicationFilter,
+            LinkIDReportWalletFilter walletFilter)
+        {
+            WalletReportRequest request = new WalletReportRequest();
+
+            request.walletOrganizationId = walletOrganizationId;
+
+            if (null != dateFilter)
+            {
+                request.dateFilter = new DateFilter();
+                request.dateFilter.startDate = dateFilter.startDate;
+                if (null != dateFilter.endDate)
+                {
+                    request.dateFilter.endDateSpecified = true;
+                    request.dateFilter.endDate = dateFilter.endDate.Value;
+                }
+            }
+            if (null != applicationFilter)
+            {
+                request.applicationFilter = new ApplicationFilter();
+                request.applicationFilter.applicationName = applicationFilter.applicationName;
+            }
+            if (null != walletFilter)
+            {
+                request.walletFilter = new WalletFilter();
+                request.walletFilter.walletId = walletFilter.walletId;
+                request.walletFilter.userId = walletFilter.userId;
+            }
+
+            WalletReportResponse response = this.client.walletReport(request);
+
+            if (null != response.error)
+            {
+                throw new ReportingException(response.error.errorCode);
+            }
+
+            ReportingWSNameSpace.WalletReportTransaction[] wsTransactions = response.transactions;
+
+            List<LinkIDWalletReportTransaction> transactions = new List<LinkIDWalletReportTransaction>();
+            foreach (ReportingWSNameSpace.WalletReportTransaction wsTransaction in wsTransactions)
+            {
+                transactions.Add(convert(wsTransaction));
+            }
+
+            return transactions;
+
+        }
+
 
         private List<LinkIDParkingSession> getParkingReport(Nullable<DateTime> startDate, Nullable<DateTime> endDate,
             List<String> barCodes, List<String> ticketNumbers, List<String> dtaKeys, List<String> parkings)
@@ -120,7 +189,14 @@ namespace safe_online_sdk_dotnet
                 request.parkings = parkings.ToArray();
             }
 
-            ReportingWSNameSpace.ParkingSession[] wsParkingSessions = this.client.parkingReport(request);
+            ParkingReportResponse response = this.client.parkingReport(request);
+
+            if (null != response.error)
+            {
+                throw new ReportingException(response.error.errorCode);
+            }
+
+            ReportingWSNameSpace.ParkingSession[] wsParkingSessions = response.sessions;
 
             List<LinkIDParkingSession> parkingSessions = new List<LinkIDParkingSession>();
             foreach (ReportingWSNameSpace.ParkingSession wsParkingSession in wsParkingSessions)
@@ -158,7 +234,14 @@ namespace safe_online_sdk_dotnet
                 request.mandateReferences = mandateReferences.ToArray();
             }
 
-            ReportingWSNameSpace.PaymentOrder[] wsOrders= this.client.paymentReport(request);
+            PaymentReportResponse response = this.client.paymentReport(request);
+
+            if (null != response.error)
+            {
+                throw new ReportingException(response.error.errorCode);
+            }
+
+            ReportingWSNameSpace.PaymentOrder[] wsOrders= response.orders;
 
             List<LinkIDPaymentOrder> orders = new List<LinkIDPaymentOrder>();
             foreach (ReportingWSNameSpace.PaymentOrder wsOrder in wsOrders)
@@ -253,6 +336,13 @@ namespace safe_online_sdk_dotnet
             return new LinkIDParkingSession(wsParkingSession.date, wsParkingSession.barCode, wsParkingSession.parking,
                 wsParkingSession.userId, wsParkingSession.turnover, wsParkingSession.validated,
                 wsParkingSession.paymentOrderReference, convert(wsParkingSession.paymentState));
+        }
+
+        private LinkIDWalletReportTransaction convert(ReportingWSNameSpace.WalletReportTransaction wsTransaction)
+        {
+            return new LinkIDWalletReportTransaction(wsTransaction.walletId, wsTransaction.creationDate,
+                wsTransaction.transactionId, wsTransaction.amount, convert(wsTransaction.currency),
+                wsTransaction.userId, wsTransaction.applicationName);
         }
     }
 }

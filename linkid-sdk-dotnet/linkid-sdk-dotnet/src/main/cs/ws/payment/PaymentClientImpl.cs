@@ -72,7 +72,9 @@ namespace safe_online_sdk_dotnet
                 }
             }
 
-            return new LinkIDPaymentStatus(convert(response.paymentStatus), response.captured, response.amountPayed,
+            return new LinkIDPaymentStatus(response.orderReference, response.userId, convert(response.paymentStatus), 
+                response.authorized, response.captured, response.amountPayed, response.amount, convert(response.currency),
+                response.description, response.profile, response.created, response.mandateReference,
                 new LinkIDPaymentDetails(transactions, walletTransactions));
         }
 
