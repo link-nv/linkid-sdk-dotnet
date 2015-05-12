@@ -16,6 +16,15 @@ namespace safe_online_sdk_dotnet
         String enroll(String userId, String walletOrganizationId, double amount, LinkIDCurrency currency);
 
         /// <summary>
+        /// Get info about a wallet for specified user and wallet organization
+        /// </summary>
+        /// <param name="userId">the linkID of the user</param>
+        /// <param name="walletOrganizationId">the wallet organization ID</param>
+        /// <returns>the wallet info or null if it does not exist</returns>
+        /// <exception cref="WalletGetInfoException">Something went wrong, check the error code in the exception</exception>
+        LinkIDWalletInfo getInfo(String userId, String walletOrganizationId);
+
+        /// <summary>
         /// Add credit for specific user/wallet
         /// </summary>
         /// <param name="userId">the linkID user</param>

@@ -55,6 +55,31 @@ namespace safe_online_sdk_dotnet
             throw new RuntimeException("No success nor error element in the response ?!");
         }
 
+        public LinkIDWalletInfo getInfo(String userId, String walletOrganizationId)
+        {
+            WalletGetInfoRequest request = new WalletGetInfoRequest();
+
+            // input
+            request.userId = userId;
+            request.walletOrganizationId = walletOrganizationId;
+
+            WalletGetInfoResponse response = this.client.getInfo(request);
+
+            // parse response
+            if (null != response.error)
+            {
+                throw new WalletGetInfoException(response.error.errorCode);
+            }
+
+            if (null != response.success)
+            {
+                return new LinkIDWalletInfo(response.success.walletId, response.success.amount, 
+                    convert(response.success.currency));
+            }
+
+            throw new RuntimeException("No success nor error element in the response ?!");
+        }
+
         public void addCredit(String userId, String walletId, double amount, LinkIDCurrency currency)
         {
             WalletAddCreditRequest request = new WalletAddCreditRequest();
@@ -164,6 +189,16 @@ namespace safe_online_sdk_dotnet
             }
 
             return Currency.EUR;
+        }
+
+        private LinkIDCurrency convert(Currency currency)
+        {
+            switch (currency)
+            {
+                case Currency.EUR: return LinkIDCurrency.EUR;
+            }
+
+            return LinkIDCurrency.EUR;
         }
     }
 }

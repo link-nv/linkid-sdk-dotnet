@@ -56,6 +56,9 @@ namespace safe_online_sdk_dotnet
                 paymentContext.validationTimeSpecified = true;
                 paymentContext.allowDeferredPay = paymentContextDO.allowDeferredPay;
                 paymentContext.allowDeferredPaySpecified = true;
+                paymentContext.mandate = paymentContextDO.mandate;
+                paymentContext.mandateDescription = paymentContextDO.mandateDescription;
+                paymentContext.mandateReference = paymentContextDO.mandateReference;
 
                 request.paymentContext = paymentContext;
             }
