@@ -25,12 +25,18 @@ namespace safe_online_sdk_dotnet
         /// Do not mix this attribute with expiryDate. If so, expiryDate will be preferred</param>
         /// <param name="callback">Optional callback config</param>
         /// <param name="identityProfiles">Optional identity profiles</param>
+        /// <param name="sessionExpiryOverride">optional session expiry (seconds)</param>
+        /// <param name="theme">optional theme, if not specified default application theme will be chosen</param>
+        /// <param name="mobileLandingSuccess">optional landing page for an authn/payment started on iOS browser</param>
+        /// <param name="mobileLandingError">optional landing page for an authn/payment started on iOS browser</param>
+        /// <param name="mobileLandingCancel">optional landing page for an authn/payment started on iOS browser</param>
         /// <returns>Success object containing the QR in PNG format, the content of the QR code and the LTQR reference of the created long term session
         /// This LTQR reference will be used in the notifications to the service provider.</returns>
         /// <exception cref="PushException">Something went wrong, check the error code what</exception>
         LTQRSession push(String authenticationMessage, String finishedMessage, LinkIDPaymentContext paymentContext, 
             bool oneTimeUse, Nullable<DateTime> expiryDate, Nullable<long> expiryDuration,
-            LinkIDCallback callback, List<String> identityProfiles);
+            LinkIDCallback callback, List<String> identityProfiles, Nullable<long> sessionExpiryOverride, String theme,
+            String mobileLandingSuccess, String mobileLandingError, String mobileLandingCancel);
 
         /// <summary>
         /// Change ﻿Change an existing long term QR code
@@ -42,12 +48,18 @@ namespace safe_online_sdk_dotnet
         /// <param name="oneTimeUse">Long term QR session can only be used once</param>
         /// <param name="expiryDate">Optional expiry date of the long term session</param>
         /// <param name="expiryDuration">Optional expiry duration of the long term session. 
+        /// <param name="sessionExpiryOverride">optional session expiry (seconds)</param>
+        /// <param name="theme">optional theme, if not specified default application theme will be chosen</param>
+        /// <param name="mobileLandingSuccess">optional landing page for an authn/payment started on iOS browser</param>
+        /// <param name="mobileLandingError">optional landing page for an authn/payment started on iOS browser</param>
+        /// <param name="mobileLandingCancel">optional landing page for an authn/payment started on iOS browser</param>
         /// Expressed in number of seconds starting from the creation.
         /// Do not mix this attribute with expiryDate. If so, expiryDate will be preferred</param>
         /// <exception cref="ChangeException">Something went wrong, check the error code what</exception>
         LTQRSession change(String ltqrReference, String authenticationMessage, String finishedMessage,
             LinkIDPaymentContext paymentContext, Nullable<DateTime> expiryDate, Nullable<long> expiryDuration,
-            LinkIDCallback callback, List<String> identityProfiles);
+            LinkIDCallback callback, List<String> identityProfiles, Nullable<long> sessionExpiryOverride, String theme,
+            String mobileLandingSuccess, String mobileLandingError, String mobileLandingCancel);
 
         /// <summary>
         /// Fetch a set of client sessions

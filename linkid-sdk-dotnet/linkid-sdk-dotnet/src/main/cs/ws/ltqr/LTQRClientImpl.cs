@@ -36,7 +36,8 @@ namespace safe_online_sdk_dotnet
 
         public LTQRSession push(String authenticationMessage, String finishedMessage, LinkIDPaymentContext paymentContextDO, 
             bool oneTimeUse, Nullable<DateTime> expiryDate, Nullable<long> expiryDuration,
-            LinkIDCallback callback, List<String> identityProfiles)
+            LinkIDCallback callback, List<String> identityProfiles, Nullable<long> sessionExpiryOverride, String theme,
+            String mobileLandingSuccess, String mobileLandingError, String mobileLandingCancel)
         {
             PushRequest request = new PushRequest();
 
@@ -92,6 +93,15 @@ namespace safe_online_sdk_dotnet
                 request.expiryDuration = expiryDuration.Value;
                 request.expiryDurationSpecified = true;
             }
+            if (null != sessionExpiryOverride)
+            {
+                request.sessionExpiryOverride = sessionExpiryOverride.Value;
+                request.sessionExpiryOverrideSpecified = true;
+            }
+            request.theme = theme;
+            request.mobileLandingSuccess = mobileLandingSuccess;
+            request.mobileLandingError = mobileLandingError;
+            request.mobileLandingCancel = mobileLandingCancel;
 
             // operate
             PushResponse response = this.client.push(request);
@@ -117,7 +127,8 @@ namespace safe_online_sdk_dotnet
 
         public LTQRSession change(String ltqrReference, String authenticationMessage, String finishedMessage,
             LinkIDPaymentContext paymentContextDO, Nullable<DateTime> expiryDate, Nullable<long> expiryDuration,
-            LinkIDCallback callback, List<String> identityProfiles)
+            LinkIDCallback callback, List<String> identityProfiles, Nullable<long> sessionExpiryOverride, String theme,
+            String mobileLandingSuccess, String mobileLandingError, String mobileLandingCancel)
         {
             ChangeRequest request = new ChangeRequest();
             request.ltqrReference = ltqrReference;
@@ -170,6 +181,15 @@ namespace safe_online_sdk_dotnet
                 request.expiryDuration = expiryDuration.Value;
                 request.expiryDurationSpecified = true;
             }
+            if (null != sessionExpiryOverride)
+            {
+                request.sessionExpiryOverride = sessionExpiryOverride.Value;
+                request.sessionExpiryOverrideSpecified = true;
+            }
+            request.theme = theme;
+            request.mobileLandingSuccess = mobileLandingSuccess;
+            request.mobileLandingError = mobileLandingError;
+            request.mobileLandingCancel = mobileLandingCancel;
 
             // operate
             ChangeResponse response = this.client.change(request);

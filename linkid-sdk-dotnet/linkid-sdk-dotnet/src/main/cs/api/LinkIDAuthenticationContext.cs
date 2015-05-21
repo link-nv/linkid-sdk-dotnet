@@ -17,6 +17,9 @@ namespace safe_online_sdk_dotnet
         public static readonly String IDENTITY_PROFILE_PREFIX = "linkID.identityProfile";
         public static readonly String SESSION_EXPIRY_OVERRIDE = "linkID.sessionExpiryOverride";
         public static readonly String THEME = "linkID.theme";
+        public static readonly String MOBILE_LANDING_SUCCESS_URL = "linkID.mobileLandingSuccess";
+        public static readonly String MOBILE_LANDING_ERROR_URL = "linkID.mobileLandingError";
+        public static readonly String MOBILE_LANDING_CANCEL_URL = "linkID.mobileLandingCancel";
 
         public String applicationName { get; set; }
         public String applicationFriendlyName { get; set; }
@@ -30,6 +33,10 @@ namespace safe_online_sdk_dotnet
         public List<String> identityProfiles { get; set; }
         public long sessionExpiryOverride { get; set; }
         public String theme { get; set; }
+
+        public String mobileLandingSuccess { get; set; }
+        public String mobileLandingError { get; set; }
+        public String mobileLandingCancel { get; set; }
 
         public bool mobileForceRegistration { get; set; }
         public bool forceAuthentication { get; set; }
@@ -75,6 +82,19 @@ namespace safe_online_sdk_dotnet
             if (null != theme)
             {
                 deviceContextMap.Add(THEME, theme);
+            }
+
+            if (null != mobileLandingSuccess)
+            {
+                deviceContextMap.Add(MOBILE_LANDING_SUCCESS_URL, mobileLandingSuccess);
+            }
+            if (null != mobileLandingError)
+            {
+                deviceContextMap.Add(MOBILE_LANDING_ERROR_URL, mobileLandingError);
+            }
+            if (null != mobileLandingCancel)
+            {
+                deviceContextMap.Add(MOBILE_LANDING_CANCEL_URL, mobileLandingCancel);
             }
 
             return deviceContextMap;
