@@ -92,5 +92,23 @@ namespace safe_online_sdk_dotnet.test.cs
             clientSessions = client.pull(ltqrReferences, paymentOrderReferences, clientSessionIds);
             Assert.AreEqual(0, clientSessions.Length);
         }
+
+        [Test]
+        public void testInfo()
+        {
+            string[] ltqrReferences = new string[] { "56360436-efe0-451c-b078-2954e52700da", "54fa7902-5b05-4586-ba24-749921ff9aa1" };
+
+            // operate: info
+            List<LinkIDLTQRInfo> infos = client.info(ltqrReferences);
+
+            // Verify
+            Assert.NotNull(infos);
+            Assert.AreEqual(ltqrReferences.Length, infos.Count);
+
+            foreach (LinkIDLTQRInfo info in infos)
+            {
+                Console.WriteLine("LTQR Info: " + info);
+            }
+        }
     }
 }

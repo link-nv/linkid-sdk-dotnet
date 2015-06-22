@@ -115,13 +115,15 @@
     <Compile Include="src\main\cs\ws\ltqr\ChangeErrorCode.cs" />
     <Compile Include="src\main\cs\ws\ltqr\ErrorCode.cs" />
     <Compile Include="src\main\cs\ws\ltqr\exception\ChangeException.cs" />
+    <Compile Include="src\main\cs\ws\ltqr\exception\LinkIDLTQRInfoException.cs" />
     <Compile Include="src\main\cs\ws\ltqr\exception\PullException.cs" />
     <Compile Include="src\main\cs\ws\ltqr\exception\PushException.cs" />
     <Compile Include="src\main\cs\ws\ltqr\exception\RemoveException.cs" />
+    <Compile Include="src\main\cs\api\LinkIDLTQRInfo.cs" />
     <Compile Include="src\main\cs\ws\ltqr\LTQRClient.cs" />
     <Compile Include="src\main\cs\ws\ltqr\LTQRClientImpl.cs" />
     <Compile Include="src\main\cs\ws\ltqr\LTQRClientSession.cs" />
-    <Compile Include="src\main\cs\ws\ltqr\LTQRSession.cs" />
+    <Compile Include="src\main\cs\api\LTQRSession.cs" />
     <Compile Include="src\main\cs\ws\mandate\MandateClient.cs" />
     <Compile Include="src\main\cs\ws\mandate\MandateClientImpl.cs" />
     <Compile Include="src\main\cs\ws\mandate\MandatePayException.cs" />

@@ -296,8 +296,69 @@ namespace safe_online_sdk_dotnet
             throw new RuntimeException("No success nor error element in the response ?!");
         }
 
+        public List<LinkIDLTQRInfo> info(String[] ltqrReferences)
+        {
+            if (null == ltqrReferences || 0 == ltqrReferences.Length)
+            {
+                throw new RuntimeException("ltqrReferences list cannot be empty");
+            }
+
+            // operate
+            InfoResponse response = this.client.info(ltqrReferences);
+
+            // convert response
+            if (null != response.error)
+            {
+                throw new LinkIDLTQRInfoException(convert(response.error.errorCode));
+            }
+
+            if (null != response.success)
+            {
+                List<LinkIDLTQRInfo> infos = new List<LinkIDLTQRInfo>();
+
+                foreach (LTQRInfo ltqrInfo in response.success)
+                {
+                    // convert base64 encoded QR image
+                    byte[] qrCodeImage = Convert.FromBase64String(ltqrInfo.encodedQR);
+
+                    infos.Add(new LinkIDLTQRInfo(ltqrInfo.ltqrReference, ltqrInfo.sessionId, ltqrInfo.created,
+                        qrCodeImage, ltqrInfo.qrContent, ltqrInfo.authenticationMessage, ltqrInfo.finishedMessage,
+                        ltqrInfo.oneTimeUse, ltqrInfo.expiryDate, 
+                        ltqrInfo.expiryDurationSpecified? ltqrInfo.expiryDuration : 0,
+                        getPaymentContext(ltqrInfo), getCallback(ltqrInfo), ltqrInfo.identityProfiles, 
+                        ltqrInfo.sessionExpiryOverrideSpecified? ltqrInfo.sessionExpiryOverride : 0,
+                        ltqrInfo.theme, ltqrInfo.mobileLandingSuccess, ltqrInfo.mobileLandingError, 
+                        ltqrInfo.mobileLandingCancel));
+                }
+
+                return infos;
+            }
+
+            throw new RuntimeException("No success nor error element in the response ?!");
+        }
+
+
 
         // helper methods
+
+        private LinkIDPaymentContext getPaymentContext(LTQRInfo ltqrInfo)
+        {
+            if (null == ltqrInfo.paymentContext) return null;
+
+            return new LinkIDPaymentContext(ltqrInfo.paymentContext.amount, convert(ltqrInfo.paymentContext.currency),
+                ltqrInfo.paymentContext.description, ltqrInfo.paymentContext.orderReference, ltqrInfo.paymentContext.paymentProfile,
+                ltqrInfo.paymentContext.validationTimeSpecified ? ltqrInfo.paymentContext.validationTime : 5,
+                PaymentAddBrowser.NOT_ALLOWED, ltqrInfo.paymentContext.allowDeferredPay, ltqrInfo.paymentContext.mandate,
+                ltqrInfo.paymentContext.mandateDescription, ltqrInfo.paymentContext.mandateReference);
+        }
+
+        private LinkIDCallback getCallback(LTQRInfo ltqrInfo)
+        {
+            if (null == ltqrInfo.callback) return null;
+            
+            return new LinkIDCallback(ltqrInfo.callback.location, ltqrInfo.callback.appSessionId, 
+                ltqrInfo.callback.inAppSpecified ? ltqrInfo.callback.inApp : false);
+        }
 
         private ErrorCode convert(LTQRWSNameSpace.ErrorCode errorCode)
         {
@@ -326,6 +387,17 @@ namespace safe_online_sdk_dotnet
             {
                 case LinkIDCurrency.EUR:
                     return LTQRWSNameSpace.Currency.EUR;
+            }
+
+            throw new RuntimeException("Currency " + currency.ToString() + " is not supported!");
+        }
+
+        private LinkIDCurrency convert(LTQRWSNameSpace.Currency currency)
+        {
+            switch (currency)
+            {
+                case LTQRWSNameSpace.Currency.EUR:
+                    return LinkIDCurrency.EUR;
             }
 
             throw new RuntimeException("Currency " + currency.ToString() + " is not supported!");

@@ -80,6 +80,14 @@ namespace safe_online_sdk_dotnet
         /// <exception cref="RemoveException">Something went wrong, check the error code what</exception>
         void remove(String[] ltqrReferences, String[] paymentOrderReferences, String[] clientSessionIds);
 
+        /// <summary>
+        /// Fetch info for the specified LTQR references
+        /// </summary>
+        /// <param name="ltqrReferences">the list of LTQR references to fetch info for</param>
+        /// <returns>the LTQR info objects</returns>
+        /// <exception cref="LinkIDLTQRInfoException">Something went wrong, check the error code what</exception>
+        List<LinkIDLTQRInfo> info(String[] ltqrReferences);
+
         // log incoming and outgoing soap messages to the console
         void enableLogging();
 
