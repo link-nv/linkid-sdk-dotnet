@@ -128,7 +128,7 @@ namespace safe_online_sdk_dotnet
         public LTQRSession change(String ltqrReference, String authenticationMessage, String finishedMessage,
             LinkIDPaymentContext paymentContextDO, Nullable<DateTime> expiryDate, Nullable<long> expiryDuration,
             LinkIDCallback callback, List<String> identityProfiles, Nullable<long> sessionExpiryOverride, String theme,
-            String mobileLandingSuccess, String mobileLandingError, String mobileLandingCancel)
+            String mobileLandingSuccess, String mobileLandingError, String mobileLandingCancel, bool resetUsed)
         {
             ChangeRequest request = new ChangeRequest();
             request.ltqrReference = ltqrReference;
@@ -190,6 +190,9 @@ namespace safe_online_sdk_dotnet
             request.mobileLandingSuccess = mobileLandingSuccess;
             request.mobileLandingError = mobileLandingError;
             request.mobileLandingCancel = mobileLandingCancel;
+
+            request.resetUsedSpecified = true;
+            request.resetUsed = resetUsed;
 
             // operate
             ChangeResponse response = this.client.change(request);

@@ -48,7 +48,7 @@ namespace safe_online_sdk_dotnet.test.cs
             LinkIDPaymentContext paymentContext = new LinkIDPaymentContext(9999, LinkIDCurrency.EUR, ".NET Test Changed", paymentOrderReference, null);
             DateTime expiryDate = DateTime.Now.AddMonths(12);
 
-            client.change(ltqrReference, null, finishedMessage, paymentContext, expiryDate, null, null, null, null, null, null, null, null);
+            client.change(ltqrReference, null, finishedMessage, paymentContext, expiryDate, null, null, null, null, null, null, null, null, false);
         }
 
         [Test]

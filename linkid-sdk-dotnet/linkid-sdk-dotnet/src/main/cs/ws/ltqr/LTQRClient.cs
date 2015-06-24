@@ -53,13 +53,14 @@ namespace safe_online_sdk_dotnet
         /// <param name="mobileLandingSuccess">optional landing page for an authn/payment started on iOS browser</param>
         /// <param name="mobileLandingError">optional landing page for an authn/payment started on iOS browser</param>
         /// <param name="mobileLandingCancel">optional landing page for an authn/payment started on iOS browser</param>
+        /// <param name="resetUsed">Optional flag for single use LTQR codes to let them be used again one time. If multi use this flag does nothing.</param>
         /// Expressed in number of seconds starting from the creation.
         /// Do not mix this attribute with expiryDate. If so, expiryDate will be preferred</param>
         /// <exception cref="ChangeException">Something went wrong, check the error code what</exception>
         LTQRSession change(String ltqrReference, String authenticationMessage, String finishedMessage,
             LinkIDPaymentContext paymentContext, Nullable<DateTime> expiryDate, Nullable<long> expiryDuration,
             LinkIDCallback callback, List<String> identityProfiles, Nullable<long> sessionExpiryOverride, String theme,
-            String mobileLandingSuccess, String mobileLandingError, String mobileLandingCancel);
+            String mobileLandingSuccess, String mobileLandingError, String mobileLandingCancel, bool resetUsed);
 
         /// <summary>
         /// Fetch a set of client sessions
