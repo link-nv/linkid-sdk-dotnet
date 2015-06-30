@@ -11,7 +11,8 @@ namespace safe_online_sdk_dotnet
         public bool captured { get; set; }
         public double amountPayed { get; set; }
         public double amount { get; set; }
-        public LinkIDCurrency currency { get; set; }
+        public Nullable<LinkIDCurrency> currency { get; set; }
+        public String walletCoin { get; set; }
         public String description { get; set; }
         public String profile { get; set; }
         public DateTime created { get; set; }
@@ -19,7 +20,7 @@ namespace safe_online_sdk_dotnet
         public LinkIDPaymentDetails paymentDetails { get; set; }
 
         public LinkIDPaymentStatus(String orderReference, String userId, LinkIDPaymentState paymentState,
-            bool authorized, bool captured, double amountPayed, double amount, LinkIDCurrency currency,
+            bool authorized, bool captured, double amountPayed, double amount, Nullable<LinkIDCurrency> currency, String walletCoin,
             String description, String profile, DateTime created, String mandateReference, LinkIDPaymentDetails paymentDetails)
         {
             this.orderReference = orderReference;
@@ -30,6 +31,7 @@ namespace safe_online_sdk_dotnet
             this.amountPayed = amountPayed;
             this.amount = amount;
             this.currency = currency;
+            this.walletCoin = walletCoin;
             this.description = description;
             this.profile = profile;
             this.created = created;
@@ -50,6 +52,7 @@ namespace safe_online_sdk_dotnet
             output += "  * amountPayed: " + amountPayed + "\n";
             output += "  * amount: " + amount + "\n";
             output += "  * currency: " + currency + "\n";
+            output += "  * walletCoin: " + walletCoin + "\n"; 
             output += "  * description: " + description + "\n";
             output += "  * profile: " + profile + "\n";
             output += "  * created: " + created + "\n";

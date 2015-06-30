@@ -28,7 +28,7 @@ namespace safe_online_sdk_dotnet
 
         public PaymentClientImpl(string location, string username, string password)
 		{
-            string address = "https://" + location + "/linkid-ws-username/payment30";
+            string address = "https://" + location + "/linkid-ws-username/payment40";
 			EndpointAddress remoteAddress = new EndpointAddress(address);
 
             BasicHttpBinding binding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
@@ -58,30 +58,31 @@ namespace safe_online_sdk_dotnet
                         wsPaymentTransaction.paymentMethod, convert(wsPaymentTransaction.paymentState),
                         wsPaymentTransaction.creationDate, wsPaymentTransaction.authorizationDate,
                         wsPaymentTransaction.capturedDate, wsPaymentTransaction.docdataReference,
-                        wsPaymentTransaction.amount, convert(wsPaymentTransaction.currency)));
+                        wsPaymentTransaction.amount, convert(wsPaymentTransaction.currency).Value));
                 }
             }
 
             List<LinkIDWalletTransaction> walletTransactions = new List<LinkIDWalletTransaction>();
             if (null != response.paymentDetails.walletTransactions)
             {
-                foreach (WalletTransactionV20 wsWalletTransaction in response.paymentDetails.walletTransactions)
+                foreach (WalletTransactionV40 wsWalletTransaction in response.paymentDetails.walletTransactions)
                 {
                     walletTransactions.Add(new LinkIDWalletTransaction(wsWalletTransaction.walletId, wsWalletTransaction.creationDate,
-                        wsWalletTransaction.transactionId, wsWalletTransaction.amount, convert(wsWalletTransaction.currency)));
+                        wsWalletTransaction.transactionId, wsWalletTransaction.amount, 
+                        wsWalletTransaction.currencySpecified? convert(wsWalletTransaction.currency) : null, 
+                        wsWalletTransaction.walletCoin));
                 }
             }
 
             return new LinkIDPaymentStatus(response.orderReference, response.userId, convert(response.paymentStatus), 
-                response.authorized, response.captured, response.amountPayed, response.amount, convert(response.currency),
+                response.authorized, response.captured, response.amountPayed, response.amount, 
+                response.currencySpecified? convert(response.currency) : null, response.walletCoin,
                 response.description, response.profile, response.created, response.mandateReference,
                 new LinkIDPaymentDetails(transactions, walletTransactions));
         }
 
-        private LinkIDCurrency convert(Currency currency)
+        private Nullable<LinkIDCurrency> convert(Currency currency)
         {
-            if (null == currency) return LinkIDCurrency.EUR;
-
             switch (currency)
             {
                 case Currency.EUR: return LinkIDCurrency.EUR;          

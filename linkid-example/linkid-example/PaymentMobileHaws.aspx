@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="PaymentMobile.aspx.cs" Inherits="linkid_example.PaymentMobile" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="PaymentMobileHaws.aspx.cs" Inherits="linkid_example.PaymentMobileHaws" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -8,7 +8,7 @@
     <title>linkID Mobile Payment over HAWS Demo</title>
     
     <script type="text/javascript" id="linkid-login-script" 
-        src="https://demo.linkid.be/linkid-static/js/linkid-min.js"></script>
+        src="https://demo.linkid.be/linkid-static/js/linkid.js"></script>
 
     <style type="text/css">
         .linkid-login {

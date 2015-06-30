@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:net:lin-k:safe-online:payment:3.0" xmlns:tns="urn:net:lin-k:safe-online:payment:3.0"
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:net:lin-k:safe-online:payment:4.0" xmlns:tns="urn:net:lin-k:safe-online:payment:4.0"
         xmlns:com="urn:net:lin-k:safe-online:common" elementFormDefault="qualified">
 
 	<annotation>
 		<documentation>
 			Document identifier: safe-online-payment
 			Revision history:
-			V3.0 (February, 2015):
+			V4.0 (June, 2015):
 			Authorized vs capture details
 		</documentation>
 	</annotation>
@@ -57,9 +57,14 @@
                         <documentation>Amount that was intended to be payed, i.e. what was specified in the linkID payment context</documentation>
                     </annotation>
                 </element>
-                <element name="currency" minOccurs="1" maxOccurs="1" type="com:Currency">
+                <element name="currency" minOccurs="0" maxOccurs="1" type="com:Currency">
                     <annotation>
-                        <documentation>Currency of the amount that was intended to be payed</documentation>
+                        <documentation>Optional payment amount currency</documentation>
+                    </annotation>
+                </element>
+                <element name="walletCoin" type="string" minOccurs="0" maxOccurs="1">
+                    <annotation>
+                        <documentation>Optional payment amount wallet coin</documentation>
                     </annotation>
                 </element>
                 <element name="description" minOccurs="0" maxOccurs="1" type="string">
@@ -98,39 +103,9 @@
                     <documentation>Regular payment transactions, VISA, MASTERCARD, SEPA, ...</documentation>
                 </annotation>
             </element>
-            <element name="walletTransactions" minOccurs="0" maxOccurs="unbounded" type="com:WalletTransactionV20">
+            <element name="walletTransactions" minOccurs="0" maxOccurs="unbounded" type="com:WalletTransactionV40">
                 <annotation>
                     <documentation>Wallet payment transactions</documentation>
-                </annotation>
-            </element>
-        </sequence>
-    </complexType>
-
-    <complexType name="WalletTransaction">
-        <sequence>
-            <element name="walletId" minOccurs="1" maxOccurs="1" type="string">
-                <annotation>
-                    <documentation>Wallet ID, a UUID</documentation>
-                </annotation>
-            </element>
-            <element name="creationDate" minOccurs="1" maxOccurs="1" type="dateTime">
-                <annotation>
-                    <documentation>Transaction creation data</documentation>
-                </annotation>
-            </element>
-            <element name="transactionId" minOccurs="1" maxOccurs="1" type="string">
-                <annotation>
-                    <documentation>Transaction ID, a UUID</documentation>
-                </annotation>
-            </element>
-            <element name="amount" minOccurs="1" maxOccurs="1" type="double">
-                <annotation>
-                    <documentation>Transaction amount (in cents)</documentation>
-                </annotation>
-            </element>
-            <element name="currency" minOccurs="1" maxOccurs="1" type="com:Currency">
-                <annotation>
-                    <documentation>Transaction currency</documentation>
                 </annotation>
             </element>
         </sequence>

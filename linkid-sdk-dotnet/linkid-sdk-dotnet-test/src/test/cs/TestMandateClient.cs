@@ -28,7 +28,8 @@ namespace safe_online_sdk_dotnet.test.cs
         public void testPay()
         {
             String mandateReference = "2876527e-850e-4615-975c-94a29ff48fb8";
-            LinkIDPaymentContext paymentContext = new LinkIDPaymentContext(20000, LinkIDCurrency.EUR, ".NET Mandate Test", null, null, 10, PaymentAddBrowser.NOT_ALLOWED, true);
+            LinkIDPaymentContext paymentContext = new LinkIDPaymentContext(new LinkIDPaymentAmount(20000, LinkIDCurrency.EUR, null), 
+                ".NET Mandate Test", null, null, 10, PaymentAddBrowser.NOT_ALLOWED, true);
 
             String orderReference = client.pay(mandateReference, paymentContext, "nl");
             Assert.NotNull(orderReference);

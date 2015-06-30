@@ -22,9 +22,8 @@ namespace linkid_example
                 new RemoteCertificateValidationCallback(WCFUtil.AnyCertificateValidationCallback);
 
             // handles request to start a linkID authentication and validates the incoming authentication responses
-            LoginConfig.handleLinkIDWithHAWS(Request, Response, Session, TestUtil.SESSION_AUTH_CONTEXT, 
-                TestUtil.LINKID_HOST, TestUtil.APP_NAME, TestUtil.language, 
-                LOGINPAGE_LOCATION, TestUtil.wsUsername, TestUtil.wsPassword);
+            LoginConfig.handleLinkID(Request, Response, Session, TestUtil.SESSION_AUTH_CONTEXT, 
+                TestUtil.LINKID_HOST, LOGINPAGE_LOCATION, TestUtil.wsUsername, TestUtil.wsPassword);
         }
     }
 }

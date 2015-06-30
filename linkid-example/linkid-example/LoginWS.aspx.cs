@@ -25,9 +25,14 @@ namespace linkid_example
             if (null == authnSession)
             {
                 // start a linkID authentication
+                LinkIDAuthenticationContext linkIDContext = new LinkIDAuthenticationContext();
+                linkIDContext.authenticationMessage = "WS Authn Message";
+                linkIDContext.finishedMessage = "WS Finished Message";
+                linkIDContext.applicationName = TestUtil.APP_NAME;
+                linkIDContext.language = TestUtil.language;
+
                 authnSession = WSLoginUtil.startLinkIDAuthentication(TestUtil.LINKID_HOST,
-                    TestUtil.wsUsername, TestUtil.wsPassword, TestUtil.APP_NAME,
-                    "WS Authn Message", "WS Finished Message", null, null, null, null, TestUtil.language, null, false);
+                    TestUtil.wsUsername, TestUtil.wsPassword, linkIDContext, null);
 
                 qr.Src = "data:image/png;base64," + authnSession.qrCodeImageEncoded;
 
@@ -48,7 +53,7 @@ namespace linkid_example
                 if (null != pollResponse.authenticationContext)
                 {
                     // logged in, dump user data
-                    state.Text += TestUtil.dumpAuthenticationContext(pollResponse.authenticationContext);
+                    state.Text += pollResponse.authenticationContext.ToString();
                 }
 
                 // hide qr image

@@ -28,7 +28,7 @@ namespace safe_online_sdk_dotnet.test.cs
         [Test]
         public void testGetStatus()
         {
-            String orderReference = "afc766fe-f091-4f8e-9dec-eed83422ca43";
+            String orderReference = "7d545bcb56f84fc8945f0cd537ca6694";
 
             LinkIDPaymentStatus paymentStatus = client.getStatus(orderReference);
 

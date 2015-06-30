@@ -34,7 +34,7 @@ namespace safe_online_sdk_dotnet
             this.client.Endpoint.Behaviors.Add(new LoggingBehavior());
         }
 
-        public LTQRSession push(String authenticationMessage, String finishedMessage, LinkIDPaymentContext paymentContextDO, 
+        public LTQRSession push(String authenticationMessage, String finishedMessage, LinkIDPaymentContext linkIDPaymentContext, 
             bool oneTimeUse, Nullable<DateTime> expiryDate, Nullable<long> expiryDuration,
             LinkIDCallback callback, List<String> identityProfiles, Nullable<long> sessionExpiryOverride, String theme,
             String mobileLandingSuccess, String mobileLandingError, String mobileLandingCancel)
@@ -45,21 +45,29 @@ namespace safe_online_sdk_dotnet
             request.finishedMessage = finishedMessage;
 
             // payment context
-            if (null != paymentContextDO)
+            if (null != linkIDPaymentContext)
             {
                 LTQRWSNameSpace.PaymentContext paymentContext = new LTQRWSNameSpace.PaymentContext();
-                paymentContext.amount = paymentContextDO.amount;
-                paymentContext.currency = convert(paymentContextDO.currency);
-                paymentContext.description = paymentContextDO.description;
-                paymentContext.orderReference = paymentContextDO.orderReference;
-                paymentContext.paymentProfile = paymentContextDO.paymentProfile;
-                paymentContext.validationTime = paymentContextDO.paymentValidationTime;
+                paymentContext.amount = linkIDPaymentContext.amount.amount;
+                paymentContext.currencySpecified = linkIDPaymentContext.amount.currency.HasValue;
+                if (linkIDPaymentContext.amount.currency.HasValue)
+                {
+                    paymentContext.currency = convert(linkIDPaymentContext.amount.currency.Value);
+                }
+                paymentContext.walletCoin = linkIDPaymentContext.amount.walletCoin;
+                paymentContext.description = linkIDPaymentContext.description;
+                paymentContext.orderReference = linkIDPaymentContext.orderReference;
+                paymentContext.paymentProfile = linkIDPaymentContext.paymentProfile;
+                paymentContext.validationTime = linkIDPaymentContext.paymentValidationTime;
                 paymentContext.validationTimeSpecified = true;
-                paymentContext.allowDeferredPay = paymentContextDO.allowDeferredPay;
+                paymentContext.allowDeferredPay = linkIDPaymentContext.allowDeferredPay;
                 paymentContext.allowDeferredPaySpecified = true;
-                paymentContext.mandate = paymentContextDO.mandate;
-                paymentContext.mandateDescription = paymentContextDO.mandateDescription;
-                paymentContext.mandateReference = paymentContextDO.mandateReference;
+                paymentContext.mandate = null != linkIDPaymentContext.mandate;
+                if (null != linkIDPaymentContext.mandate)
+                {
+                    paymentContext.mandateDescription = linkIDPaymentContext.mandate.description;
+                    paymentContext.mandateReference = linkIDPaymentContext.mandate.reference;
+                }
 
                 request.paymentContext = paymentContext;
             }
@@ -126,7 +134,7 @@ namespace safe_online_sdk_dotnet
         }
 
         public LTQRSession change(String ltqrReference, String authenticationMessage, String finishedMessage,
-            LinkIDPaymentContext paymentContextDO, Nullable<DateTime> expiryDate, Nullable<long> expiryDuration,
+            LinkIDPaymentContext linkIDPaymentContext, Nullable<DateTime> expiryDate, Nullable<long> expiryDuration,
             LinkIDCallback callback, List<String> identityProfiles, Nullable<long> sessionExpiryOverride, String theme,
             String mobileLandingSuccess, String mobileLandingError, String mobileLandingCancel, bool resetUsed)
         {
@@ -137,17 +145,22 @@ namespace safe_online_sdk_dotnet
             request.finishedMessage = finishedMessage;
 
             // payment context
-            if (null != paymentContextDO)
+            if (null != linkIDPaymentContext)
             {
                 LTQRWSNameSpace.PaymentContext paymentContext = new LTQRWSNameSpace.PaymentContext();
-                paymentContext.amount = paymentContextDO.amount;
-                paymentContext.currency = convert(paymentContextDO.currency);
-                paymentContext.description = paymentContextDO.description;
-                paymentContext.orderReference = paymentContextDO.orderReference;
-                paymentContext.paymentProfile = paymentContextDO.paymentProfile;
-                paymentContext.validationTime = paymentContextDO.paymentValidationTime;
+                paymentContext.amount = linkIDPaymentContext.amount.amount;
+                paymentContext.currencySpecified = linkIDPaymentContext.amount.currency.HasValue;
+                if (linkIDPaymentContext.amount.currency.HasValue)
+                {
+                    paymentContext.currency = convert(linkIDPaymentContext.amount.currency.Value);
+                }
+                paymentContext.walletCoin = linkIDPaymentContext.amount.walletCoin;
+                paymentContext.description = linkIDPaymentContext.description;
+                paymentContext.orderReference = linkIDPaymentContext.orderReference;
+                paymentContext.paymentProfile = linkIDPaymentContext.paymentProfile;
+                paymentContext.validationTime = linkIDPaymentContext.paymentValidationTime;
                 paymentContext.validationTimeSpecified = true;
-                paymentContext.allowDeferredPay = paymentContextDO.allowDeferredPay;
+                paymentContext.allowDeferredPay = linkIDPaymentContext.allowDeferredPay;
                 paymentContext.allowDeferredPaySpecified = true;
 
                 request.paymentContext = paymentContext;
@@ -348,11 +361,25 @@ namespace safe_online_sdk_dotnet
         {
             if (null == ltqrInfo.paymentContext) return null;
 
-            return new LinkIDPaymentContext(ltqrInfo.paymentContext.amount, convert(ltqrInfo.paymentContext.currency),
-                ltqrInfo.paymentContext.description, ltqrInfo.paymentContext.orderReference, ltqrInfo.paymentContext.paymentProfile,
+            LinkIDPaymentAmount amount;
+            if (ltqrInfo.paymentContext.currencySpecified)
+            {
+                amount = new LinkIDPaymentAmount(ltqrInfo.paymentContext.amount, convert(ltqrInfo.paymentContext.currency), null);
+            }
+            else
+            {
+                amount = new LinkIDPaymentAmount(ltqrInfo.paymentContext.amount, null, ltqrInfo.paymentContext.walletCoin);
+            }
+
+            LinkIDPaymentMandate mandate = null;
+            if (ltqrInfo.paymentContext.mandate)
+            {
+                mandate = new LinkIDPaymentMandate(ltqrInfo.paymentContext.mandateDescription, ltqrInfo.paymentContext.mandateReference);
+            }
+
+            return new LinkIDPaymentContext(amount, ltqrInfo.paymentContext.description, ltqrInfo.paymentContext.orderReference, ltqrInfo.paymentContext.paymentProfile,
                 ltqrInfo.paymentContext.validationTimeSpecified ? ltqrInfo.paymentContext.validationTime : 5,
-                PaymentAddBrowser.NOT_ALLOWED, ltqrInfo.paymentContext.allowDeferredPay, ltqrInfo.paymentContext.mandate,
-                ltqrInfo.paymentContext.mandateDescription, ltqrInfo.paymentContext.mandateReference);
+                PaymentAddBrowser.NOT_ALLOWED, ltqrInfo.paymentContext.allowDeferredPay, mandate);
         }
 
         private LinkIDCallback getCallback(LTQRInfo ltqrInfo)

@@ -13,14 +13,18 @@ namespace linkid_example
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            LinkIDAuthenticationContext linkIDContext = new LinkIDAuthenticationContext();
+
+            linkIDContext.applicationName = TestUtil.APP_NAME;
+
             // device context
-            LoginUtil.setDeviceAuthnMessage(Session, ".NET Authn Msg");
-            LoginUtil.setDeviceFinishedMessage(Session, ".NET Finished Msg");
+            linkIDContext.authenticationMessage = ".NET Authn Msg";
+            linkIDContext.finishedMessage = ".NET Finished Msg";
 
             // Identity profiles
             List<String> identityProfiles = new List<String>();
             identityProfiles.Add("linkid_basic");
-            LoginUtil.setIdentityProfiles(Session, identityProfiles);
+            linkIDContext.identityProfiles = identityProfiles;
 
             // attribute suggestions
             Dictionary<string, List<Object>> attributeSuggestions = new Dictionary<string, List<object>>();
@@ -29,11 +33,13 @@ namespace linkid_example
             attributeSuggestions.Add("test.attribute.boolean", new List<Object> { true });
             attributeSuggestions.Add("test.attribute.integer", new List<Object> { 69 });
             attributeSuggestions.Add("test.attribute.double", new List<Object> { 3.14159 });
-            LoginUtil.setAttriuteSuggestions(Session, attributeSuggestions);
+            linkIDContext.attributeSuggestions = attributeSuggestions;
 
-            //LoginUtil.setPaymentContext(Session, new PaymentContext(100, Currency.EUR));
+            // linkIDContext.paymentContext = new LinkIDPaymentContext(100, LinkIDCurrency.EUR);
 
-            //LoginUtil.setCallback(Session, new Callback("google.be", null, true);
+            // linkIDContext.callback = new LinkIDCallback("google.be", null, true);
+
+            linkIDContext.store(Session);
         }
     }
 }

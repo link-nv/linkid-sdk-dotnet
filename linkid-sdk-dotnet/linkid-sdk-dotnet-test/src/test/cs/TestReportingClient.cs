@@ -29,7 +29,7 @@ namespace safe_online_sdk_dotnet.test.cs
         [Test]
         public void testGetPaymentReport()
         {
-            DateTime startDate = DateTime.Now.Subtract(new TimeSpan(30, 0, 0, 0));
+            DateTime startDate = DateTime.Now.Subtract(new TimeSpan(90, 0, 0, 0));
             DateTime endDate = DateTime.Now;
 
             List<LinkIDPaymentOrder> paymentOrders = client.getPaymentReport(startDate, endDate);

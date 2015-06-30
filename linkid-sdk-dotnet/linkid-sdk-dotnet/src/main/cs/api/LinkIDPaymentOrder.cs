@@ -8,7 +8,8 @@ namespace safe_online_sdk_dotnet
     {
         public DateTime date { get; set; }
         public double amount { get; set; }
-        public LinkIDCurrency currency { get; set; }
+        public Nullable<LinkIDCurrency> currency { get; set; }
+        public String walletCoin { get; set; }
         public String description { get; set; }
         public LinkIDPaymentState paymentState { get; set; }
         public double amountPayed { get; set; }
@@ -22,14 +23,15 @@ namespace safe_online_sdk_dotnet
         public List<LinkIDPaymentTransaction> transactions { get; set; }
         public List<LinkIDWalletTransaction> walletTransactions { get; set; }
 
-        public LinkIDPaymentOrder(DateTime date, double amount, LinkIDCurrency currency, String description,
-            LinkIDPaymentState paymentState, double amountPayed, bool authorized, bool captured,
+        public LinkIDPaymentOrder(DateTime date, double amount, Nullable<LinkIDCurrency> currency, String walletCoin, 
+            String description, LinkIDPaymentState paymentState, double amountPayed, bool authorized, bool captured,
             String orderReference, String userId, String email, String givenName, String familyName,
             List<LinkIDPaymentTransaction> transactions, List<LinkIDWalletTransaction> walletTransactions)
         {
             this.date = date;
             this.amount = amount;
             this.currency = currency;
+            this.walletCoin = walletCoin;
             this.description = description;
             this.paymentState = paymentState;
             this.amountPayed = amountPayed;
@@ -50,7 +52,14 @@ namespace safe_online_sdk_dotnet
 
             output += "Payment order: " + orderReference + "\n";
             output += "  * date: " + date + "\n";
-            output += "  * amount: " + amount + currency + "\n";
+            if (null != currency)
+            {
+                output += "  * amount: " + amount + currency.Value + "\n";
+            }
+            else
+            {
+                output += "  * amount: " + amount + walletCoin+ "\n";
+            }
             output += "  * description: " + description + "\n";
             output += "  * paymentState: " + paymentState + "\n";
             output += "  * amountPayed: " + amountPayed + "\n";

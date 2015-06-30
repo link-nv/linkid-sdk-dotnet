@@ -51,7 +51,10 @@
   <ItemGroup>
     <Compile Include="src\main\cs\api\LinkIDAuthenticationContext.cs" />
     <Compile Include="src\main\cs\api\LinkIDCurrency.cs" />
+    <Compile Include="src\main\cs\api\LinkIDPaymentAmount.cs" />
     <Compile Include="src\main\cs\api\LinkIDPaymentDetails.cs" />
+    <Compile Include="src\main\cs\api\LinkIDPaymentMandate.cs" />
+    <Compile Include="src\main\cs\api\LinkIDPaymentMenu.cs" />
     <Compile Include="src\main\cs\api\LinkIDPaymentMethodType.cs" />
     <Compile Include="src\main\cs\api\LinkIDPaymentState.cs" />
     <Compile Include="src\main\cs\api\LinkIDPaymentStatus.cs" />
@@ -229,12 +232,12 @@
     <Exec Command="svcutil /namespace:*,NotificationConsumerWSNameSpace /directory:target\services src\main\resources\notification-ws\notification-consumer.wsdl src\main\resources\notification-ws\b-2.xsd src\main\resources\notification-ws\bf-2.xsd src\main\resources\ws-addr.xsd src\main\resources\notification-ws\t-1.xsd" />
     <Exec Command="svcutil /namespace:*,NotificationProducerWSNameSpace /directory:target\services src\main\resources\notification-ws\notification-producer.wsdl src\main\resources\notification-ws\b-2.xsd src\main\resources\notification-ws\bf-2.xsd src\main\resources\ws-addr.xsd src\main\resources\notification-ws\t-1.xsd" />
     <Exec Command="svcutil /namespace:*,NotificationSubscriptionManagerWSNameSpace /directory:target\services src\main\resources\notification-ws\notification-subscription-manager.wsdl src\main\resources\notification-ws\b-2.xsd src\main\resources\notification-ws\bf-2.xsd src\main\resources\ws-addr.xsd src\main\resources\notification-ws\t-1.xsd" />
-    <Exec Command="svcutil /namespace:*,PaymentWSNameSpace /directory:target\services src\main\resources\payment-ws\safe-online-payment-3.0.wsdl src\main\resources\payment-ws\safe-online-payment-3.0.xsd src\main\resources\ws-addr.xsd src\main\resources\xmldsig-core-schema.xsd src\main\resources\xenc-schema.xsd src\main\resources\safe-online-common.xsd" />
+    <Exec Command="svcutil /namespace:*,PaymentWSNameSpace /directory:target\services src\main\resources\payment-ws\safe-online-payment-4.0.wsdl src\main\resources\payment-ws\safe-online-payment-4.0.xsd src\main\resources\ws-addr.xsd src\main\resources\xmldsig-core-schema.xsd src\main\resources\xenc-schema.xsd src\main\resources\safe-online-common.xsd" />
     <Exec Command="svcutil /namespace:*,LTQRWSNameSpace /directory:target\services src\main\resources\ltqr-ws\safe-online-ltqr-2.0.wsdl src\main\resources\ltqr-ws\safe-online-ltqr-2.0.xsd src\main\resources\safe-online-common.xsd" />
     <Exec Command="svcutil /namespace:*,HawsWSNameSpace /directory:target\services src\main\resources\haws-ws\safe-online-haws.wsdl src\main\resources\haws-ws\safe-online-haws.xsd" />
     <Exec Command="svcutil /namespace:*,AuthWSNameSpace /directory:target\services src\main\resources\auth-ws\safe-online-auth.wsdl src\main\resources\auth-ws\safe-online-auth.xsd" />
     <Exec Command="svcutil /namespace:*,MandateWSNameSpace /directory:target\services src\main\resources\mandate-ws\safe-online-mandate.wsdl src\main\resources\mandate-ws\safe-online-mandate.xsd src\main\resources\safe-online-common.xsd" />
-    <Exec Command="svcutil /namespace:*,ReportingWSNameSpace /directory:target\services src\main\resources\reporting-ws\safe-online-reporting-2.0.wsdl  src\main\resources\reporting-ws\safe-online-reporting-2.0.xsd src\main\resources\safe-online-common.xsd" />
+    <Exec Command="svcutil /namespace:*,ReportingWSNameSpace /directory:target\services src\main\resources\reporting-ws\safe-online-reporting-3.0.wsdl  src\main\resources\reporting-ws\safe-online-reporting-3.0.xsd src\main\resources\safe-online-common.xsd" />
     <Exec Command="svcutil /namespace:*,CaptureWSNameSpace /directory:target\services src\main\resources\capture-ws\safe-online-capture.wsdl src\main\resources\capture-ws\safe-online-capture.xsd" />
     <Exec Command="svcutil /namespace:*,WalletWSNameSpace /directory:target\services src\main\resources\wallet-ws\safe-online-wallet.wsdl src\main\resources\wallet-ws\safe-online-wallet.xsd src\main\resources\safe-online-common.xsd" />
   </Target>

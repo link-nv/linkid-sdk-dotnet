@@ -20,7 +20,7 @@ namespace safe_online_sdk_dotnet
 
         public ReportingClientImpl(string location, string username, string password)
 		{			
-			string address = "https://" + location + "/linkid-ws-username/reporting20";
+			string address = "https://" + location + "/linkid-ws-username/reporting30";
 			EndpointAddress remoteAddress = new EndpointAddress(address);
 
             BasicHttpBinding binding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
@@ -262,24 +262,27 @@ namespace safe_online_sdk_dotnet
                     transactions.Add(new LinkIDPaymentTransaction(convert(paymentTransaction.paymentMethodType),
                         paymentTransaction.paymentMethod, convert(paymentTransaction.paymentState),
                         paymentTransaction.creationDate, paymentTransaction.authorizationDate, paymentTransaction.capturedDate,
-                        paymentTransaction.docdataReference, paymentTransaction.amount, convert(paymentTransaction.currency)));
+                        paymentTransaction.docdataReference, paymentTransaction.amount, convert(paymentTransaction.currency).Value));
                 }
             }
 
             List<LinkIDWalletTransaction> walletTransactions = new List<LinkIDWalletTransaction>();
             if (null != wsOrder.walletTransactions)
             {
-                foreach (WalletTransactionV20 walletTransaction in wsOrder.walletTransactions)
+                foreach (WalletTransactionV40 walletTransaction in wsOrder.walletTransactions)
                 {
                     walletTransactions.Add(new LinkIDWalletTransaction(walletTransaction.walletId, walletTransaction.creationDate,
-                        walletTransaction.transactionId, walletTransaction.amount, convert(walletTransaction.currency)));
+                        walletTransaction.transactionId, walletTransaction.amount, 
+                        walletTransaction.currencySpecified ? convert(walletTransaction.currency) : null, 
+                        walletTransaction.walletCoin));
                 }
             }
 
-            return new LinkIDPaymentOrder(wsOrder.date, wsOrder.amount, convert(wsOrder.currency), wsOrder.description,
-                convert(wsOrder.paymentState), wsOrder.amountPayed, wsOrder.authorized, wsOrder.captured,
-                wsOrder.orderReference, wsOrder.userId, wsOrder.email, wsOrder.givenName, wsOrder.familyName,
-                transactions, walletTransactions);
+            return new LinkIDPaymentOrder(wsOrder.date, wsOrder.amount, 
+                wsOrder.currencySpecified? convert(wsOrder.currency) : null, wsOrder.walletCoin,
+                wsOrder.description, convert(wsOrder.paymentState), wsOrder.amountPayed, wsOrder.authorized, 
+                wsOrder.captured, wsOrder.orderReference, wsOrder.userId, wsOrder.email, wsOrder.givenName, 
+                wsOrder.familyName, transactions, walletTransactions);
         }
 
         private LinkIDPaymentMethodType convert(ReportingWSNameSpace.PaymentMethodType wsPaymentMethodType)
@@ -296,7 +299,7 @@ namespace safe_online_sdk_dotnet
             return LinkIDPaymentMethodType.UNKNOWN;
         }
 
-        private LinkIDCurrency convert(ReportingWSNameSpace.Currency wsCurrency)
+        private Nullable<LinkIDCurrency> convert(ReportingWSNameSpace.Currency wsCurrency)
         {
             switch (wsCurrency)
             {
@@ -341,8 +344,9 @@ namespace safe_online_sdk_dotnet
         private LinkIDWalletReportTransaction convert(ReportingWSNameSpace.WalletReportTransaction wsTransaction)
         {
             return new LinkIDWalletReportTransaction(wsTransaction.walletId, wsTransaction.creationDate,
-                wsTransaction.transactionId, wsTransaction.amount, convert(wsTransaction.currency),
-                wsTransaction.userId, wsTransaction.applicationName);
+                wsTransaction.transactionId, wsTransaction.amount, 
+                wsTransaction.currencySpecified? convert(wsTransaction.currency) : null, 
+                wsTransaction.walletCoin, wsTransaction.userId, wsTransaction.applicationName);
         }
     }
 }

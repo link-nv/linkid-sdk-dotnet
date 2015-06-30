@@ -41,8 +41,13 @@ namespace safe_online_sdk_dotnet
             MandatePaymentRequest request = new MandatePaymentRequest();
 
             MandateWSNameSpace.PaymentContext paymentContext = new MandateWSNameSpace.PaymentContext();
-            paymentContext.amount = linkIDPaymentContext.amount;
-            paymentContext.currency = convert(linkIDPaymentContext.currency);
+            paymentContext.amount = linkIDPaymentContext.amount.amount;
+            paymentContext.currencySpecified = linkIDPaymentContext.amount.currency.HasValue;
+            if (linkIDPaymentContext.amount.currency.HasValue)
+            {
+                paymentContext.currency = convert(linkIDPaymentContext.amount.currency.Value);
+            }
+            paymentContext.walletCoin = linkIDPaymentContext.amount.walletCoin;
             paymentContext.description = linkIDPaymentContext.description;
             paymentContext.orderReference = linkIDPaymentContext.orderReference;
             paymentContext.paymentProfile = linkIDPaymentContext.paymentProfile;

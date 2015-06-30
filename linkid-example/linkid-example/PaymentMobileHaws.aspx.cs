@@ -13,9 +13,18 @@ namespace linkid_example
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            // payment context
-            LoginUtil.setPaymentContext(Session, new PaymentContext(100, Currency.EUR, "payment context", null,
-                null, 10, PaymentAddBrowser.REDIRECT, false));
+            LinkIDAuthenticationContext linkIDContext = new LinkIDAuthenticationContext();
+
+            linkIDContext.applicationName = TestUtil.APP_NAME;
+
+//            linkIDContext.paymentContext = new LinkIDPaymentContext(
+//                new LinkIDPaymentAmount(100, LinkIDCurrency.EUR, null), "payment context", null,
+//                null, 10, PaymentAddBrowser.REDIRECT, false);
+            linkIDContext.paymentContext = new LinkIDPaymentContext(
+                new LinkIDPaymentAmount(100, null, "urn:linkid:wallet:coin:coffee"), "payment context", null,
+                null, 10, PaymentAddBrowser.REDIRECT, false);
+
+            linkIDContext.store(Session);
         }
     }
 }

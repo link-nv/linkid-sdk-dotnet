@@ -8,24 +8,21 @@ namespace linkid_example
     public class TestUtil
     {
         // linkID host to be used
-        //public static string LINKID_HOST = "192.168.5.14:8443";
-        public static string LINKID_HOST = "demo.linkid.be";
+        public static string LINKID_HOST = "192.168.5.14:8443";
+        //public static string LINKID_HOST = "demo.linkid.be";
 
         // application details
         public static string APP_NAME = "example-mobile";
+        //public static string APP_NAME = "test-shop";
 
         // set the language to be used in the linkID iFrame
         public static string language = "en";
 
         // username,password case HAWS binding / WS-Security Password token is used
-        public static string wsUsername = "example-mobile";
+         public static string wsUsername = "example-mobile";
+        //public static string wsUsername = "test-shop";
         public static string wsPassword = "6E6C1CB7-965C-48A0-B2B0-6B65674BE19F";
-
-        // certificates and key locations case SAML Post / WS-Security X509 profile is used
-        public static string KEY_DIR = "C:\\cygwin\\home\\devel\\keystores\\";
-        public static string CERT_LINKID = KEY_DIR + "linkid.crt";
-        public static string CERT_APP = KEY_DIR + "demotest.crt";
-        public static string KEY_APP = KEY_DIR + "demotest.key";
+        //public static string wsPassword = "5E017416-23B2-47E1-A9E0-43EE3C75A1B0";
 
         /*
          * linkID authentication context session attribute
@@ -36,65 +33,5 @@ namespace linkid_example
          * for the application.
          */
         public static string SESSION_AUTH_CONTEXT = "linkID.authContext";
-
-        public static string dumpAuthenticationContext(AuthenticationProtocolContext authContext)
-        {
-            string output = "<h1>Successfully authenticated</h1>";
-            output += "<p>UserID=" + authContext.getUserId() +
-                " authenticated using device " + authContext.getAuthenticatedDevices()[0] + "</p>";
-
-            if (null != authContext.getPaymentResponse())
-            {
-
-                // log payment response
-                output  += "<h2>Payment response</h2>";
-                output += "  * Order reference = " + authContext.getPaymentResponse().orderReference + "<br/>";
-                output += "  * Payment State = " + authContext.getPaymentResponse().paymentState + "<br/>";
-                output += "  * Payment Menu = " + authContext.getPaymentResponse().paymentMenuURL + "<br/>";
-                output += "  * DocData reference = " + authContext.getPaymentResponse().docdataReference + "<br/>";
-                output += "  * Mandate reference = " + authContext.getPaymentResponse().mandateReference + "<br/>";
-            }
-
-            if (null != authContext.getAttributes())
-            {
-                // log attributes
-                foreach (String key in authContext.getAttributes().Keys)
-                {
-                    output += "<p/>";
-                    output += "<h2>Attribute=" + key + " via SAML Response</h2>";
-                    output += logAttributes(authContext.getAttributes()[key]);
-                }
-            }
-
-            return output;
-
-        }
-
-        public static string logAttributes(List<AttributeSDK> attributes)
-        {
-            string output = "";
-
-            foreach (AttributeSDK attribute in attributes)
-            {
-                output += "AttributeID: " + attribute.getAttributeId() + "<br/>";
-                if (attribute.getValue() is Compound)
-                {
-                    Compound compound = (Compound)attribute.getValue();
-                    foreach (AttributeSDK member in compound.members)
-                    {
-                        output +=
-                            "  * Member: " + member.getAttributeName() + " value=" + member.getValue() + "<br/>";
-                    }
-                }
-                else
-                {
-                    output += "Value: " + attribute.getValue() + "<br/>";
-                }
-            }
-
-            return output;
-        }
-
-
     }
 }

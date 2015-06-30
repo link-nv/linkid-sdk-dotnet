@@ -138,7 +138,7 @@ namespace safe_online_sdk_dotnet.test.cs
             linkIDContext.attributeSuggestions = attributeSuggestions;
 
             // payment context
-            LinkIDPaymentContext paymentContext = new LinkIDPaymentContext(1, LinkIDCurrency.EUR);
+            LinkIDPaymentContext paymentContext = new LinkIDPaymentContext(new LinkIDPaymentAmount(1, LinkIDCurrency.EUR, null));
             linkIDContext.paymentContext = paymentContext;
 
             // callback
