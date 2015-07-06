@@ -73,8 +73,7 @@ namespace safe_online_sdk_dotnet
 
             if (null != response.success)
             {
-                return new LinkIDWalletInfo(response.success.walletId, response.success.amount, 
-                    convert(response.success.currency));
+                return new LinkIDWalletInfo(response.success.walletId);
             }
 
             throw new RuntimeException("No success nor error element in the response ?!");
