@@ -320,8 +320,6 @@ namespace safe_online_sdk_dotnet
                     return LinkIDPaymentState.WAITING_FOR_UPDATE;
                 case ReportingWSNameSpace.PaymentStatusType.FAILED:
                     return LinkIDPaymentState.FAILED;
-                case ReportingWSNameSpace.PaymentStatusType.DEFERRED:
-                    return LinkIDPaymentState.DEFERRED;
                 case ReportingWSNameSpace.PaymentStatusType.AUTHORIZED:
                     return LinkIDPaymentState.PAYED;
                 case ReportingWSNameSpace.PaymentStatusType.REFUND_STARTED:

@@ -22,7 +22,7 @@ namespace linkid_example
 //                null, 10, PaymentAddBrowser.REDIRECT, false);
             linkIDContext.paymentContext = new LinkIDPaymentContext(
                 new LinkIDPaymentAmount(100, null, "urn:linkid:wallet:coin:coffee"), "payment context", null,
-                null, 10, PaymentAddBrowser.REDIRECT, false);
+                null, 10, PaymentAddBrowser.REDIRECT);
 
             linkIDContext.store(Session);
         }

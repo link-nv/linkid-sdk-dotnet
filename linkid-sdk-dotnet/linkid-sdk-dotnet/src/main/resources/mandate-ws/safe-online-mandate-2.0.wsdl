@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" targetNamespace="urn:net:lin-k:safe-online:mandate"
-             xmlns:tns="urn:net:lin-k:safe-online:mandate" name="SafeOnlineMandateWebService">
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" targetNamespace="urn:net:lin-k:safe-online:mandate:2.0"
+             xmlns:tns="urn:net:lin-k:safe-online:mandate:2.0" name="SafeOnlineMandateWebService">
     <types>
         <schema xmlns="http://www.w3.org/2001/XMLSchema">
-            <import namespace="urn:net:lin-k:safe-online:mandate" schemaLocation="safe-online-mandate.xsd" />
+            <import namespace="urn:net:lin-k:safe-online:mandate:2.0" schemaLocation="safe-online-mandate-2.0.xsd" />
         </schema>
     </types>
 
@@ -30,7 +30,7 @@
     <binding name="MandateServiceBinding" type="tns:MandateServicePort">
         <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
         <operation name="pay">
-            <soap:operation soapAction="urn:net:lin-k:safe-online:mandate:pay" />
+            <soap:operation soapAction="urn:net:lin-k:safe-online:mandate:2.0:pay" />
             <input>
                 <soap:body use="literal" />
             </input>
@@ -44,7 +44,7 @@
 
     <service name="MandateService">
         <port name="MandateServicePort" binding="tns:MandateServiceBinding">
-            <soap:address location="http://localhost:8080/${safe-online.ws.webapp.url}/mandate/" />
+            <soap:address location="http://localhost:8080/${safe-online.ws.webapp.url}/mandate20/" />
         </port>
     </service>
 </definitions>

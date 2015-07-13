@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:net:lin-k:safe-online:mandate" xmlns:tns="urn:net:lin-k:safe-online:mandate"
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:net:lin-k:safe-online:mandate:2.0" xmlns:tns="urn:net:lin-k:safe-online:mandate:2.0"
         xmlns:com="urn:net:lin-k:safe-online:common" elementFormDefault="qualified">
 
 	<annotation>
@@ -16,7 +16,7 @@
     <element name="MandatePaymentRequest">
 		<complexType>
             <sequence>
-                <element name="paymentContext" type="com:PaymentContext" minOccurs="0" maxOccurs="1">
+                <element name="paymentContext" type="com:PaymentContextV20" minOccurs="0" maxOccurs="1">
                     <annotation>
                         <documentation>Optional payment context</documentation>
                     </annotation>

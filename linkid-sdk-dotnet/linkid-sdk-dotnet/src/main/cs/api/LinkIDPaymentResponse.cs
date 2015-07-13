@@ -85,8 +85,6 @@ namespace safe_online_sdk_dotnet
         {
             if (paymentStateString.Equals(LinkIDPaymentState.STARTED.ToString()))
                 return LinkIDPaymentState.STARTED;
-            if (paymentStateString.Equals(LinkIDPaymentState.DEFERRED.ToString()))
-                return LinkIDPaymentState.DEFERRED;
             if (paymentStateString.Equals(LinkIDPaymentState.WAITING_FOR_UPDATE.ToString()))
                 return LinkIDPaymentState.WAITING_FOR_UPDATE;
             if (paymentStateString.Equals(LinkIDPaymentState.FAILED.ToString()))

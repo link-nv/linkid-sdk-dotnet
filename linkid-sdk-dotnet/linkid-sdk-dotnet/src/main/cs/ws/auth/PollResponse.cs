@@ -25,8 +25,6 @@ namespace safe_online_sdk_dotnet
             {
                 case AuthWSNameSpace.PaymentState.linkidpaymentstatestarted:
                     return LinkIDPaymentState.STARTED;
-                case AuthWSNameSpace.PaymentState.linkidpaymentstatedeferred:
-                    return LinkIDPaymentState.DEFERRED;
                 case AuthWSNameSpace.PaymentState.linkidpaymentstatefailed:
                     return LinkIDPaymentState.FAILED;
                 case AuthWSNameSpace.PaymentState.linkidpaymentstatepayed:

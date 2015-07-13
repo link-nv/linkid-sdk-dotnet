@@ -22,7 +22,7 @@ namespace safe_online_sdk_dotnet
 
         public MandateClientImpl(string location, string username, string password)
 		{			
-			string address = "https://" + location + "/linkid-ws-username/mandate";
+			string address = "https://" + location + "/linkid-ws-username/mandate20";
 			EndpointAddress remoteAddress = new EndpointAddress(address);
 
             BasicHttpBinding binding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
@@ -40,7 +40,7 @@ namespace safe_online_sdk_dotnet
         {
             MandatePaymentRequest request = new MandatePaymentRequest();
 
-            MandateWSNameSpace.PaymentContext paymentContext = new MandateWSNameSpace.PaymentContext();
+            MandateWSNameSpace.PaymentContextV20 paymentContext = new MandateWSNameSpace.PaymentContextV20();
             paymentContext.amount = linkIDPaymentContext.amount.amount;
             paymentContext.currencySpecified = linkIDPaymentContext.amount.currency.HasValue;
             if (linkIDPaymentContext.amount.currency.HasValue)
@@ -52,7 +52,6 @@ namespace safe_online_sdk_dotnet
             paymentContext.orderReference = linkIDPaymentContext.orderReference;
             paymentContext.paymentProfile = linkIDPaymentContext.paymentProfile;
             paymentContext.validationTime = linkIDPaymentContext.paymentValidationTime;
-            paymentContext.allowDeferredPay = linkIDPaymentContext.allowDeferredPay;
             paymentContext.allowPartial = linkIDPaymentContext.allowPartial;
             paymentContext.onlyWallets = linkIDPaymentContext.onlyWallets;
             request.paymentContext = paymentContext;

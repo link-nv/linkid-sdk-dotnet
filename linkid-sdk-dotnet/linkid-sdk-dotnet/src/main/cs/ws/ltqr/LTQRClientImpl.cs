@@ -20,7 +20,7 @@ namespace safe_online_sdk_dotnet
 
         public LTQRClientImpl(string location, string username, string password)
 		{			
-			string address = "https://" + location + "/linkid-ws-username/ltqr20";
+			string address = "https://" + location + "/linkid-ws-username/ltqr30";
 			EndpointAddress remoteAddress = new EndpointAddress(address);
 
             BasicHttpBinding binding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
@@ -47,7 +47,7 @@ namespace safe_online_sdk_dotnet
             // payment context
             if (null != linkIDPaymentContext)
             {
-                LTQRWSNameSpace.PaymentContext paymentContext = new LTQRWSNameSpace.PaymentContext();
+                LTQRWSNameSpace.PaymentContextV20 paymentContext = new LTQRWSNameSpace.PaymentContextV20();
                 paymentContext.amount = linkIDPaymentContext.amount.amount;
                 paymentContext.currencySpecified = linkIDPaymentContext.amount.currency.HasValue;
                 if (linkIDPaymentContext.amount.currency.HasValue)
@@ -60,8 +60,6 @@ namespace safe_online_sdk_dotnet
                 paymentContext.paymentProfile = linkIDPaymentContext.paymentProfile;
                 paymentContext.validationTime = linkIDPaymentContext.paymentValidationTime;
                 paymentContext.validationTimeSpecified = true;
-                paymentContext.allowDeferredPay = linkIDPaymentContext.allowDeferredPay;
-                paymentContext.allowDeferredPaySpecified = true;
                 paymentContext.mandate = null != linkIDPaymentContext.mandate;
                 if (null != linkIDPaymentContext.mandate)
                 {
@@ -147,7 +145,7 @@ namespace safe_online_sdk_dotnet
             // payment context
             if (null != linkIDPaymentContext)
             {
-                LTQRWSNameSpace.PaymentContext paymentContext = new LTQRWSNameSpace.PaymentContext();
+                LTQRWSNameSpace.PaymentContextV20 paymentContext = new LTQRWSNameSpace.PaymentContextV20();
                 paymentContext.amount = linkIDPaymentContext.amount.amount;
                 paymentContext.currencySpecified = linkIDPaymentContext.amount.currency.HasValue;
                 if (linkIDPaymentContext.amount.currency.HasValue)
@@ -160,8 +158,6 @@ namespace safe_online_sdk_dotnet
                 paymentContext.paymentProfile = linkIDPaymentContext.paymentProfile;
                 paymentContext.validationTime = linkIDPaymentContext.paymentValidationTime;
                 paymentContext.validationTimeSpecified = true;
-                paymentContext.allowDeferredPay = linkIDPaymentContext.allowDeferredPay;
-                paymentContext.allowDeferredPaySpecified = true;
 
                 request.paymentContext = paymentContext;
             }
@@ -379,7 +375,7 @@ namespace safe_online_sdk_dotnet
 
             return new LinkIDPaymentContext(amount, ltqrInfo.paymentContext.description, ltqrInfo.paymentContext.orderReference, ltqrInfo.paymentContext.paymentProfile,
                 ltqrInfo.paymentContext.validationTimeSpecified ? ltqrInfo.paymentContext.validationTime : 5,
-                PaymentAddBrowser.NOT_ALLOWED, ltqrInfo.paymentContext.allowDeferredPay, mandate);
+                PaymentAddBrowser.NOT_ALLOWED, mandate);
         }
 
         private LinkIDCallback getCallback(LTQRInfo ltqrInfo)

@@ -100,7 +100,6 @@ namespace safe_online_sdk_dotnet
                 case PaymentStatusType.STARTED: return LinkIDPaymentState.STARTED;
                 case PaymentStatusType.WAITING_FOR_UPDATE: return LinkIDPaymentState.WAITING_FOR_UPDATE;
                 case PaymentStatusType.AUTHORIZED: return LinkIDPaymentState.PAYED;
-                case PaymentStatusType.DEFERRED: return LinkIDPaymentState.DEFERRED;
                 case PaymentStatusType.FAILED: return LinkIDPaymentState.FAILED;
                 case PaymentStatusType.REFUND_STARTED: return LinkIDPaymentState.REFUND_STARTED;
                 case PaymentStatusType.REFUNDED: return LinkIDPaymentState.REFUNDED;

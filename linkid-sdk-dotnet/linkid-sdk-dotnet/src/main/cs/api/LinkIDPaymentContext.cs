@@ -16,7 +16,6 @@ namespace safe_online_sdk_dotnet
         public static readonly String PROFILE_KEY          = "PaymentContext.profile";
         public static readonly String VALIDATION_TIME_KEY  = "PaymentContext.validationTime";
         public static readonly String ﻿ADD_BROWSER_KEY      = "PaymentContext.addBrowser";
-        public static readonly String DEFERRED_PAY_KEY     = "PaymentContext.deferredPay";
         public static readonly String MANDATE_KEY          = "PaymentContext.mandate";
         public static readonly String MANDATE_DESCRIPTION_KEY = "PaymentContext.mandateDescription";
         public static readonly String MANDATE_REFERENCE_KEY = "PaymentContext.mandateReference";
@@ -45,10 +44,6 @@ namespace safe_online_sdk_dotnet
         // ﻿whether or not to allow to display the option in the client to add a payment method in the browser. default is not allowed
         public PaymentAddBrowser paymentAddBrowser { get; set; }
 
-        // whether or not deferred payments are allowed, if a user has no payment token attached to the linkID account
-        // linkID can allow for the user to make a deferred payment which he can complete later on from this browser.
-        public Boolean allowDeferredPay {get; set;}
-
         // mandate
         public LinkIDPaymentMandate mandate { get; set; }
 
@@ -59,8 +54,7 @@ namespace safe_online_sdk_dotnet
         public bool onlyWallets {get; set;}     // allow only wallets for this payments
 
         public LinkIDPaymentContext(LinkIDPaymentAmount amount, String description, String orderReference,
-            String paymentProfile, int paymentValidationTime, 
-            PaymentAddBrowser paymentAddBrowser, Boolean allowDeferredPay, LinkIDPaymentMandate mandate)
+            String paymentProfile, int paymentValidationTime, PaymentAddBrowser paymentAddBrowser, LinkIDPaymentMandate mandate)
         {
             if (null == amount.currency && null == amount.walletCoin)
             {
@@ -82,17 +76,16 @@ namespace safe_online_sdk_dotnet
             this.paymentProfile = paymentProfile;
             this.paymentValidationTime = paymentValidationTime;
             this.paymentAddBrowser = paymentAddBrowser;
-            this.allowDeferredPay = allowDeferredPay;
             this.mandate = mandate;
         }
 
         public LinkIDPaymentContext(LinkIDPaymentAmount amount, String description, String orderReference, 
-            String paymentProfile, int paymentValidationTime, PaymentAddBrowser paymentAddBrowser, Boolean allowDeferredPay)
+            String paymentProfile, int paymentValidationTime, PaymentAddBrowser paymentAddBrowser)
             : this(amount, description, orderReference, paymentProfile, paymentValidationTime,
-                paymentAddBrowser, allowDeferredPay, null) { }
+                paymentAddBrowser, null) { }
 
         public LinkIDPaymentContext(LinkIDPaymentAmount amount, String description, String orderReference, String paymentProfile)
-            : this(amount, description, orderReference, paymentProfile, 5, PaymentAddBrowser.REDIRECT, false) {}
+            : this(amount, description, orderReference, paymentProfile, 5, PaymentAddBrowser.REDIRECT) {}
 
         public LinkIDPaymentContext(LinkIDPaymentAmount amount)
             : this(amount, null, null, null) {}
@@ -115,8 +108,6 @@ namespace safe_online_sdk_dotnet
 
             dictionary.Add(ADD_BROWSER_KEY, paymentAddBrowser.ToString());
             
-            dictionary.Add(DEFERRED_PAY_KEY, allowDeferredPay.ToString());
-
             // mandates
             if (null != mandate)
             {
