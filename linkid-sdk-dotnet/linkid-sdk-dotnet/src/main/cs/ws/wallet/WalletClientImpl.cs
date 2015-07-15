@@ -73,8 +73,7 @@ namespace safe_online_sdk_dotnet
 
             if (null != response.success)
             {
-                return new LinkIDWalletInfo(response.success.walletId, response.success.amount, 
-                    convert(response.success.currency));
+                return new LinkIDWalletInfo(response.success.walletId);
             }
 
             throw new RuntimeException("No success nor error element in the response ?!");
@@ -171,6 +170,31 @@ namespace safe_online_sdk_dotnet
             if (null != response.error)
             {
                 throw new WalletCommitException(response.error.errorCode);
+            }
+
+            if (null != response.success)
+            {
+                return;
+            }
+
+            throw new RuntimeException("No success nor error element in the response ?!");
+        }
+
+        public void release(String userId, String walletId, String walletTransactionId)
+        {
+            WalletReleaseRequest request = new WalletReleaseRequest();
+
+            // input
+            request.userId = userId;
+            request.walletId = walletId;
+            request.walletTransactionId = walletTransactionId;
+
+            WalletReleaseResponse response = this.client.release(request);
+
+            // parse response
+            if (null != response.error)
+            {
+                throw new WalletReleaseException(response.error.errorCode);
             }
 
             if (null != response.success)

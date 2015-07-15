@@ -139,6 +139,7 @@
     <Compile Include="src\main\cs\ws\reporting\ReportingException.cs" />
     <Compile Include="src\main\cs\ws\wallet\WalletCommitException.cs" />
     <Compile Include="src\main\cs\ws\wallet\WalletGetInfoException.cs" />
+    <Compile Include="src\main\cs\ws\wallet\WalletReleaseException.cs" />
     <Compile Include="src\main\cs\ws\wallet\WalletRemoveException.cs" />
     <Compile Include="src\main\cs\ws\wallet\WalletRemoveCreditException.cs" />
     <Compile Include="src\main\cs\ws\wallet\WalletAddCreditException.cs" />

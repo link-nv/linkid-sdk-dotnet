@@ -59,7 +59,16 @@ namespace safe_online_sdk_dotnet
         /// <param name="userId">the linkID user</param>
         /// <param name="walletId">the ID of the wallet</param>
         /// <param name="walletTransactionId">the ID of the wallet transaction to commit</param>
-        /// <exception cref="WalletRemoveException">Something went wrong, check the error code in the exception</exception>
+        /// <exception cref="WalletCommitException">Something went wrong, check the error code in the exception</exception>
         void commit(String userId, String walletId, String walletTransactionId);
+
+        /// <summary>
+        /// Release a wallet transaction immediately instead of waiting for the wallet's expiration.
+        /// </summary>
+        /// <param name="userId">the linkID user</param>
+        /// <param name="walletId">the ID of the wallet</param>
+        /// <param name="walletTransactionId">the ID of the wallet transaction to release</param>
+        /// <exception cref="WalletReleaseException">Something went wrong, check the error code in the exception</exception>
+        void release(String userId, String walletId, String walletTransactionId);
     }
 }
