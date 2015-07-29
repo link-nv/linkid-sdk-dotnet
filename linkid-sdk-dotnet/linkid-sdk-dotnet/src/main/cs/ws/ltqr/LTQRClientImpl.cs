@@ -20,7 +20,7 @@ namespace safe_online_sdk_dotnet
 
         public LTQRClientImpl(string location, string username, string password)
 		{			
-			string address = "https://" + location + "/linkid-ws-username/ltqr30";
+			string address = "https://" + location + "/linkid-ws-username/ltqr40";
 			EndpointAddress remoteAddress = new EndpointAddress(address);
 
             BasicHttpBinding binding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
@@ -37,7 +37,8 @@ namespace safe_online_sdk_dotnet
         public LTQRSession push(String authenticationMessage, String finishedMessage, LinkIDPaymentContext linkIDPaymentContext, 
             bool oneTimeUse, Nullable<DateTime> expiryDate, Nullable<long> expiryDuration,
             LinkIDCallback callback, List<String> identityProfiles, Nullable<long> sessionExpiryOverride, String theme,
-            String mobileLandingSuccess, String mobileLandingError, String mobileLandingCancel)
+            String mobileLandingSuccess, String mobileLandingError, String mobileLandingCancel,
+            LinkIDLTQRPollingConfiguration pollingConfiguration, bool waitForUnlock)
         {
             PushRequest request = new PushRequest();
 
@@ -87,6 +88,9 @@ namespace safe_online_sdk_dotnet
                 request.identityProfiles = identityProfiles.ToArray();
             }
 
+            // polling configuration
+            request.pollingConfiguration = convert(pollingConfiguration);
+
             // configuration
             request.oneTimeUse = oneTimeUse;
             if (null != expiryDate)
@@ -108,6 +112,7 @@ namespace safe_online_sdk_dotnet
             request.mobileLandingSuccess = mobileLandingSuccess;
             request.mobileLandingError = mobileLandingError;
             request.mobileLandingCancel = mobileLandingCancel;
+            request.waitForUnlock = waitForUnlock;
 
             // operate
             PushResponse response = this.client.push(request);
@@ -134,7 +139,8 @@ namespace safe_online_sdk_dotnet
         public LTQRSession change(String ltqrReference, String authenticationMessage, String finishedMessage,
             LinkIDPaymentContext linkIDPaymentContext, Nullable<DateTime> expiryDate, Nullable<long> expiryDuration,
             LinkIDCallback callback, List<String> identityProfiles, Nullable<long> sessionExpiryOverride, String theme,
-            String mobileLandingSuccess, String mobileLandingError, String mobileLandingCancel, bool resetUsed)
+            String mobileLandingSuccess, String mobileLandingError, String mobileLandingCancel, bool resetUsed,
+            LinkIDLTQRPollingConfiguration pollingConfiguration, bool waitForUnlock, bool unlock)
         {
             ChangeRequest request = new ChangeRequest();
             request.ltqrReference = ltqrReference;
@@ -179,6 +185,9 @@ namespace safe_online_sdk_dotnet
                 request.identityProfiles = identityProfiles.ToArray();
             }
 
+            // polling configuration
+            request.pollingConfiguration = convert(pollingConfiguration);
+
             // configuration
             if (null != expiryDate)
             {
@@ -202,6 +211,9 @@ namespace safe_online_sdk_dotnet
 
             request.resetUsedSpecified = true;
             request.resetUsed = resetUsed;
+
+            request.waitForUnlock = waitForUnlock;
+            request.unlock = unlock;
 
             // operate
             ChangeResponse response = this.client.change(request);
@@ -340,7 +352,8 @@ namespace safe_online_sdk_dotnet
                         getPaymentContext(ltqrInfo), getCallback(ltqrInfo), ltqrInfo.identityProfiles, 
                         ltqrInfo.sessionExpiryOverrideSpecified? ltqrInfo.sessionExpiryOverride : 0,
                         ltqrInfo.theme, ltqrInfo.mobileLandingSuccess, ltqrInfo.mobileLandingError, 
-                        ltqrInfo.mobileLandingCancel));
+                        ltqrInfo.mobileLandingCancel, convert(ltqrInfo.pollingConfiguration), 
+                        ltqrInfo.waitForUnlock, ltqrInfo.locked));
                 }
 
                 return infos;
@@ -427,6 +440,56 @@ namespace safe_online_sdk_dotnet
             }
 
             throw new RuntimeException("Currency " + currency.ToString() + " is not supported!");
+        }
+
+        private PollingConfiguration convert(LinkIDLTQRPollingConfiguration pollingconfiguration)
+        {
+            if (null != pollingconfiguration)
+            {
+                PollingConfiguration wsPollingConfiguration = new PollingConfiguration();
+
+                if (pollingconfiguration.pollAttempts > 1)
+                {
+                    wsPollingConfiguration.pollAttemptsSpecified = true;
+                    wsPollingConfiguration.pollAttempts = pollingconfiguration.pollAttempts;
+                }
+
+                if (pollingconfiguration.pollInterval > 2)
+                {
+                    wsPollingConfiguration.pollIntervalSpecified = true;
+                    wsPollingConfiguration.pollInterval = pollingconfiguration.pollInterval;
+                }
+
+                if (pollingconfiguration.paymentPollAttempts > 1)
+                {
+                    wsPollingConfiguration.paymentPollAttemptsSpecified = true;
+                    wsPollingConfiguration.paymentPollAttempts = pollingconfiguration.paymentPollAttempts;
+                }
+
+                if (pollingconfiguration.paymentPollInterval > 2)
+                {
+                    wsPollingConfiguration.paymentPollIntervalSpecified = true;
+                    wsPollingConfiguration.paymentPollInterval = pollingconfiguration.paymentPollInterval;
+                }
+
+                return wsPollingConfiguration;
+            }
+
+            return null;
+        }
+
+        private LinkIDLTQRPollingConfiguration convert(PollingConfiguration pollingconfiguration)
+        {
+            if (null == pollingconfiguration)
+            {
+                return null;
+            }
+
+            return new LinkIDLTQRPollingConfiguration(
+                pollingconfiguration.pollAttemptsSpecified ? pollingconfiguration.pollAttempts : -1,
+                pollingconfiguration.pollIntervalSpecified ? pollingconfiguration.pollInterval : -1,
+                pollingconfiguration.paymentPollAttemptsSpecified ? pollingconfiguration.paymentPollAttempts : -1,
+                pollingconfiguration.paymentPollIntervalSpecified ? pollingconfiguration.paymentPollInterval : -1);
         }
     }
 }

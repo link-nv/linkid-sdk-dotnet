@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="src\main\cs\api\LinkIDAuthenticationContext.cs" />
     <Compile Include="src\main\cs\api\LinkIDCurrency.cs" />
+    <Compile Include="src\main\cs\api\LinkIDLTQRPollingConfiguration.cs" />
     <Compile Include="src\main\cs\api\LinkIDPaymentAmount.cs" />
     <Compile Include="src\main\cs\api\LinkIDPaymentDetails.cs" />
     <Compile Include="src\main\cs\api\LinkIDPaymentMandate.cs" />
@@ -180,7 +181,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="target\services\SafeOnlineLTQR30WebService.cs">
+    <Compile Include="target\services\SafeOnlineLTQR40WebService.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -234,7 +235,7 @@
     <Exec Command="svcutil /namespace:*,NotificationProducerWSNameSpace /directory:target\services src\main\resources\notification-ws\notification-producer.wsdl src\main\resources\notification-ws\b-2.xsd src\main\resources\notification-ws\bf-2.xsd src\main\resources\ws-addr.xsd src\main\resources\notification-ws\t-1.xsd" />
     <Exec Command="svcutil /namespace:*,NotificationSubscriptionManagerWSNameSpace /directory:target\services src\main\resources\notification-ws\notification-subscription-manager.wsdl src\main\resources\notification-ws\b-2.xsd src\main\resources\notification-ws\bf-2.xsd src\main\resources\ws-addr.xsd src\main\resources\notification-ws\t-1.xsd" />
     <Exec Command="svcutil /namespace:*,PaymentWSNameSpace /directory:target\services src\main\resources\payment-ws\safe-online-payment-4.0.wsdl src\main\resources\payment-ws\safe-online-payment-4.0.xsd src\main\resources\ws-addr.xsd src\main\resources\xmldsig-core-schema.xsd src\main\resources\xenc-schema.xsd src\main\resources\safe-online-common.xsd" />
-    <Exec Command="svcutil /namespace:*,LTQRWSNameSpace /directory:target\services src\main\resources\ltqr-ws\safe-online-ltqr-3.0.wsdl src\main\resources\ltqr-ws\safe-online-ltqr-3.0.xsd src\main\resources\safe-online-common.xsd" />
+    <Exec Command="svcutil /namespace:*,LTQRWSNameSpace /directory:target\services src\main\resources\ltqr-ws\safe-online-ltqr-4.0.wsdl src\main\resources\ltqr-ws\safe-online-ltqr-4.0.xsd src\main\resources\safe-online-common.xsd" />
     <Exec Command="svcutil /namespace:*,HawsWSNameSpace /directory:target\services src\main\resources\haws-ws\safe-online-haws.wsdl src\main\resources\haws-ws\safe-online-haws.xsd" />
     <Exec Command="svcutil /namespace:*,AuthWSNameSpace /directory:target\services src\main\resources\auth-ws\safe-online-auth.wsdl src\main\resources\auth-ws\safe-online-auth.xsd" />
     <Exec Command="svcutil /namespace:*,MandateWSNameSpace /directory:target\services src\main\resources\mandate-ws\safe-online-mandate-2.0.wsdl src\main\resources\mandate-ws\safe-online-mandate-2.0.xsd src\main\resources\safe-online-common.xsd" />

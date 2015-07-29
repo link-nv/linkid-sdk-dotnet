@@ -1,15 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:net:lin-k:safe-online:ltqr:3.0" xmlns:tns="urn:net:lin-k:safe-online:ltqr:3.0"
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:net:lin-k:safe-online:ltqr:4.0" xmlns:tns="urn:net:lin-k:safe-online:ltqr:4.0"
         xmlns:com="urn:net:lin-k:safe-online:common" elementFormDefault="qualified">
-
-	<annotation>
-		<documentation>
-			Document identifier: safe-online-ltqr
-			Revision history:
-			V2.0 (December, 2014):
-			Initial Standard Schema.
-		</documentation>
-	</annotation>
 
     <import schemaLocation="safe-online-common.xsd" namespace="urn:net:lin-k:safe-online:common" />
 
@@ -68,6 +59,11 @@
                         <documentation>optional landing page for an authn/payment started on iOS browser</documentation>
                     </annotation>
                 </element>
+                <element name="pollingConfiguration" type="tns:PollingConfiguration" minOccurs="0" maxOccurs="1">
+                    <annotation>
+                        <documentation>Optional polling configuration, if not specified linkID defaults</documentation>
+                    </annotation>
+                </element>
             </sequence>
             <attribute name="oneTimeUse" type="boolean" use="required">
                 <annotation>
@@ -83,6 +79,11 @@
                 <annotation>
                     <documentation>Expiry duration of the long term session. Expressed in number of seconds starting from the creation.
                         Do not mix this attribute with expiryDate. If so, expiryDate will be preferred.</documentation>
+                </annotation>
+            </attribute>
+            <attribute name="waitForUnlock" type="boolean" use="required">
+                <annotation>
+                    <documentation>Marks the LTQR to wait for an explicit unlock call. This only makes sense for single-use LTQR codes. Unlock the LTQR with the change operation with unlock=true</documentation>
                 </annotation>
             </attribute>
 		</complexType>
@@ -157,6 +158,11 @@
                         <documentation>optional landing page for an authn/payment started on iOS browser</documentation>
                     </annotation>
                 </element>
+                <element name="pollingConfiguration" type="tns:PollingConfiguration" minOccurs="0" maxOccurs="1">
+                    <annotation>
+                        <documentation>Optional polling configuration, if not specified linkID defaults</documentation>
+                    </annotation>
+                </element>
             </sequence>
             <attribute name="resetUsed" type="boolean" use="optional">
                 <annotation>
@@ -172,6 +178,16 @@
                 <annotation>
                     <documentation>Expiry duration of the long term session. Expressed in number of seconds starting from the creation.
                         Do not mix this attribute with expiryDate. If so, expiryDate will be preferred.</documentation>
+                </annotation>
+            </attribute>
+            <attribute name="waitForUnlock" type="boolean" use="required">
+                <annotation>
+                    <documentation>Marks the LTQR to wait for an explicit unlock call. This only makes sense for single-use LTQR codes. Unlock the LTQR with the change operation with unlock=true</documentation>
+                </annotation>
+            </attribute>
+            <attribute name="unlock" type="boolean" use="required">
+                <annotation>
+                    <documentation>Unlocks the LTQR. When the first linkID user has finished for this LTQR, it will go back to locked if waitForUnlock=true.</documentation>
                 </annotation>
             </attribute>
         </complexType>
@@ -465,6 +481,21 @@
                     <documentation>optional landing page for an authn/payment started on iOS browser</documentation>
                 </annotation>
             </element>
+            <element name="pollingConfiguration" type="tns:PollingConfiguration" minOccurs="0" maxOccurs="1">
+                <annotation>
+                    <documentation>Optional polling configuration, if not specified linkID defaults</documentation>
+                </annotation>
+            </element>
+            <element name="waitForUnlock" type="boolean" minOccurs="1" maxOccurs="1">
+                <annotation>
+                    <documentation>LTQR that is configured to wait for unlock</documentation>
+                </annotation>
+            </element>
+            <element name="locked" type="boolean" minOccurs="1" maxOccurs="1">
+                <annotation>
+                    <documentation>Is the LTQR currently locked?</documentation>
+                </annotation>
+            </element>
         </sequence>
     </complexType>
 
@@ -566,5 +597,30 @@
 			</enumeration>
 		</restriction>
 	</simpleType>
+
+    <complexType name="PollingConfiguration">
+        <sequence>
+            <element name="pollAttempts" type="int" minOccurs="0" maxOccurs="1">
+                <annotation>
+                    <documentation>Maximum poll attempts if LTQR is configured waitForUnlock=true. If not specified linkID will default. If waitForUnlock not specified ignored.</documentation>
+                </annotation>
+            </element>
+            <element name="pollInterval" type="int" minOccurs="0" maxOccurs="1">
+                <annotation>
+                    <documentation>Poll interval (in seconds) if LTQR is configured waitForUnlock=true. If not specified linkID will default. If waitForUnlock not specified ignored. Minimum is 2s.</documentation>
+                </annotation>
+            </element>
+            <element name="paymentPollAttempts" type="int" minOccurs="0" maxOccurs="1">
+                <annotation>
+                    <documentation>Maximum payment poll attempts. If LTQR without payment context ignored.</documentation>
+                </annotation>
+            </element>
+            <element name="paymentPollInterval" type="int" minOccurs="0" maxOccurs="1">
+                <annotation>
+                    <documentation>Payment poll interval (in seconds). If LTQR without payment context ignored. Minimum is 2s.</documentation>
+                </annotation>
+            </element>
+        </sequence>
+    </complexType>
 
 </schema>

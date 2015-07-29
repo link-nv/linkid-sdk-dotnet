@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" targetNamespace="urn:net:lin-k:safe-online:ltqr:3.0"
-             xmlns:tns="urn:net:lin-k:safe-online:ltqr:3.0" name="SafeOnlineLTQR30WebService">
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" targetNamespace="urn:net:lin-k:safe-online:ltqr:4.0"
+             xmlns:tns="urn:net:lin-k:safe-online:ltqr:4.0" name="SafeOnlineLTQR40WebService">
     <types>
         <schema xmlns="http://www.w3.org/2001/XMLSchema">
-            <import namespace="urn:net:lin-k:safe-online:ltqr:3.0" schemaLocation="safe-online-ltqr-3.0.xsd" />
+            <import namespace="urn:net:lin-k:safe-online:ltqr:4.0" schemaLocation="safe-online-ltqr-4.0.xsd" />
         </schema>
     </types>
 
@@ -82,7 +82,7 @@
     <binding name="LTQRServiceBinding" type="tns:LTQRServicePort">
         <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
         <operation name="push">
-            <soap:operation soapAction="urn:net:lin-k:safe-online:ltqr:3.0:push" />
+            <soap:operation soapAction="urn:net:lin-k:safe-online:ltqr:4.0:push" />
             <input>
                 <soap:body use="literal" />
             </input>
@@ -91,7 +91,7 @@
             </output>
         </operation>
         <operation name="change">
-            <soap:operation soapAction="urn:net:lin-k:safe-online:ltqr:3.0:change" />
+            <soap:operation soapAction="urn:net:lin-k:safe-online:ltqr:4.0:change" />
             <input>
                 <soap:body use="literal" />
             </input>
@@ -100,7 +100,7 @@
             </output>
         </operation>
         <operation name="pull">
-            <soap:operation soapAction="urn:net:lin-k:safe-online:ltqr:3.0:pull" />
+            <soap:operation soapAction="urn:net:lin-k:safe-online:ltqr:4.0:pull" />
             <input>
                 <soap:body use="literal" />
             </input>
@@ -109,7 +109,7 @@
             </output>
         </operation>
         <operation name="remove">
-            <soap:operation soapAction="urn:net:lin-k:safe-online:ltqr:3.0:remove" />
+            <soap:operation soapAction="urn:net:lin-k:safe-online:ltqr:4.0:remove" />
             <input>
                 <soap:body use="literal" />
             </input>
@@ -118,7 +118,7 @@
             </output>
         </operation>
         <operation name="info">
-            <soap:operation soapAction="urn:net:lin-k:safe-online:ltqr:3.0:info" />
+            <soap:operation soapAction="urn:net:lin-k:safe-online:ltqr:4.0:info" />
             <input>
                 <soap:body use="literal" />
             </input>
@@ -132,7 +132,7 @@
 
     <service name="LTQRService">
         <port name="LTQRServicePort" binding="tns:LTQRServiceBinding">
-            <soap:address location="http://localhost:8080/${safe-online.ws.webapp.url}/ltqr3/" />
+            <soap:address location="http://localhost:8080/${safe-online.ws.webapp.url}/ltqr4/" />
         </port>
     </service>
 </definitions>

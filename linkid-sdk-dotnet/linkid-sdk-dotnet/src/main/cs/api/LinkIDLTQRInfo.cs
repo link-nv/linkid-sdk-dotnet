@@ -31,13 +31,19 @@ namespace safe_online_sdk_dotnet
         public String mobileLandingSuccess { get; private set; }
         public String mobileLandingError{ get; private set; }
         public String mobileLandingCancel { get; private set; }
+        //
+        public LinkIDLTQRPollingConfiguration pollingConfiguration { get; private set; }
+        //
+        public bool waitForUnlock { get; private set; }
+        public bool locked { get; private set; }
 
         public LinkIDLTQRInfo(String ltqrReference, String sessionId, DateTime created,
             byte[] qrCodeImage, String qrCodeURL, String authenticationMessage, String finishedMessage,
             bool oneTimeUse, DateTime expiryDate, Nullable<long> expiryDuration,
             LinkIDPaymentContext paymentContext, LinkIDCallback callback, String[] identityProfiles,
             Nullable<long> sessionExpiryOverride, String theme,
-            String mobileLandingSuccess, String mobileLandingError, String mobileLandingCancel)
+            String mobileLandingSuccess, String mobileLandingError, String mobileLandingCancel,
+            LinkIDLTQRPollingConfiguration pollingConfiguration, bool waitForUnlock, bool locked)
         {
             this.ltqrReference = ltqrReference;
             this.sessionId = sessionId;
@@ -57,6 +63,9 @@ namespace safe_online_sdk_dotnet
             this.mobileLandingSuccess = mobileLandingSuccess;
             this.mobileLandingError = mobileLandingError;
             this.mobileLandingCancel = mobileLandingCancel;
+            this.pollingConfiguration = pollingConfiguration;
+            this.waitForUnlock = waitForUnlock;
+            this.locked = locked;
         }
 
         public override String ToString()
