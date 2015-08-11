@@ -91,9 +91,12 @@ namespace safe_online_sdk_dotnet
             // parse attributes
             List<LinkIDAttribute> attributes = new List<LinkIDAttribute>();
 
-            foreach (DataType data in response.Data)
+            if (null != response.Data)
             {
-                attributes.Add(getAttribute(data.Attribute));
+                foreach (DataType data in response.Data)
+                {
+                    attributes.Add(getAttribute(data.Attribute));
+                }
             }
             return attributes;
 

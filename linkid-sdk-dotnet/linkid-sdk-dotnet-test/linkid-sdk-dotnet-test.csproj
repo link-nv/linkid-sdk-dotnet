@@ -53,7 +53,6 @@
     <Compile Include="src\test\cs\TestConstants.cs" />
     <Compile Include="src\test\cs\TestDataClient.cs" />
     <Compile Include="src\test\cs\TestHawsClient.cs" />
-    <Compile Include="src\test\cs\TestIdMapping.cs" />
     <Compile Include="src\test\cs\TestLTQRClient.cs" />
     <Compile Include="src\test\cs\TestSaml.cs" />
   </ItemGroup>

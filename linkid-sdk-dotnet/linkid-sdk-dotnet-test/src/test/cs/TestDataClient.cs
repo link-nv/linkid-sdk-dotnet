@@ -23,26 +23,29 @@ namespace safe_online_sdk_dotnet.test.cs
         }
 
         [Test]
-        public void TestDataWSUsername()
+        public void TestDataWSUsername1()
         {
-            IdMappingClient idMappingClient =
-                new IdMappingClientImpl(TestConstants.wsLocation, TestConstants.testWsUsername, TestConstants.testWsPassword);
             DataClient dataClient = new DataClientImpl(TestConstants.wsLocation, TestConstants.testWsUsername, TestConstants.testWsPassword);
             dataClient.enableLogging();
 
-            dataWSTest(idMappingClient, dataClient);
+            String userId = "e4269366-ddfb-43dc-838d-01569a8c4c22";
+            String attributeName = "<your-data-attribute>";
+
+            // Get
+            List<LinkIDAttribute> attributes = dataClient.getAttributes(userId, attributeName);
+            Assert.AreEqual(0, attributes.Count);
         }
 
-        private void dataWSTest(IdMappingClient idMappingClient, DataClient dataClient)
+        [Test]
+        public void TestDataWSUsername2()
         {
-            String attributeName = "profile.familyName";
-            String value = "Family Name";
-            String value2 = "Family Name 2";
+            DataClient dataClient = new DataClientImpl(TestConstants.wsLocation, TestConstants.testWsUsername, TestConstants.testWsPassword);
+            dataClient.enableLogging();
 
-
-            // first fetch userId
-            String userId = idMappingClient.getUserId(TestConstants.loginAttribute, TestConstants.testLogin);
-            Console.WriteLine("admin userId: " + userId);
+            String userId = "e4269366-ddfb-43dc-838d-01569a8c4c22";
+            String attributeName = "<your-data-attribute>";
+            String value = "Value 1";
+            String value2 = "Value 2";
 
             // Remove old attribute if any
             dataClient.removeAttributes(userId, attributeName); 
