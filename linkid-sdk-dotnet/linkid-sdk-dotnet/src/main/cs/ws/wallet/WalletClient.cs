@@ -11,9 +11,10 @@ namespace safe_online_sdk_dotnet
         /// <param name="walletOrganizationId">the wallet organization ID</param>
         /// <param name="amount">the optional initial amount</param>
         /// <param name="currency">the optional currency of the initial amount</param>
+        /// <param name="walletCoin">the optional wallet coin of the initial amount</param>
         /// <returns>the wallet ID</returns>
         /// <exception cref="WalletEnrollException">Something went wrong, check the error code in the exception</exception>
-        String enroll(String userId, String walletOrganizationId, double amount, LinkIDCurrency currency);
+        String enroll(String userId, String walletOrganizationId, double amount, LinkIDCurrency currency, String walletCoin);
 
         /// <summary>
         /// Get info about a wallet for specified user and wallet organization
@@ -31,8 +32,9 @@ namespace safe_online_sdk_dotnet
         /// <param name="walletId">the wallet ID of the linkID user</param>
         /// <param name="amount">amount to add</param>
         /// <param name="currency">currency of amount to add</param>
+        /// <param name="walletCoin">the optional wallet coin of the initial amount</param>
         /// <exception cref="WalletAddCreditException">Something went wrong, check the error code in the exception</exception>
-        void addCredit(String userId, String walletId, double amount, LinkIDCurrency currency);
+        void addCredit(String userId, String walletId, double amount, LinkIDCurrency currency, String walletCoin);
 
         /// <summary>
         /// Remove credit for specific user/wallet
@@ -41,8 +43,9 @@ namespace safe_online_sdk_dotnet
         /// <param name="walletId">the wallet ID of the linkID user</param>
         /// <param name="amount">amount to remove</param>
         /// <param name="currency">currency of amount to remove</param>
+        /// <param name="walletCoin">the optional wallet coin of the initial amount</param>
         /// <exception cref="WalletRemoveCreditException">Something went wrong, check the error code in the exception</exception>
-        void removeCredit(String userId, String walletId, double amount, LinkIDCurrency currency);
+        void removeCredit(String userId, String walletId, double amount, LinkIDCurrency currency, String walletCoin);
 
         /// <summary>
         /// Remove specified wallet

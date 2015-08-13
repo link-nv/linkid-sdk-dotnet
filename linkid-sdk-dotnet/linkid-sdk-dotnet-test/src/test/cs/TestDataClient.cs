@@ -29,7 +29,7 @@ namespace safe_online_sdk_dotnet.test.cs
             dataClient.enableLogging();
 
             String userId = "e4269366-ddfb-43dc-838d-01569a8c4c22";
-            String attributeName = "<your-data-attribute>";
+            String attributeName = "guido.data.future.plans";
 
             // Get
             List<LinkIDAttribute> attributes = dataClient.getAttributes(userId, attributeName);
@@ -43,7 +43,7 @@ namespace safe_online_sdk_dotnet.test.cs
             dataClient.enableLogging();
 
             String userId = "e4269366-ddfb-43dc-838d-01569a8c4c22";
-            String attributeName = "<your-data-attribute>";
+            String attributeName = "guido.data.future.plans";
             String value = "Value 1";
             String value2 = "Value 2";
 
