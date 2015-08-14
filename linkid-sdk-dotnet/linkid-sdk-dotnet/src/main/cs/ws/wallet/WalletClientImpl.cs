@@ -36,7 +36,11 @@ namespace safe_online_sdk_dotnet
             // input
             request.userId = userId;
             request.walletOrganizationId = walletOrganizationId;
-            request.amount = amount;
+            if (amount > 0)
+            {
+                request.amount = amount;
+                request.amountSpecified = true;
+            }
             if (null != currency)
             {
                 request.currencySpecified = true;
@@ -95,6 +99,7 @@ namespace safe_online_sdk_dotnet
             request.userId = userId;
             request.walletId = walletId;
             request.amount = amount;
+            request.amountSpecified = true;
             if (null != currency)
             {
                 request.currencySpecified = true;
@@ -129,6 +134,7 @@ namespace safe_online_sdk_dotnet
             request.userId = userId;
             request.walletId = walletId;
             request.amount = amount;
+            request.amountSpecified = true;
             if (null != currency)
             {
                 request.currencySpecified = true;
