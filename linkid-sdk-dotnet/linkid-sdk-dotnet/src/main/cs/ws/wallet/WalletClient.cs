@@ -14,7 +14,7 @@ namespace safe_online_sdk_dotnet
         /// <param name="walletCoin">the optional wallet coin of the initial amount</param>
         /// <returns>the wallet ID</returns>
         /// <exception cref="WalletEnrollException">Something went wrong, check the error code in the exception</exception>
-        String enroll(String userId, String walletOrganizationId, double amount, LinkIDCurrency currency, String walletCoin);
+        String enroll(String userId, String walletOrganizationId, double amount, Nullable<LinkIDCurrency> currency, String walletCoin);
 
         /// <summary>
         /// Get info about a wallet for specified user and wallet organization
@@ -34,7 +34,7 @@ namespace safe_online_sdk_dotnet
         /// <param name="currency">currency of amount to add</param>
         /// <param name="walletCoin">the optional wallet coin of the initial amount</param>
         /// <exception cref="WalletAddCreditException">Something went wrong, check the error code in the exception</exception>
-        void addCredit(String userId, String walletId, double amount, LinkIDCurrency currency, String walletCoin);
+        void addCredit(String userId, String walletId, double amount, Nullable<LinkIDCurrency> currency, String walletCoin);
 
         /// <summary>
         /// Remove credit for specific user/wallet
@@ -45,7 +45,7 @@ namespace safe_online_sdk_dotnet
         /// <param name="currency">currency of amount to remove</param>
         /// <param name="walletCoin">the optional wallet coin of the initial amount</param>
         /// <exception cref="WalletRemoveCreditException">Something went wrong, check the error code in the exception</exception>
-        void removeCredit(String userId, String walletId, double amount, LinkIDCurrency currency, String walletCoin);
+        void removeCredit(String userId, String walletId, double amount, Nullable<LinkIDCurrency> currency, String walletCoin);
 
         /// <summary>
         /// Remove specified wallet

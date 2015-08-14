@@ -29,7 +29,7 @@ namespace safe_online_sdk_dotnet
             this.client.Endpoint.Behaviors.Add(new LoggingBehavior());
         }
 
-        public String enroll(String userId, String walletOrganizationId, double amount, LinkIDCurrency currency, String walletCoin)
+        public String enroll(String userId, String walletOrganizationId, double amount, Nullable<LinkIDCurrency> currency, String walletCoin)
         {
             WalletEnrollRequest request = new WalletEnrollRequest();
 
@@ -37,8 +37,15 @@ namespace safe_online_sdk_dotnet
             request.userId = userId;
             request.walletOrganizationId = walletOrganizationId;
             request.amount = amount;
-            request.currency = convert(currency);
-            request.walletCoin = walletCoin;
+            if (null != currency)
+            {
+                request.currencySpecified = true;
+                request.currency = convert(currency.Value);
+            }
+            if (null != walletCoin)
+            {
+                request.walletCoin = walletCoin;
+            }
 
             WalletEnrollResponse response = this.client.enroll(request);
 
@@ -80,7 +87,7 @@ namespace safe_online_sdk_dotnet
             throw new RuntimeException("No success nor error element in the response ?!");
         }
 
-        public void addCredit(String userId, String walletId, double amount, LinkIDCurrency currency, String walletCoin)
+        public void addCredit(String userId, String walletId, double amount, Nullable<LinkIDCurrency> currency, String walletCoin)
         {
             WalletAddCreditRequest request = new WalletAddCreditRequest();
 
@@ -88,8 +95,15 @@ namespace safe_online_sdk_dotnet
             request.userId = userId;
             request.walletId = walletId;
             request.amount = amount;
-            request.currency = convert(currency);
-            request.walletCoin = walletCoin;
+            if (null != currency)
+            {
+                request.currencySpecified = true;
+                request.currency = convert(currency.Value);
+            }
+            if (null != walletCoin)
+            {
+                request.walletCoin = walletCoin;
+            }
 
             WalletAddCreditResponse response = this.client.addCredit(request);
 
@@ -107,7 +121,7 @@ namespace safe_online_sdk_dotnet
             throw new RuntimeException("No success nor error element in the response ?!");
         }
 
-        public void removeCredit(String userId, String walletId, double amount, LinkIDCurrency currency, String walletCoin)
+        public void removeCredit(String userId, String walletId, double amount, Nullable<LinkIDCurrency> currency, String walletCoin)
         {
             WalletRemoveCreditRequest request = new WalletRemoveCreditRequest();
 
@@ -115,8 +129,15 @@ namespace safe_online_sdk_dotnet
             request.userId = userId;
             request.walletId = walletId;
             request.amount = amount;
-            request.currency = convert(currency);
-            request.walletCoin = walletCoin;
+            if (null != currency)
+            {
+                request.currencySpecified = true;
+                request.currency = convert(currency.Value);
+            }
+            if (null != walletCoin)
+            {
+                request.walletCoin = walletCoin;
+            }
 
             WalletRemoveCreditResponse response = this.client.removeCredit(request);
 
