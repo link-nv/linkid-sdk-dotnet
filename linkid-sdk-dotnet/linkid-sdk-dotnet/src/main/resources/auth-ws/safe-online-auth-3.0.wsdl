@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" targetNamespace="urn:net:lin-k:safe-online:auth"
-             xmlns:tns="urn:net:lin-k:safe-online:auth" name="SafeOnlineAuthWebService">
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" targetNamespace="urn:net:lin-k:safe-online:auth:3.0"
+             xmlns:tns="urn:net:lin-k:safe-online:auth:3.0" name="SafeOnlineAuthWebService">
     <types>
         <schema xmlns="http://www.w3.org/2001/XMLSchema">
-            <import namespace="urn:net:lin-k:safe-online:auth" schemaLocation="safe-online-auth.xsd" />
+            <import namespace="urn:net:lin-k:safe-online:auth:3.0" schemaLocation="safe-online-auth-3.0.xsd" />
         </schema>
     </types>
 
@@ -56,7 +56,7 @@
     <binding name="AuthServiceBinding" type="tns:AuthServicePort">
         <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
         <operation name="start">
-            <soap:operation soapAction="urn:net:lin-k:safe-online:auth:start" />
+            <soap:operation soapAction="urn:net:lin-k:safe-online:auth:3.0:start" />
             <input>
                 <soap:body use="literal" />
             </input>
@@ -65,7 +65,7 @@
             </output>
         </operation>
         <operation name="poll">
-            <soap:operation soapAction="urn:net:lin-k:safe-online:auth:poll" />
+            <soap:operation soapAction="urn:net:lin-k:safe-online:auth:3.0:poll" />
             <input>
                 <soap:body use="literal" />
             </input>
@@ -74,7 +74,7 @@
             </output>
         </operation>
         <operation name="cancel">
-            <soap:operation soapAction="urn:net:lin-k:safe-online:auth:cancel" />
+            <soap:operation soapAction="urn:net:lin-k:safe-online:auth:3.0:cancel" />
             <input>
                 <soap:body use="literal" />
             </input>
@@ -88,7 +88,7 @@
 
     <service name="AuthService">
         <port name="AuthServicePort" binding="tns:AuthServiceBinding">
-            <soap:address location="http://localhost:8080/${safe-online.ws.webapp.url}/auth/" />
+            <soap:address location="http://localhost:8080/${safe-online.ws.webapp.url}/auth30/" />
         </port>
     </service>
 </definitions>

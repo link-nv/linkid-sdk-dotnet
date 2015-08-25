@@ -23,7 +23,7 @@ namespace safe_online_sdk_dotnet
 
         public AuthClientImpl(string location, string username, string password)
 		{			
-			string address = "https://" + location + "/linkid-ws-username/auth";
+			string address = "https://" + location + "/linkid-ws-username/auth30";
 			EndpointAddress remoteAddress = new EndpointAddress(address);
 
             BasicHttpBinding binding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
@@ -38,7 +38,7 @@ namespace safe_online_sdk_dotnet
         }
 
         public AuthnSession start(Saml2AuthUtil saml2AuthUtil, AttributeWSNamespace.AuthnRequestType authnRequest, 
-            string language, string userAgent, bool forceRegistration)
+            string language, string userAgent)
         {
             StartRequest request = new StartRequest();
 
@@ -47,7 +47,6 @@ namespace safe_online_sdk_dotnet
 
             request.language = language;
             request.userAgent = userAgent;
-            request.forceRegistration = forceRegistration;
 
             // operate
             StartResponse response = this.client.start(request);

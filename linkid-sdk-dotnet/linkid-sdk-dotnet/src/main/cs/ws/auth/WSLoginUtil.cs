@@ -19,8 +19,7 @@ namespace safe_online_sdk_dotnet
 
             // send request
             AuthClient client = new AuthClientImpl(linkIDHost, username, password);
-            return client.start(saml2AuthUtil, authnRequest, linkIDContext.language, userAgent, 
-                linkIDContext.mobileForceRegistration);
+            return client.start(saml2AuthUtil, authnRequest, linkIDContext.language, userAgent);
         }
 
         public static PollResponse pollLinkIDAuthentication(string linkIDHost, string username, string password, 

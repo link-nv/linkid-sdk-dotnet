@@ -40,23 +40,11 @@ namespace safe_online_sdk_dotnet
             return "https://" + linkIDHost + "/linkid-qr/auth-min";
         }
 
-        public static string getMobileMinimalRegPath(string linkIDHost)
-        {
-            return "https://" + linkIDHost + "/linkid-qr/reg-min";
-        }
-
         public LoginConfig(HttpRequest request, HttpSessionState session, String linkIDHost, 
             LinkIDAuthenticationContext linkIDContext)
         {
-            string LINKID_MOBILE_MINIMAL_ENTRY = getMobileMinimalPath(linkIDHost);
-            string LINKID_MOBILE_REG_MINIMAL_ENTRY = getMobileMinimalRegPath(linkIDHost);
-
             targetURI = request[RequestConstants.TARGET_URI_REQUEST_PARAM];
-
-            if (linkIDContext.mobileForceRegistration)
-                linkIDLandingPage = LINKID_MOBILE_REG_MINIMAL_ENTRY;
-            else
-                linkIDLandingPage = LINKID_MOBILE_MINIMAL_ENTRY;
+            linkIDLandingPage = getMobileMinimalPath(linkIDHost);
 
             // store on session
             session[SESSION_LOGIN_CONFIG] = this;

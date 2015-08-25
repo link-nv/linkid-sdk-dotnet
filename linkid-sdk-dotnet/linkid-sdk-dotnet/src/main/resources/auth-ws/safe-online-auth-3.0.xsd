@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:net:lin-k:safe-online:auth" xmlns:tns="urn:net:lin-k:safe-online:auth"
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:net:lin-k:safe-online:auth:3.0" xmlns:tns="urn:net:lin-k:safe-online:auth:3.0"
         elementFormDefault="qualified">
 
 	<annotation>
 		<documentation>
 			Document identifier: safe-online-auth
 			Revision history:
-			V1.0 (April, 2014):
+			V3.0 (August 24, 2015):
 			Initial Standard Schema.
 		</documentation>
 	</annotation>
@@ -33,11 +33,6 @@
             <attribute name="userAgent" type="string" use="optional">
                 <annotation>
                     <documentation>Optional user agent string, for adding e.g. callback params to the QR code URL, android chrome URL needs to be http://linkidmauthurl/MAUTH/2/zUC8oA/eA==, ...</documentation>
-                </annotation>
-            </attribute>
-            <attribute name="forceRegistration" type="boolean" use="optional">
-                <annotation>
-                    <documentation>Force registration?</documentation>
                 </annotation>
             </attribute>
         </complexType>
@@ -92,6 +87,11 @@
 			<enumeration value="error.request.invalid">
 				<annotation>
 					<documentation>The authentication request was invalid</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="error.maintenance">
+				<annotation>
+					<documentation>linkID is down for maintenance</documentation>
 				</annotation>
 			</enumeration>
 		</restriction>
@@ -228,6 +228,11 @@
 					<documentation>No linkID authentication was found with this sessionId</documentation>
 				</annotation>
 			</enumeration>
+			<enumeration value="error.maintenance">
+				<annotation>
+					<documentation>linkID is down for maintenance</documentation>
+				</annotation>
+			</enumeration>
 		</restriction>
 	</simpleType>
 
@@ -277,6 +282,11 @@
 			<enumeration value="error.unexpected">
 				<annotation>
 					<documentation>Something went wrong trying to cancel the linkID authentication session</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="error.maintenance">
+				<annotation>
+					<documentation>linkID is down for maintenance</documentation>
 				</annotation>
 			</enumeration>
 		</restriction>

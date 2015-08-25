@@ -38,7 +38,6 @@ namespace safe_online_sdk_dotnet
         public String mobileLandingError { get; set; }
         public String mobileLandingCancel { get; set; }
 
-        public bool mobileForceRegistration { get; set; }
         public bool forceAuthentication { get; set; }
         public Dictionary<string, List<Object>> attributeSuggestions { get; set; }
         public LinkIDPaymentContext paymentContext { get; set; }
