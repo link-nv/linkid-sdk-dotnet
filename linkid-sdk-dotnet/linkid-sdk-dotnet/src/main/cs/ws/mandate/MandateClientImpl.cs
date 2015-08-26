@@ -22,7 +22,7 @@ namespace safe_online_sdk_dotnet
 
         public MandateClientImpl(string location, string username, string password)
 		{			
-			string address = "https://" + location + "/linkid-ws-username/mandate20";
+			string address = "https://" + location + "/linkid-ws-username/mandate30";
 			EndpointAddress remoteAddress = new EndpointAddress(address);
 
             BasicHttpBinding binding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
@@ -54,6 +54,7 @@ namespace safe_online_sdk_dotnet
             paymentContext.validationTime = linkIDPaymentContext.paymentValidationTime;
             paymentContext.allowPartial = linkIDPaymentContext.allowPartial;
             paymentContext.onlyWallets = linkIDPaymentContext.onlyWallets;
+            paymentContext.paymentStatusLocation = linkIDPaymentContext.paymentStatusLocation;
             request.paymentContext = paymentContext;
 
             request.mandateReference = mandateReference;

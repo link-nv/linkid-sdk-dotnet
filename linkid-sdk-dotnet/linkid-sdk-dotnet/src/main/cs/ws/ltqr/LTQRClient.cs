@@ -32,6 +32,7 @@ namespace safe_online_sdk_dotnet
         /// <param name="mobileLandingCancel">optional landing page for an authn/payment started on iOS browser</param>
         /// <param name="pollingConfiguration">Optional polling configuration</param>
         /// <param name="waitForUnlock">Marks the LTQR to wait for an explicit unlock call. This only makes sense for single-use LTQR codes. Unlock the LTQR with the change operation with unlock=true</param>
+        /// <param name="ltqrStatusLocation">Optional LTQR status location</param>
         /// <returns>Success object containing the QR in PNG format, the content of the QR code and the LTQR reference of the created long term session
         /// This LTQR reference will be used in the notifications to the service provider.</returns>
         /// <exception cref="PushException">Something went wrong, check the error code what</exception>
@@ -39,7 +40,7 @@ namespace safe_online_sdk_dotnet
             bool oneTimeUse, Nullable<DateTime> expiryDate, Nullable<long> expiryDuration,
             LinkIDCallback callback, List<String> identityProfiles, Nullable<long> sessionExpiryOverride, String theme,
             String mobileLandingSuccess, String mobileLandingError, String mobileLandingCancel, 
-            LinkIDLTQRPollingConfiguration pollingConfiguration, bool waitForUnlock);
+            LinkIDLTQRPollingConfiguration pollingConfiguration, bool waitForUnlock, String ltqrStatusLocation);
 
         /// <summary>
         /// Change ﻿Change an existing long term QR code
@@ -62,12 +63,13 @@ namespace safe_online_sdk_dotnet
         /// <param name="pollingConfiguration">Optional polling configuration</param>
         /// <param name="waitForUnlock">Marks the LTQR to wait for an explicit unlock call. This only makes sense for single-use LTQR codes. Unlock the LTQR with the change operation with unlock=true</param>
         /// <param name="unlock">Unlocks the LTQR. When the first linkID user has finished for this LTQR, it will go back to locked if waitForUnlock=true</param>
+        /// <param name="ltqrStatusLocation">Optional LTQR status location</param>
         /// <exception cref="ChangeException">Something went wrong, check the error code what</exception>
         LTQRSession change(String ltqrReference, String authenticationMessage, String finishedMessage,
             LinkIDPaymentContext paymentContext, Nullable<DateTime> expiryDate, Nullable<long> expiryDuration,
             LinkIDCallback callback, List<String> identityProfiles, Nullable<long> sessionExpiryOverride, String theme,
             String mobileLandingSuccess, String mobileLandingError, String mobileLandingCancel, bool resetUsed,
-            LinkIDLTQRPollingConfiguration pollingConfiguration, bool waitForUnlock, bool unlock);
+            LinkIDLTQRPollingConfiguration pollingConfiguration, bool waitForUnlock, bool unlock, String ltqrStatusLocation);
 
         /// <summary>
         /// Fetch a set of client sessions

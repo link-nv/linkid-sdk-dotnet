@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:net:lin-k:safe-online:capture" xmlns:tns="urn:net:lin-k:safe-online:capture"
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:net:lin-k:safe-online:capture:2.0" xmlns:tns="urn:net:lin-k:safe-online:capture:2.0"
         elementFormDefault="qualified">
 
 	<annotation>
 		<documentation>
 			Document identifier: safe-online-capture
 			Revision history:
-			V1.0 (January, 2015):
+			V2.0 (August, 2015):
 			Initial Standard Schema.
 		</documentation>
 	</annotation>
@@ -47,6 +47,11 @@
 			<enumeration value="error.capture.failed">
 				<annotation>
 					<documentation>Could not capture this payment for an unexpected reason</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="error.maintenance">
+				<annotation>
+					<documentation>linkID is down for maintenance</documentation>
 				</annotation>
 			</enumeration>
 		</restriction>

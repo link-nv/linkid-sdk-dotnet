@@ -23,7 +23,7 @@ namespace safe_online_sdk_dotnet
 
         public HawsClientImpl(string location, string username, string password)
 		{			
-			string address = "https://" + location + "/linkid-ws-username/haws";
+			string address = "https://" + location + "/linkid-ws-username/haws20";
 			EndpointAddress remoteAddress = new EndpointAddress(address);
 
             BasicHttpBinding binding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
@@ -39,7 +39,7 @@ namespace safe_online_sdk_dotnet
 
         public string push(AttributeWSNamespace.AuthnRequestType authnRequest, string language)
         {
-            PushRequestV2 request = new PushRequestV2();
+            PushRequest request = new PushRequest();
 
             XmlDocument authnRequestDocument = Saml2AuthUtil.toXmlDocument(authnRequest);
             request.Any = authnRequestDocument.DocumentElement;
@@ -47,7 +47,7 @@ namespace safe_online_sdk_dotnet
             request.language = language;
 
             // operate
-            PushResponse response = this.client.pushV2(request);
+            PushResponse response = this.client.push(request);
 
             // parse response
             if (null != response.error)

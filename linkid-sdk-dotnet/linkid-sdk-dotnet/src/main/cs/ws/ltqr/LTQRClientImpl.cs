@@ -20,7 +20,7 @@ namespace safe_online_sdk_dotnet
 
         public LTQRClientImpl(string location, string username, string password)
 		{			
-			string address = "https://" + location + "/linkid-ws-username/ltqr40";
+			string address = "https://" + location + "/linkid-ws-username/ltqr50";
 			EndpointAddress remoteAddress = new EndpointAddress(address);
 
             BasicHttpBinding binding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
@@ -38,7 +38,7 @@ namespace safe_online_sdk_dotnet
             bool oneTimeUse, Nullable<DateTime> expiryDate, Nullable<long> expiryDuration,
             LinkIDCallback callback, List<String> identityProfiles, Nullable<long> sessionExpiryOverride, String theme,
             String mobileLandingSuccess, String mobileLandingError, String mobileLandingCancel,
-            LinkIDLTQRPollingConfiguration pollingConfiguration, bool waitForUnlock)
+            LinkIDLTQRPollingConfiguration pollingConfiguration, bool waitForUnlock, String ltqrStatusLocation)
         {
             PushRequest request = new PushRequest();
 
@@ -62,11 +62,14 @@ namespace safe_online_sdk_dotnet
                 paymentContext.validationTime = linkIDPaymentContext.paymentValidationTime;
                 paymentContext.validationTimeSpecified = true;
                 paymentContext.mandate = null != linkIDPaymentContext.mandate;
+
                 if (null != linkIDPaymentContext.mandate)
                 {
                     paymentContext.mandateDescription = linkIDPaymentContext.mandate.description;
                     paymentContext.mandateReference = linkIDPaymentContext.mandate.reference;
                 }
+
+                paymentContext.paymentStatusLocation = linkIDPaymentContext.paymentStatusLocation;
 
                 request.paymentContext = paymentContext;
             }
@@ -114,6 +117,8 @@ namespace safe_online_sdk_dotnet
             request.mobileLandingCancel = mobileLandingCancel;
             request.waitForUnlock = waitForUnlock;
 
+            request.ltqrStatusLocation = ltqrStatusLocation;
+
             // operate
             PushResponse response = this.client.push(request);
 
@@ -140,7 +145,7 @@ namespace safe_online_sdk_dotnet
             LinkIDPaymentContext linkIDPaymentContext, Nullable<DateTime> expiryDate, Nullable<long> expiryDuration,
             LinkIDCallback callback, List<String> identityProfiles, Nullable<long> sessionExpiryOverride, String theme,
             String mobileLandingSuccess, String mobileLandingError, String mobileLandingCancel, bool resetUsed,
-            LinkIDLTQRPollingConfiguration pollingConfiguration, bool waitForUnlock, bool unlock)
+            LinkIDLTQRPollingConfiguration pollingConfiguration, bool waitForUnlock, bool unlock, String ltqrStatusLocation)
         {
             ChangeRequest request = new ChangeRequest();
             request.ltqrReference = ltqrReference;
@@ -164,6 +169,8 @@ namespace safe_online_sdk_dotnet
                 paymentContext.paymentProfile = linkIDPaymentContext.paymentProfile;
                 paymentContext.validationTime = linkIDPaymentContext.paymentValidationTime;
                 paymentContext.validationTimeSpecified = true;
+
+                paymentContext.paymentStatusLocation = linkIDPaymentContext.paymentStatusLocation;
 
                 request.paymentContext = paymentContext;
             }
@@ -214,6 +221,8 @@ namespace safe_online_sdk_dotnet
 
             request.waitForUnlock = waitForUnlock;
             request.unlock = unlock;
+
+            request.ltqrStatusLocation = ltqrStatusLocation;
 
             // operate
             ChangeResponse response = this.client.change(request);
@@ -353,7 +362,7 @@ namespace safe_online_sdk_dotnet
                         ltqrInfo.sessionExpiryOverrideSpecified? ltqrInfo.sessionExpiryOverride : 0,
                         ltqrInfo.theme, ltqrInfo.mobileLandingSuccess, ltqrInfo.mobileLandingError, 
                         ltqrInfo.mobileLandingCancel, convert(ltqrInfo.pollingConfiguration), 
-                        ltqrInfo.waitForUnlock, ltqrInfo.locked));
+                        ltqrInfo.waitForUnlock, ltqrInfo.locked, ltqrInfo.ltqrStatusLocation));
                 }
 
                 return infos;

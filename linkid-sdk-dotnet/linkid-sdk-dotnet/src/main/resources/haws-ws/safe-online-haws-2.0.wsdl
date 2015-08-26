@@ -1,17 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" targetNamespace="urn:net:lin-k:safe-online:haws"
-             xmlns:tns="urn:net:lin-k:safe-online:haws" name="SafeOnlineHAWSWebService">
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" targetNamespace="urn:net:lin-k:safe-online:haws:2.0"
+             xmlns:tns="urn:net:lin-k:safe-online:haws:2.0" name="SafeOnlineHAWSWebService">
     <types>
         <schema xmlns="http://www.w3.org/2001/XMLSchema">
-            <import namespace="urn:net:lin-k:safe-online:haws" schemaLocation="safe-online-haws.xsd" />
+            <import namespace="urn:net:lin-k:safe-online:haws:2.0" schemaLocation="safe-online-haws-2.0.xsd" />
         </schema>
     </types>
-
-    <!-- =================== Push request v2 ========================= -->
-
-    <message name="pushRequestV2">
-		<part name="request" element="tns:PushRequestV2" />
-	</message>
 
     <!-- =================== Push request ========================= -->
 
@@ -38,10 +32,6 @@
 			<input message="tns:pushRequest" />
 			<output message="tns:pushResponse" />
 		</operation>
-		<operation name="pushV2">
-			<input message="tns:pushRequestV2" />
-			<output message="tns:pushResponse" />
-		</operation>
 		<operation name="pull">
 			<input message="tns:pullRequest" />
 			<output message="tns:pullResponse" />
@@ -53,16 +43,7 @@
     <binding name="HawsServiceBinding" type="tns:HawsServicePort">
         <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
         <operation name="push">
-            <soap:operation soapAction="urn:net:lin-k:safe-online:haws:push" />
-            <input>
-                <soap:body use="literal" />
-            </input>
-            <output>
-                <soap:body use="literal" />
-            </output>
-        </operation>
-        <operation name="pushV2">
-            <soap:operation soapAction="urn:net:lin-k:safe-online:haws:pushV2" />
+            <soap:operation soapAction="urn:net:lin-k:safe-online:haws:2.0:push" />
             <input>
                 <soap:body use="literal" />
             </input>
@@ -71,7 +52,7 @@
             </output>
         </operation>
         <operation name="pull">
-            <soap:operation soapAction="urn:net:lin-k:safe-online:haws:pull" />
+            <soap:operation soapAction="urn:net:lin-k:safe-online:haws:2.0:pull" />
             <input>
                 <soap:body use="literal" />
             </input>
@@ -85,7 +66,7 @@
 
     <service name="HawsService">
         <port name="HawsServicePort" binding="tns:HawsServiceBinding">
-            <soap:address location="http://localhost:8080/${safe-online.ws.webapp.url}/haws/" />
+            <soap:address location="http://localhost:8080/${safe-online.ws.webapp.url}/haws20/" />
         </port>
     </service>
 </definitions>

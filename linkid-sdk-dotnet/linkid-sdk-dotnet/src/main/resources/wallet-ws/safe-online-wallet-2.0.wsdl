@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" targetNamespace="urn:net:lin-k:safe-online:wallet"
-             xmlns:tns="urn:net:lin-k:safe-online:wallet" name="SafeOnlineWalletWebService">
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" targetNamespace="urn:net:lin-k:safe-online:wallet:2.0"
+             xmlns:tns="urn:net:lin-k:safe-online:wallet:2.0" name="SafeOnlineWalletWebService">
     <types>
         <schema xmlns="http://www.w3.org/2001/XMLSchema">
-            <import namespace="urn:net:lin-k:safe-online:wallet" schemaLocation="safe-online-wallet.xsd" />
+            <import namespace="urn:net:lin-k:safe-online:wallet:2.0" schemaLocation="safe-online-wallet-2.0.xsd" />
         </schema>
     </types>
 
@@ -108,7 +108,7 @@
     <binding name="WalletServiceBinding" type="tns:WalletServicePort">
         <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
         <operation name="enroll">
-            <soap:operation soapAction="urn:net:lin-k:safe-online:wallet:enroll" />
+            <soap:operation soapAction="urn:net:lin-k:safe-online:wallet:2.0:enroll" />
             <input>
                 <soap:body use="literal" />
             </input>
@@ -117,7 +117,7 @@
             </output>
         </operation>
         <operation name="getInfo">
-            <soap:operation soapAction="urn:net:lin-k:safe-online:wallet:getInfo" />
+            <soap:operation soapAction="urn:net:lin-k:safe-online:wallet:2.0:getInfo" />
             <input>
                 <soap:body use="literal" />
             </input>
@@ -126,7 +126,7 @@
             </output>
         </operation>
         <operation name="addCredit">
-            <soap:operation soapAction="urn:net:lin-k:safe-online:wallet:addCredit" />
+            <soap:operation soapAction="urn:net:lin-k:safe-online:wallet:2.0:addCredit" />
             <input>
                 <soap:body use="literal" />
             </input>
@@ -135,7 +135,7 @@
             </output>
         </operation>
         <operation name="removeCredit">
-            <soap:operation soapAction="urn:net:lin-k:safe-online:wallet:removeCredit" />
+            <soap:operation soapAction="urn:net:lin-k:safe-online:wallet:2.0:removeCredit" />
             <input>
                 <soap:body use="literal" />
             </input>
@@ -144,7 +144,7 @@
             </output>
         </operation>
         <operation name="remove">
-            <soap:operation soapAction="urn:net:lin-k:safe-online:wallet:remove" />
+            <soap:operation soapAction="urn:net:lin-k:safe-online:wallet:2.0:remove" />
             <input>
                 <soap:body use="literal" />
             </input>
@@ -153,7 +153,7 @@
             </output>
         </operation>
         <operation name="commit">
-            <soap:operation soapAction="urn:net:lin-k:safe-online:wallet:commit" />
+            <soap:operation soapAction="urn:net:lin-k:safe-online:wallet:2.0:commit" />
             <input>
                 <soap:body use="literal" />
             </input>
@@ -162,7 +162,7 @@
             </output>
         </operation>
         <operation name="release">
-            <soap:operation soapAction="urn:net:lin-k:safe-online:wallet:release" />
+            <soap:operation soapAction="urn:net:lin-k:safe-online:wallet:2.0:release" />
             <input>
                 <soap:body use="literal" />
             </input>
@@ -176,7 +176,7 @@
 
     <service name="WalletService">
         <port name="WalletServicePort" binding="tns:WalletServiceBinding">
-            <soap:address location="http://localhost:8080/${safe-online.ws.webapp.url}/wallet/" />
+            <soap:address location="http://localhost:8080/${safe-online.ws.webapp.url}/wallet20/" />
         </port>
     </service>
 </definitions>

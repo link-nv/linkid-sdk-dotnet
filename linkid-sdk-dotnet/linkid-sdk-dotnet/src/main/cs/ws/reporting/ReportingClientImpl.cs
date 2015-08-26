@@ -20,7 +20,7 @@ namespace safe_online_sdk_dotnet
 
         public ReportingClientImpl(string location, string username, string password)
 		{			
-			string address = "https://" + location + "/linkid-ws-username/reporting30";
+			string address = "https://" + location + "/linkid-ws-username/reporting40";
 			EndpointAddress remoteAddress = new EndpointAddress(address);
 
             BasicHttpBinding binding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:net:lin-k:safe-online:haws" xmlns:tns="urn:net:lin-k:safe-online:haws"
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:net:lin-k:safe-online:haws:2.0" xmlns:tns="urn:net:lin-k:safe-online:haws:2.0"
         elementFormDefault="qualified">
 
 	<annotation>
 		<documentation>
 			Document identifier: safe-online-haws
 			Revision history:
-			V1.0 (January, 2014):
+			V2.0 (August, 2015):
 			Initial Standard Schema.
 		</documentation>
 	</annotation>
@@ -14,41 +14,6 @@
     <!-- =================== Push request ========================= -->
 
     <element name="PushRequest">
-        <annotation>
-            <documentation>Submit an authentication request</documentation>
-        </annotation>
-        <complexType>
-            <sequence>
-                <any namespace='##any' processContents='lax' minOccurs='1' maxOccurs='1'>
-                    <annotation>
-                        <documentation>The authentication request, e.g. a SAML2 request</documentation>
-                    </annotation>
-                </any>
-            </sequence>
-            <attribute name="language" type="string" use="optional">
-                <annotation>
-                    <documentation>ISO 639 alpha-2 or alpha-3 language code. Optional, default is en</documentation>
-                </annotation>
-            </attribute>
-            <attribute name="theme" type="string" use="optional">
-                <annotation>
-                    <documentation>Optional theme</documentation>
-                </annotation>
-            </attribute>
-            <attribute name="loginMode" type="string" use="optional">
-                <annotation>
-                    <documentation>Optional login mode</documentation>
-                </annotation>
-            </attribute>
-            <attribute name="startPage" type="string" use="optional">
-                <annotation>
-                    <documentation>Optional start page</documentation>
-                </annotation>
-            </attribute>
-        </complexType>
-    </element>
-
-    <element name="PushRequestV2">
         <annotation>
             <documentation>Submit an authentication request</documentation>
         </annotation>
@@ -92,6 +57,16 @@
 			<enumeration value="error.request.invalid">
 				<annotation>
 					<documentation>The authentication request was invalid</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="error.unexpected">
+				<annotation>
+					<documentation>Something unexpected happened</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="error.maintenance">
+				<annotation>
+					<documentation>linkID is down for maintenance</documentation>
 				</annotation>
 			</enumeration>
 		</restriction>
@@ -148,6 +123,16 @@
 			<enumeration value="error.response.invalid.sessionId">
 				<annotation>
 					<documentation>No authentication response found with this sessionId</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="error.unexpected">
+				<annotation>
+					<documentation>Something unexpected happened</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="error.maintenance">
+				<annotation>
+					<documentation>linkID is down for maintenance</documentation>
 				</annotation>
 			</enumeration>
 		</restriction>

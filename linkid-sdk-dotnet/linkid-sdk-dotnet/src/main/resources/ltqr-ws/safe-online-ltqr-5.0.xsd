@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:net:lin-k:safe-online:ltqr:4.0" xmlns:tns="urn:net:lin-k:safe-online:ltqr:4.0"
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:net:lin-k:safe-online:ltqr:5.0" xmlns:tns="urn:net:lin-k:safe-online:ltqr:5.0"
         xmlns:com="urn:net:lin-k:safe-online:common" elementFormDefault="qualified">
 
     <import schemaLocation="safe-online-common.xsd" namespace="urn:net:lin-k:safe-online:common" />
@@ -62,6 +62,11 @@
                 <element name="pollingConfiguration" type="tns:PollingConfiguration" minOccurs="0" maxOccurs="1">
                     <annotation>
                         <documentation>Optional polling configuration, if not specified linkID defaults</documentation>
+                    </annotation>
+                </element>
+                <element name="ltqrStatusLocation" type="string" minOccurs="0" maxOccurs="1">
+                    <annotation>
+                        <documentation>Optional LTQR status location override</documentation>
                     </annotation>
                 </element>
             </sequence>
@@ -161,6 +166,11 @@
                 <element name="pollingConfiguration" type="tns:PollingConfiguration" minOccurs="0" maxOccurs="1">
                     <annotation>
                         <documentation>Optional polling configuration, if not specified linkID defaults</documentation>
+                    </annotation>
+                </element>
+                <element name="ltqrStatusLocation" type="string" minOccurs="0" maxOccurs="1">
+                    <annotation>
+                        <documentation>Optional LTQR status location override</documentation>
                     </annotation>
                 </element>
             </sequence>
@@ -496,6 +506,11 @@
                     <documentation>Is the LTQR currently locked?</documentation>
                 </annotation>
             </element>
+            <element name="ltqrStatusLocation" type="string" minOccurs="0" maxOccurs="1">
+                <annotation>
+                    <documentation>Optional LTQR status location override</documentation>
+                </annotation>
+            </element>
         </sequence>
     </complexType>
 
@@ -554,6 +569,16 @@
 					<documentation>The provided Service Provider credentials are not correct.</documentation>
 				</annotation>
 			</enumeration>
+			<enumeration value="error.unexpected">
+				<annotation>
+					<documentation>Something unexpected happened.</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="error.maintenance">
+				<annotation>
+					<documentation>linkID is down for maintenance.</documentation>
+				</annotation>
+			</enumeration>
 		</restriction>
 	</simpleType>
 
@@ -570,6 +595,16 @@
 			<enumeration value="error.not.found">
 				<annotation>
 					<documentation>The LTQR was not found.</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="error.unexpected">
+				<annotation>
+					<documentation>Something unexpected happened.</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="error.maintenance">
+				<annotation>
+					<documentation>linkID is down for maintenance.</documentation>
 				</annotation>
 			</enumeration>
 		</restriction>

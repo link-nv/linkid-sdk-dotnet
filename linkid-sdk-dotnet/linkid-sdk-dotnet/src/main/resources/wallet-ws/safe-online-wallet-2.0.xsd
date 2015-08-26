@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:net:lin-k:safe-online:wallet" xmlns:tns="urn:net:lin-k:safe-online:wallet"
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:net:lin-k:safe-online:wallet:2.0" xmlns:tns="urn:net:lin-k:safe-online:wallet:2.0"
         xmlns:com="urn:net:lin-k:safe-online:common" elementFormDefault="qualified">
 
 	<annotation>
 		<documentation>
 			Document identifier: safe-online-wallet
 			Revision history:
-			V1.0 (February, 2015):
+			V2.0 (August, 2015):
             Initial version
 		</documentation>
 	</annotation>
@@ -107,6 +107,11 @@
 					<documentation>Something unexpected happened</documentation>
 				</annotation>
 			</enumeration>
+			<enumeration value="error.maintenance">
+				<annotation>
+					<documentation>linkID is down for maintenance</documentation>
+				</annotation>
+			</enumeration>
 		</restriction>
 	</simpleType>
 
@@ -172,6 +177,11 @@
 			<enumeration value="error.unexpected">
 				<annotation>
 					<documentation>Something unexpected happened</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="error.maintenance">
+				<annotation>
+					<documentation>linkID is down for maintenance</documentation>
 				</annotation>
 			</enumeration>
 		</restriction>
@@ -259,6 +269,11 @@
 					<documentation>Something unexpected happened</documentation>
 				</annotation>
 			</enumeration>
+			<enumeration value="error.maintenance">
+				<annotation>
+					<documentation>linkID is down for maintenance</documentation>
+				</annotation>
+			</enumeration>
 		</restriction>
 	</simpleType>
 
@@ -344,6 +359,11 @@
 					<documentation>Something unexpected happened</documentation>
 				</annotation>
 			</enumeration>
+			<enumeration value="error.maintenance">
+				<annotation>
+					<documentation>linkID is down for maintenance</documentation>
+				</annotation>
+			</enumeration>
 		</restriction>
 	</simpleType>
 
@@ -402,6 +422,11 @@
 			<enumeration value="error.unexpected">
 				<annotation>
 					<documentation>Something unexpected happened</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="error.maintenance">
+				<annotation>
+					<documentation>linkID is down for maintenance</documentation>
 				</annotation>
 			</enumeration>
 		</restriction>
@@ -474,6 +499,11 @@
 					<documentation>Something unexpected happened</documentation>
 				</annotation>
 			</enumeration>
+			<enumeration value="error.maintenance">
+				<annotation>
+					<documentation>linkID is down for maintenance</documentation>
+				</annotation>
+			</enumeration>
 		</restriction>
 	</simpleType>
 
@@ -542,6 +572,11 @@
 			<enumeration value="error.unexpected">
 				<annotation>
 					<documentation>Something unexpected happened</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="error.maintenance">
+				<annotation>
+					<documentation>linkID is down for maintenance</documentation>
 				</annotation>
 			</enumeration>
 		</restriction>

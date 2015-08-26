@@ -36,6 +36,8 @@ namespace safe_online_sdk_dotnet
         //
         public bool waitForUnlock { get; private set; }
         public bool locked { get; private set; }
+        //
+        public String ltqrStatusLocation { get; private set; }
 
         public LinkIDLTQRInfo(String ltqrReference, String sessionId, DateTime created,
             byte[] qrCodeImage, String qrCodeURL, String authenticationMessage, String finishedMessage,
@@ -43,7 +45,8 @@ namespace safe_online_sdk_dotnet
             LinkIDPaymentContext paymentContext, LinkIDCallback callback, String[] identityProfiles,
             Nullable<long> sessionExpiryOverride, String theme,
             String mobileLandingSuccess, String mobileLandingError, String mobileLandingCancel,
-            LinkIDLTQRPollingConfiguration pollingConfiguration, bool waitForUnlock, bool locked)
+            LinkIDLTQRPollingConfiguration pollingConfiguration, bool waitForUnlock, bool locked, 
+            String ltqrStatusLocation)
         {
             this.ltqrReference = ltqrReference;
             this.sessionId = sessionId;
@@ -66,6 +69,7 @@ namespace safe_online_sdk_dotnet
             this.pollingConfiguration = pollingConfiguration;
             this.waitForUnlock = waitForUnlock;
             this.locked = locked;
+            this.ltqrStatusLocation = ltqrStatusLocation;
         }
 
         public override String ToString()

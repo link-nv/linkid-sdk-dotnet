@@ -34,7 +34,7 @@ namespace safe_online_sdk_dotnet.test.cs
             DateTime expiryDate = DateTime.Now.AddMonths(3);
             LinkIDCallback callback = new LinkIDCallback("google.be", null, true);
 
-            LTQRSession session = client.push(null, finishedMessage, paymentContext, false, expiryDate, null, callback, null, null, null, null, null, null, null, false);
+            LTQRSession session = client.push(null, finishedMessage, paymentContext, false, expiryDate, null, callback, null, null, null, null, null, null, null, false, null);
 
             Assert.NotNull(session);
         }
@@ -50,7 +50,7 @@ namespace safe_online_sdk_dotnet.test.cs
                 new LinkIDPaymentAmount(9999, LinkIDCurrency.EUR, null), ".NET Test Changed", paymentOrderReference, null);
             DateTime expiryDate = DateTime.Now.AddMonths(12);
 
-            client.change(ltqrReference, null, finishedMessage, paymentContext, expiryDate, null, null, null, null, null, null, null, null, false, null, false, false);
+            client.change(ltqrReference, null, finishedMessage, paymentContext, expiryDate, null, null, null, null, null, null, null, null, false, null, false, false, null);
         }
 
         [Test]

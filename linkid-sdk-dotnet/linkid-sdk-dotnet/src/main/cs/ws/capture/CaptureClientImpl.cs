@@ -16,7 +16,7 @@ namespace safe_online_sdk_dotnet
 
         public CaptureClientImpl(string location, string username, string password)
 		{			
-			string address = "https://" + location + "/linkid-ws-username/capture";
+			string address = "https://" + location + "/linkid-ws-username/capture20";
 			EndpointAddress remoteAddress = new EndpointAddress(address);
 
             BasicHttpBinding binding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);

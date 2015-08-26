@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:net:lin-k:safe-online:reporting:3.0" xmlns:tns="urn:net:lin-k:safe-online:reporting:3.0"
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:net:lin-k:safe-online:reporting:4.0" xmlns:tns="urn:net:lin-k:safe-online:reporting:4.0"
         xmlns:com="urn:net:lin-k:safe-online:common" elementFormDefault="qualified">
 
 	<annotation>
 		<documentation>
 			Document identifier: safe-online-reporting
 			Revision history:
-			V3.0 (June, 2015):
+			V4.0 (August, 2015):
 		</documentation>
 	</annotation>
 
@@ -155,6 +155,11 @@
 			<enumeration value="error.unexpected">
 				<annotation>
 					<documentation>Something unexpected happened, consult a linkID dev for more information</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="error.maintenance">
+				<annotation>
+					<documentation>linkID is down for maintenance</documentation>
 				</annotation>
 			</enumeration>
 		</restriction>

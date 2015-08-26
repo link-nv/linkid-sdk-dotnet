@@ -25,8 +25,11 @@ namespace safe_online_sdk_dotnet
         public static readonly String MENU_RESULT_PENDING_KEY  = "PaymentContext.menuResultPending";
         public static readonly String MENU_RESULT_ERROR_KEY    = "PaymentContext.menuResultError";
 
+        public static readonly String STATUS_LOCATION_KEY = "PaymentContext.statusLocation";
+
         public static readonly String ALLOW_PARTIAL_KEY = "PaymentContext.allowPartial";
         public static readonly String ONLY_WALLETS_KEY  = "PaymentContext.onlyWallets";
+
 
         public LinkIDPaymentAmount amount;
 
@@ -49,6 +52,9 @@ namespace safe_online_sdk_dotnet
 
         // optional payment menu return URLs
         public LinkIDPaymentMenu paymentMenu { get; set; }
+
+        // optional payment status location, if not specified the default location(s) in the linkID application configuration will be used
+        public String paymentStatusLocation { get; set; }
 
         public bool allowPartial {get; set;}    // allow partial payments via wallets
         public bool onlyWallets {get; set;}     // allow only wallets for this payments
@@ -129,6 +135,11 @@ namespace safe_online_sdk_dotnet
                 dictionary.Add(MENU_RESULT_CANCELED_KEY, paymentMenu.menuResultCanceled);
                 dictionary.Add(MENU_RESULT_PENDING_KEY, paymentMenu.menuResultPending);
                 dictionary.Add(MENU_RESULT_ERROR_KEY, paymentMenu.menuResultError);
+            }
+
+            if (null != paymentStatusLocation)
+            {
+                dictionary.Add(STATUS_LOCATION_KEY, paymentStatusLocation);
             }
 
             // wallets

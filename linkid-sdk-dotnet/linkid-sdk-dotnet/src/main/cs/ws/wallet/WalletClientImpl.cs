@@ -15,7 +15,7 @@ namespace safe_online_sdk_dotnet
 
         public WalletClientImpl(string location, string username, string password)
 		{			
-			string address = "https://" + location + "/linkid-ws-username/wallet";
+			string address = "https://" + location + "/linkid-ws-username/wallet20";
 			EndpointAddress remoteAddress = new EndpointAddress(address);
 
             BasicHttpBinding binding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
