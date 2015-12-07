@@ -14,14 +14,14 @@ namespace safe_online_sdk_dotnet.test.cs
     [TestFixture]
     public class TestPaymentClient
     {
-        PaymentClient client = null;
+        LinkIDServiceClient client = null;
 
         [SetUp]
         public void Init()
         {
             TestConstants.initForDevelopment();
 
-            client = new PaymentClientImpl(TestConstants.wsLocation, TestConstants.testWsUsername, TestConstants.testWsPassword);
+            client = new LinkIDServiceClientImpl(TestConstants.wsLocation, TestConstants.testWsUsername, TestConstants.testWsPassword);
             client.enableLogging();
         }
 
@@ -30,7 +30,7 @@ namespace safe_online_sdk_dotnet.test.cs
         {
             String orderReference = "7d545bcb56f84fc8945f0cd537ca6694";
 
-            LinkIDPaymentStatus paymentStatus = client.getStatus(orderReference);
+            LinkIDPaymentStatus paymentStatus = client.getPaymentStatus(orderReference);
 
             Assert.NotNull(paymentStatus);
             Console.WriteLine(paymentStatus.ToString());

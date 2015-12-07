@@ -11,6 +11,7 @@ namespace safe_online_sdk_dotnet
         public bool captured { get; set; }
         public double amountPayed { get; set; }
         public double amount { get; set; }
+        public double refundAmount { get; set; }
         public Nullable<LinkIDCurrency> currency { get; set; }
         public String walletCoin { get; set; }
         public String description { get; set; }
@@ -20,8 +21,9 @@ namespace safe_online_sdk_dotnet
         public LinkIDPaymentDetails paymentDetails { get; set; }
 
         public LinkIDPaymentStatus(String orderReference, String userId, LinkIDPaymentState paymentState,
-            bool authorized, bool captured, double amountPayed, double amount, Nullable<LinkIDCurrency> currency, String walletCoin,
-            String description, String profile, DateTime created, String mandateReference, LinkIDPaymentDetails paymentDetails)
+            bool authorized, bool captured, double amountPayed, double amount, double refundAmount, 
+            Nullable<LinkIDCurrency> currency, String walletCoin, String description, String profile, 
+            DateTime created, String mandateReference, LinkIDPaymentDetails paymentDetails)
         {
             this.orderReference = orderReference;
             this.userId = userId;
@@ -30,6 +32,7 @@ namespace safe_online_sdk_dotnet
             this.captured = captured;
             this.amountPayed = amountPayed;
             this.amount = amount;
+            this.refundAmount = refundAmount;
             this.currency = currency;
             this.walletCoin = walletCoin;
             this.description = description;
@@ -51,6 +54,7 @@ namespace safe_online_sdk_dotnet
             output += "  * captured: " + captured + "\n";
             output += "  * amountPayed: " + amountPayed + "\n";
             output += "  * amount: " + amount + "\n";
+            output += "  * refundAmount: " + refundAmount + "\n";
             output += "  * currency: " + currency + "\n";
             output += "  * walletCoin: " + walletCoin + "\n"; 
             output += "  * description: " + description + "\n";

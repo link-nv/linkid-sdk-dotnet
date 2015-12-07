@@ -15,10 +15,11 @@ namespace safe_online_sdk_dotnet
         public String docdataReference { get; set; }
         public double amount { get; set; }
         public LinkIDCurrency currency { get; set; }
+        public double refundAmount { get; set; }
 
         public LinkIDPaymentTransaction(LinkIDPaymentMethodType paymentMethodType, String paymentMethod,
             LinkIDPaymentState paymentState, DateTime creationDate, DateTime authorizationDate,
-            DateTime capturedDate, String docdataReference, double amount, LinkIDCurrency currency)
+            DateTime capturedDate, String docdataReference, double amount, LinkIDCurrency currency, double refundAmount)
         {
             this.paymentMethodType = paymentMethodType;
             this.paymentMethod = paymentMethod;
@@ -29,6 +30,7 @@ namespace safe_online_sdk_dotnet
             this.docdataReference = docdataReference;
             this.amount = amount;
             this.currency = currency;
+            this.refundAmount = refundAmount;
         }
 
         public override String ToString()
@@ -44,6 +46,7 @@ namespace safe_online_sdk_dotnet
             output += "      * authorizationDate: " + authorizationDate + "\n";
             output += "      * capturedDate: " + capturedDate + "\n";
             output += "      * docdataReference: " + docdataReference + "\n";
+            output += "      * refundAmount: " + refundAmount + "\n";
 
             return output;
         }

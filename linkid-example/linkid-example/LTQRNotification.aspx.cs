@@ -39,11 +39,11 @@ namespace linkid_example
 //            ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(WCFUtil.AnyCertificateValidationCallback);
 
             // fetch session
-            LTQRClient client = new LTQRClientImpl(TestUtil.LINKID_HOST,
-                TestUtil.wsUsername, TestUtil.wsPassword);
-            LTQRClientSession[] clientSessions = client.pull(new string[] { ltqrReference }, null, new string[] { clientSessionId });
+            LinkIDServiceClient client = TestUtil.getClient();
+            List<LinkIDLTQRClientSession> clientSessions = client.ltqrPull(
+                new List<String>(new string[] {ltqrReference}), null, null);
             String output = "";
-            foreach (LTQRClientSession clientSession in clientSessions)
+            foreach (LinkIDLTQRClientSession clientSession in clientSessions)
             {
                 output += clientSession.ToString() + "<br />";
             }

@@ -259,10 +259,13 @@ namespace safe_online_sdk_dotnet
             {
                 foreach (PaymentTransactionV20 paymentTransaction in wsOrder.transactions)
                 {
+                    double refundAmount = 0;
+
                     transactions.Add(new LinkIDPaymentTransaction(convert(paymentTransaction.paymentMethodType),
                         paymentTransaction.paymentMethod, convert(paymentTransaction.paymentState),
                         paymentTransaction.creationDate, paymentTransaction.authorizationDate, paymentTransaction.capturedDate,
-                        paymentTransaction.docdataReference, paymentTransaction.amount, convert(paymentTransaction.currency).Value));
+                        paymentTransaction.docdataReference, paymentTransaction.amount, convert(paymentTransaction.currency).Value, 
+                        refundAmount));
                 }
             }
 
@@ -271,10 +274,13 @@ namespace safe_online_sdk_dotnet
             {
                 foreach (WalletTransactionV40 walletTransaction in wsOrder.walletTransactions)
                 {
+                    double refundAmount = 0;
+                    String paymentDescription = "";
+
                     walletTransactions.Add(new LinkIDWalletTransaction(walletTransaction.walletId, walletTransaction.creationDate,
                         walletTransaction.transactionId, walletTransaction.amount, 
                         walletTransaction.currencySpecified ? convert(walletTransaction.currency) : null, 
-                        walletTransaction.walletCoin));
+                        walletTransaction.walletCoin, refundAmount, paymentDescription));
                 }
             }
 
@@ -341,10 +347,13 @@ namespace safe_online_sdk_dotnet
 
         private LinkIDWalletReportTransaction convert(ReportingWSNameSpace.WalletReportTransaction wsTransaction)
         {
+            double refundAmount = 0;
+            String paymentDescription = "";
+
             return new LinkIDWalletReportTransaction(wsTransaction.walletId, wsTransaction.creationDate,
                 wsTransaction.transactionId, wsTransaction.amount, 
                 wsTransaction.currencySpecified? convert(wsTransaction.currency) : null, 
-                wsTransaction.walletCoin, wsTransaction.userId, wsTransaction.applicationName);
+                wsTransaction.walletCoin, refundAmount, paymentDescription, wsTransaction.userId, wsTransaction.applicationName);
         }
     }
 }

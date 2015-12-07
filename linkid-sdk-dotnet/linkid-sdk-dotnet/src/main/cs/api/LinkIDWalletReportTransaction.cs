@@ -11,7 +11,8 @@ namespace safe_online_sdk_dotnet
 
         public LinkIDWalletReportTransaction(String walletId, DateTime creationDate, String transactionId,
             double amount, Nullable<LinkIDCurrency> currency, String walletCoin, 
-            String userId, String applicationName) : base(walletId, creationDate, transactionId, amount, currency, walletCoin)
+            double refundAmount, String paymentDescription, String userId, String applicationName) 
+            : base(walletId, creationDate, transactionId, amount, currency, walletCoin, refundAmount, paymentDescription)
         {            
             this.userId = userId;
             this.applicationName = applicationName;

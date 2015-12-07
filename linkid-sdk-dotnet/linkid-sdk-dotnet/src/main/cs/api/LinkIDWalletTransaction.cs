@@ -12,9 +12,12 @@ namespace safe_online_sdk_dotnet
         public double amount { get; set; }
         public Nullable<LinkIDCurrency> currency { get; set; }
         public String walletCoin { get; set; }
+        public double refundAmount { get; set; }
+        public String paymentDescription { get; set; }
 
         public LinkIDWalletTransaction(String walletId, DateTime creationDate, String transactionId,
-            double amount, Nullable<LinkIDCurrency> currency, String walletCoin)
+            double amount, Nullable<LinkIDCurrency> currency, String walletCoin, 
+            double refundAmount, String paymentDescription)
         {
             this.walletId = walletId;
             this.creationDate = creationDate;
@@ -22,6 +25,8 @@ namespace safe_online_sdk_dotnet
             this.amount = amount;
             this.currency = currency;
             this.walletCoin = walletCoin;
+            this.refundAmount = refundAmount;
+            this.paymentDescription = paymentDescription;
         }
 
         public override String ToString()
@@ -40,6 +45,8 @@ namespace safe_online_sdk_dotnet
             output += "      * walletId: " + walletId + "\n";
             output += "      * creationDate: " + creationDate + "\n";
             output += "      * transactionId: " + transactionId + "\n";
+            output += "      * refundAmount: " + refundAmount + "\n";
+            output += "      * paymentDescription: " + paymentDescription + "\n";
 
             return output;
         }

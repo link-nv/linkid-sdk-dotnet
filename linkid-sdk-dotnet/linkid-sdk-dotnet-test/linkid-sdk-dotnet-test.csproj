@@ -47,13 +47,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="src\test\cs\AssemblyInfo.cs" />
-    <Compile Include="src\test\cs\TestPaymentClient.cs" />
+    <Compile Include="src\test\cs\TestLinkIDWSConfig.cs" />
+    <Compile Include="src\test\cs\TestLinkIDWSPayment.cs" />
     <Compile Include="src\test\cs\TestReportingClient.cs" />
-    <Compile Include="src\test\cs\TestMandateClient.cs" />
     <Compile Include="src\test\cs\TestConstants.cs" />
     <Compile Include="src\test\cs\TestDataClient.cs" />
-    <Compile Include="src\test\cs\TestHawsClient.cs" />
-    <Compile Include="src\test\cs\TestLTQRClient.cs" />
+    <Compile Include="src\test\cs\TestLLinkIDWSLTQR.cs" />
     <Compile Include="src\test\cs\TestSaml.cs" />
   </ItemGroup>
   <ItemGroup>

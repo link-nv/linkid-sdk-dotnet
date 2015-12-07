@@ -10,66 +10,29 @@ namespace safe_online_sdk_dotnet
         public String sessionId { get; private set; }
         public DateTime created { get; private set; }
         //
-        public byte[] qrCodeImage { get; private set; }
-        public String qrCodeURL { get; private set; }
+        public LinkIDQRInfo qrCodeInfo{ get; private set; }
         //
-        public String authenticationMessage { get; private set; }
-        public String finishedMessage { get; private set; }
+        public LinkIDLTQRContent content { get; private set; }
         //
-        public bool oneTimeUse { get; private set; }
-        //
-        public DateTime expiryDate { get; private set; }
-        public Nullable<long> expiryDuration { get; private set; }
-        //
-        public LinkIDPaymentContext paymentContext { get; private set; }
-        public LinkIDCallback callback { get; private set; }
-        public String[] identityProfiles { get; private set; }
-        //
-        public Nullable<long> sessionExpiryOverride { get; private set; }
-        public String theme { get; private set; }
-        //
-        public String mobileLandingSuccess { get; private set; }
-        public String mobileLandingError{ get; private set; }
-        public String mobileLandingCancel { get; private set; }
-        //
-        public LinkIDLTQRPollingConfiguration pollingConfiguration { get; private set; }
-        //
-        public bool waitForUnlock { get; private set; }
+        public LinkIDLTQRLockType lockType { get; private set; }
         public bool locked { get; private set; }
         //
-        public String ltqrStatusLocation { get; private set; }
+        public bool waitForUnblock { get; private set; }
+        public bool blocked { get; private set; }
 
         public LinkIDLTQRInfo(String ltqrReference, String sessionId, DateTime created,
-            byte[] qrCodeImage, String qrCodeURL, String authenticationMessage, String finishedMessage,
-            bool oneTimeUse, DateTime expiryDate, Nullable<long> expiryDuration,
-            LinkIDPaymentContext paymentContext, LinkIDCallback callback, String[] identityProfiles,
-            Nullable<long> sessionExpiryOverride, String theme,
-            String mobileLandingSuccess, String mobileLandingError, String mobileLandingCancel,
-            LinkIDLTQRPollingConfiguration pollingConfiguration, bool waitForUnlock, bool locked, 
-            String ltqrStatusLocation)
+            LinkIDQRInfo qrCodeInfo, LinkIDLTQRContent content, LinkIDLTQRLockType lockType, bool locked,
+            bool waitForUnblock, bool blocked)
         {
             this.ltqrReference = ltqrReference;
             this.sessionId = sessionId;
             this.created = created;
-            this.qrCodeImage = qrCodeImage;
-            this.qrCodeURL = qrCodeURL;
-            this.authenticationMessage = authenticationMessage;
-            this.finishedMessage = finishedMessage;
-            this.oneTimeUse = oneTimeUse;
-            this.expiryDate = expiryDate;
-            this.expiryDuration = expiryDuration;
-            this.paymentContext = paymentContext;
-            this.callback = callback;
-            this.identityProfiles = identityProfiles;
-            this.sessionExpiryOverride = sessionExpiryOverride;
-            this.theme = theme;
-            this.mobileLandingSuccess = mobileLandingSuccess;
-            this.mobileLandingError = mobileLandingError;
-            this.mobileLandingCancel = mobileLandingCancel;
-            this.pollingConfiguration = pollingConfiguration;
-            this.waitForUnlock = waitForUnlock;
+            this.qrCodeInfo = qrCodeInfo;
+            this.content = content;
+            this.lockType = lockType;
             this.locked = locked;
-            this.ltqrStatusLocation = ltqrStatusLocation;
+            this.waitForUnblock = waitForUnblock;
+            this.blocked = blocked;
         }
 
         public override String ToString()

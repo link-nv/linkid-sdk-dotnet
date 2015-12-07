@@ -23,9 +23,8 @@ namespace linkid_example
             }
 
             // get the latesst state of this payment transaction from linkID
-            PaymentClient paymentClient = new PaymentClientImpl(TestUtil.LINKID_HOST, TestUtil.wsUsername, TestUtil.wsPassword);
-
-            LinkIDPaymentStatus paymentStatus = paymentClient.getStatus(orderReference);
+            LinkIDServiceClient client = TestUtil.getClient();
+            LinkIDPaymentStatus paymentStatus = client.getPaymentStatus(orderReference);
 
             this.OutputLabel.Text = "<h1>Payment Status</h1>";
 
