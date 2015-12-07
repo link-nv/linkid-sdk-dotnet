@@ -30,16 +30,16 @@ namespace safe_online_sdk_dotnet
         {
             String output = "";
 
-            output += "       Attribute: " + attributeName + "(ID=" + attributeId + ")\n";
+            output += "     Attribute: " + attributeName + "(ID=" + attributeId + ")\n";
             if (value is LinkIDCompound)
             {
                 LinkIDCompound compound = (LinkIDCompound)value;
-                output += "         Compound:\n";
+                output += "       Compound:\n";
                 output += compound.ToString();
             }
             else
             {
-                output += "         value=" + value + "\n";
+                output += "       value=" + value + "\n";
             }
 
             return output;

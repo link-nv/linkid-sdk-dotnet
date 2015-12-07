@@ -26,10 +26,6 @@ namespace safe_online_sdk_dotnet
     /// </summary>
     public class Saml2AuthUtil
     {
-        private string expectedChallenge;
-
-        private string expectedAudience;
-
         public Saml2AuthUtil()
         {
         }
@@ -39,18 +35,12 @@ namespace safe_online_sdk_dotnet
         /// The return string containing the request is NOT Base64 encoded.
         /// </summary>
         /// <param name="linkIDContext">the linkID authentication/payment configuration</param>
-        /// <param name="serviceProviderUrl">The URL that will handle the returned SAML response</param>
-        /// <param name="identityProviderUrl">The LinkID authentication entry URL</param>
         /// <returns>SAML request</returns>
-        public AuthnRequestType generateAuthnRequestObject(LinkIDAuthenticationContext linkIDContext,
-            string serviceProviderUrl, string identityProviderUrl)
+        public static AuthnRequestType generateAuthnRequest(LinkIDAuthenticationContext linkIDContext)
         {
-            this.expectedChallenge = Guid.NewGuid().ToString();
-            this.expectedAudience = linkIDContext.applicationName;
-
             AuthnRequestType authnRequest = new AuthnRequestType();
             authnRequest.ForceAuthn = linkIDContext.forceAuthentication;
-            authnRequest.ID = this.expectedChallenge;
+            authnRequest.ID = Guid.NewGuid().ToString();
             authnRequest.Version = "2.0";
             authnRequest.IssueInstant = DateTime.UtcNow;
 
@@ -58,10 +48,8 @@ namespace safe_online_sdk_dotnet
             issuer.Value = linkIDContext.applicationName;
             authnRequest.Issuer = issuer;
 
-            authnRequest.AssertionConsumerServiceURL = serviceProviderUrl;
+            authnRequest.AssertionConsumerServiceURL = "http://foo.bar";
             authnRequest.ProtocolBinding = Saml2Constants.SAML2_BINDING_HTTP_POST;
-
-            authnRequest.Destination = identityProviderUrl;
 
             if (null != linkIDContext.applicationFriendlyName)
             {
@@ -186,7 +174,7 @@ namespace safe_online_sdk_dotnet
             return document;
         }
 
-        private XmlElement toXmlElement(CallbackType callback)
+        private static XmlElement toXmlElement(CallbackType callback)
         {
             XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
             ns.Add("samlp", Saml2Constants.SAML2_PROTOCOL_NAMESPACE);
@@ -214,7 +202,7 @@ namespace safe_online_sdk_dotnet
             return null;
         }
 
-        private XmlElement toXmlElement(PaymentContextType paymentContext)
+        private static XmlElement toXmlElement(PaymentContextType paymentContext)
         {
             XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
             ns.Add("samlp", Saml2Constants.SAML2_PROTOCOL_NAMESPACE);
@@ -242,7 +230,7 @@ namespace safe_online_sdk_dotnet
             return null;
         }
 
-        private XmlElement toXmlElement(DeviceContextType deviceContext)
+        private static XmlElement toXmlElement(DeviceContextType deviceContext)
         {
             XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
             ns.Add("samlp", Saml2Constants.SAML2_PROTOCOL_NAMESPACE);
@@ -270,7 +258,7 @@ namespace safe_online_sdk_dotnet
             return null;
         }
 
-        private XmlElement toXmlElement(SubjectAttributesType subjectAttributes)
+        private static XmlElement toXmlElement(SubjectAttributesType subjectAttributes)
         {
             XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
             ns.Add("samlp", Saml2Constants.SAML2_PROTOCOL_NAMESPACE);
@@ -298,44 +286,17 @@ namespace safe_online_sdk_dotnet
             return null;
         }
 
-        /// <summary>
-        /// Parses the given SAML v2.0 authentication response
-        /// </summary>
-        /// <param name="response">tje SAML v2.0 authentication response</param>
-        /// <returns>AuthenticationProtocolContext containing linkID userId, authenticated device(s) and optional dictionary of linkID attributes</returns>
-        public AuthenticationProtocolContext parseAuthnResponse(ResponseType response)
+        public static LinkIDAuthnResponse parse(ResponseType response)
         {
-            if (!response.InResponseTo.Equals(this.expectedChallenge))
-            {
-                throw new AuthenticationExceptionInvalidInResponseTo("SAML response "  + response.InResponseTo + "  is not a response belonging to the original request " + this.expectedChallenge);
-            }
-
-            if (!response.Status.StatusCode.Value.Equals(Saml2Constants.SAML2_STATUS_SUCCESS))
-            {
-                return new AuthenticationProtocolContext(); ;
-            }
-
-            String subjectName;
+            String userId = null;
+            Dictionary<String, List<LinkIDAttribute>> attributes = new Dictionary<string, List<LinkIDAttribute>>();
             foreach (object item in response.Items)
             {
                 AssertionType assertion = (AssertionType)item;
                 SubjectType subject = assertion.Subject;
                 NameIDType nameId = (NameIDType)subject.Items[0];
-                subjectName = nameId.Value;
+                userId = nameId.Value;
 
-                AudienceRestrictionType audienceRestriction = (AudienceRestrictionType)assertion.Conditions.Items[0];
-                if (null == audienceRestriction.Audience)
-                {
-                    throw new AuthenticationExceptionNoAudiences("No Audiences found in AudienceRestriction");
-                }
-
-                if (!audienceRestriction.Audience[0].Equals(this.expectedAudience))
-                {
-                    throw new AuthenticationExceptionInvalidAudience("Audience name not correct, expected: " + this.expectedAudience);
-                }
-
-                List<String> authenticatedDevices = new List<String>();
-                Dictionary<String, List<LinkIDAttribute>> attributes = null;
                 foreach (StatementAbstractType statement in assertion.Items)
                 {
                     if (statement is AttributeStatementType)
@@ -343,24 +304,17 @@ namespace safe_online_sdk_dotnet
                         AttributeStatementType attributeStatement = (AttributeStatementType)statement;
                         attributes = getAttributes(attributeStatement);
                     }
-                    else if (statement is AuthnStatementType)
-                    {
-                        AuthnStatementType authnStatement = (AuthnStatementType)statement;
-                        authenticatedDevices.Add((String)authnStatement.AuthnContext.Items[0]);
-                    }
                 }
 
-                // check for optional payment response extension
-                LinkIDPaymentResponse paymentResponse = findPaymentResponse(response);
-
-                return new AuthenticationProtocolContext(subjectName, authenticatedDevices, attributes, paymentResponse);
             }
 
-            return null;
+            LinkIDPaymentResponse paymentResponse = findPaymentResponse(response);
+            LinkIDExternalCodeResponse externalCodeResponse = findExternalCodeResponse(response);
 
+            return new LinkIDAuthnResponse(userId, attributes, paymentResponse, externalCodeResponse);
         }
 
-        private LinkIDPaymentResponse findPaymentResponse(ResponseType response)
+        private static LinkIDPaymentResponse findPaymentResponse(ResponseType response)
         {
             if (null == response.Extensions || null == response.Extensions.Any)
                 return null;
@@ -370,14 +324,31 @@ namespace safe_online_sdk_dotnet
             XmlElement xmlElement = response.Extensions.Any[0];
             if (xmlElement.LocalName.Equals(LinkIDPaymentResponse.LOCAL_NAME))
             {
-                PaymentResponseType paymentResponseType = deserialize(xmlElement);
+                PaymentResponseType paymentResponseType = deserializePaymentResponse(xmlElement);
                 return LinkIDPaymentResponse.fromSaml(paymentResponseType);
             }
 
             return null;
         }
 
-        private Dictionary<string, List<LinkIDAttribute>> getAttributes(AttributeStatementType attributeStatement)
+        private static LinkIDExternalCodeResponse findExternalCodeResponse(ResponseType response)
+        {
+            if (null == response.Extensions || null == response.Extensions.Any)
+                return null;
+            if (0 == response.Extensions.Any.Length)
+                return null;
+
+            XmlElement xmlElement = response.Extensions.Any[0];
+            if (xmlElement.LocalName.Equals(LinkIDExternalCodeResponse.LOCAL_NAME))
+            {
+                ExternalCodeResponseType externalCodeResponseType = deserializeExternalCodeResponse(xmlElement);
+                return LinkIDExternalCodeResponse.fromSaml(externalCodeResponseType);
+            }
+
+            return null;
+        }
+
+        private static Dictionary<string, List<LinkIDAttribute>> getAttributes(AttributeStatementType attributeStatement)
         {
             Dictionary<string, List<LinkIDAttribute>> attributeMap = new Dictionary<string, List<LinkIDAttribute>>();
 
@@ -449,12 +420,12 @@ namespace safe_online_sdk_dotnet
             return attribute;
         }
 
-        public static Boolean isAttributeElement(XmlNode node)
+        private static Boolean isAttributeElement(XmlNode node)
         {
             return node.NamespaceURI.Equals("urn:oasis:names:tc:SAML:2.0:assertion") && node.LocalName.Equals("Attribute");
         }
 
-        public static String getXmlAttribute(XmlNode attributeNode, String localName)
+        private static String getXmlAttribute(XmlNode attributeNode, String localName)
         {
             if (null == attributeNode.Attributes) return null;
 
@@ -468,7 +439,7 @@ namespace safe_online_sdk_dotnet
             return null;
         }
 
-        public static String getAttributeId(AttributeType attribute)
+        private static String getAttributeId(AttributeType attribute)
         {
             String attributeId = null;
             XmlAttribute[] xmlAttributes = attribute.AnyAttr;
@@ -485,7 +456,7 @@ namespace safe_online_sdk_dotnet
             return attributeId;
         }
 
-        public static bool isMultivalued(AttributeType attribute)
+        private static bool isMultivalued(AttributeType attribute)
         {
             bool multivalued = false;
             XmlAttribute[] xmlAttributes = attribute.AnyAttr;
@@ -502,7 +473,7 @@ namespace safe_online_sdk_dotnet
             return multivalued;
         }
 
-        public static PaymentResponseType deserialize(XmlElement xmlElement)
+        private static PaymentResponseType deserializePaymentResponse(XmlElement xmlElement)
         {
             XmlRootAttribute xRoot = new XmlRootAttribute();
             xRoot.ElementName = "PaymentResponse";
@@ -510,6 +481,16 @@ namespace safe_online_sdk_dotnet
 
             XmlSerializer serializer = new XmlSerializer(typeof(PaymentResponseType), xRoot);
             return (PaymentResponseType)serializer.Deserialize(new XmlTextReader(new StringReader(xmlElement.OuterXml)));
+        }
+
+        private static ExternalCodeResponseType deserializeExternalCodeResponse(XmlElement xmlElement)
+        {
+            XmlRootAttribute xRoot = new XmlRootAttribute();
+            xRoot.ElementName = "ExternalCodeResponse";
+            xRoot.Namespace = Saml2Constants.SAML2_ASSERTION_NAMESPACE;
+
+            XmlSerializer serializer = new XmlSerializer(typeof(ExternalCodeResponseType), xRoot);
+            return (ExternalCodeResponseType)serializer.Deserialize(new XmlTextReader(new StringReader(xmlElement.OuterXml)));
         }
     }
 }

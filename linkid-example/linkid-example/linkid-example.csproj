@@ -65,31 +65,12 @@
     <Reference Include="System.Web.Mobile" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="LinkIDLoginHaws.aspx" />
-    <Content Include="LoginMobileHaws.aspx" />
     <Content Include="LoginWS.aspx" />
     <Content Include="LTQRNotification.aspx" />
-    <Content Include="LinkIDLogout.aspx" />
-    <Content Include="LoggedIn.aspx" />
-    <Content Include="PaymentMobileHaws.aspx" />
     <Content Include="PaymentStateChanged.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LinkIDLoginHaws.aspx.cs">
-      <DependentUpon>LinkIDLoginHaws.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="LinkIDLoginHaws.aspx.designer.cs">
-      <DependentUpon>LinkIDLoginHaws.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="LoginMobileHaws.aspx.cs">
-      <DependentUpon>LoginMobileHaws.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="LoginMobileHaws.aspx.designer.cs">
-      <DependentUpon>LoginMobileHaws.aspx</DependentUpon>
-    </Compile>
     <Compile Include="LoginWS.aspx.cs">
       <DependentUpon>LoginWS.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -103,27 +84,6 @@
     </Compile>
     <Compile Include="LTQRNotification.aspx.designer.cs">
       <DependentUpon>LTQRNotification.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="LinkIDLogout.aspx.cs">
-      <DependentUpon>LinkIDLogout.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="LinkIDLogout.aspx.designer.cs">
-      <DependentUpon>LinkIDLogout.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="LoggedIn.aspx.cs">
-      <DependentUpon>LoggedIn.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="LoggedIn.aspx.designer.cs">
-      <DependentUpon>LoggedIn.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="PaymentMobileHaws.aspx.cs">
-      <DependentUpon>PaymentMobileHaws.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="PaymentMobileHaws.aspx.designer.cs">
-      <DependentUpon>PaymentMobileHaws.aspx</DependentUpon>
     </Compile>
     <Compile Include="PaymentStateChanged.aspx.cs">
       <DependentUpon>PaymentStateChanged.aspx</DependentUpon>
@@ -153,7 +113,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>53825</DevelopmentServerPort>
+          <DevelopmentServerPort>64773</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>

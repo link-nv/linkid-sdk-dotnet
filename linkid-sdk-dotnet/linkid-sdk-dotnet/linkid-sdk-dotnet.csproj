@@ -50,7 +50,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="src\main\cs\api\LinkIDAuthenticationContext.cs" />
+    <Compile Include="src\main\cs\api\LinkIDAuthnResponse.cs" />
+    <Compile Include="src\main\cs\api\LinkIDAuthPollResponse.cs" />
+    <Compile Include="src\main\cs\api\LinkIDAuthSession.cs" />
     <Compile Include="src\main\cs\api\LinkIDCurrency.cs" />
+    <Compile Include="src\main\cs\api\LinkIDExternalCodeResponse.cs" />
+    <Compile Include="src\main\cs\api\LinkIDExternalCodeType.cs" />
     <Compile Include="src\main\cs\api\LinkIDLTQRPollingConfiguration.cs" />
     <Compile Include="src\main\cs\api\LinkIDPaymentAmount.cs" />
     <Compile Include="src\main\cs\api\LinkIDPaymentDetails.cs" />
@@ -60,20 +65,16 @@
     <Compile Include="src\main\cs\api\LinkIDPaymentState.cs" />
     <Compile Include="src\main\cs\api\LinkIDPaymentStatus.cs" />
     <Compile Include="src\main\cs\api\LinkIDPaymentTransaction.cs" />
+    <Compile Include="src\main\cs\api\LinkIDQRInfo.cs" />
     <Compile Include="src\main\cs\api\LinkIDReportApplicationFilter.cs" />
     <Compile Include="src\main\cs\api\LinkIDReportDateFilter.cs" />
     <Compile Include="src\main\cs\api\LinkIDReportWalletFilter.cs" />
     <Compile Include="src\main\cs\api\LinkIDWalletInfo.cs" />
     <Compile Include="src\main\cs\api\LinkIDWalletReportTransaction.cs" />
     <Compile Include="src\main\cs\api\LinkIDWalletTransaction.cs" />
-    <Compile Include="src\main\cs\auth\AuthenticationProtocolContext.cs" />
-    <Compile Include="src\main\cs\auth\AuthenticationExceptionInvalidAudience.cs" />
     <Compile Include="src\main\cs\api\LinkIDAttribute.cs" />
     <Compile Include="src\main\cs\api\LinkIDCallback.cs" />
     <Compile Include="src\main\cs\api\LinkIDCompound.cs" />
-    <Compile Include="src\main\cs\auth\AuthenticationExceptionInvalidInResponseTo.cs" />
-    <Compile Include="src\main\cs\auth\AuthenticationExceptionNoAudiences.cs" />
-    <Compile Include="src\main\cs\auth\LoginConfig.cs" />
     <Compile Include="src\main\cs\api\LinkIDPaymentResponse.cs" />
     <Compile Include="src\main\cs\api\LinkIDPaymentContext.cs" />
     <Compile Include="src\main\cs\auth\Saml2Constants.cs" />
@@ -82,14 +83,6 @@
     <Compile Include="src\main\cs\api\LinkIDPaymentOrder.cs" />
     <Compile Include="src\main\cs\ws\attrib\AttributeClient.cs" />
     <Compile Include="src\main\cs\ws\attrib\AttributeClientImpl.cs" />
-    <Compile Include="src\main\cs\ws\auth\AuthClient.cs" />
-    <Compile Include="src\main\cs\ws\auth\AuthnSession.cs" />
-    <Compile Include="src\main\cs\ws\auth\AuthClientImpl.cs" />
-    <Compile Include="src\main\cs\ws\auth\exception\AuthnException.cs" />
-    <Compile Include="src\main\cs\ws\auth\exception\CancelException.cs" />
-    <Compile Include="src\main\cs\ws\auth\exception\PollException.cs" />
-    <Compile Include="src\main\cs\ws\auth\PollResponse.cs" />
-    <Compile Include="src\main\cs\ws\auth\WSLoginUtil.cs" />
     <Compile Include="src\main\cs\ws\capture\CaptureClient.cs" />
     <Compile Include="src\main\cs\ws\capture\CaptureClientImpl.cs" />
     <Compile Include="src\main\cs\ws\capture\CaptureException.cs" />
@@ -115,6 +108,11 @@
     <Compile Include="src\main\cs\ws\idmapping\IdMappingClient.cs" />
     <Compile Include="src\main\cs\ws\idmapping\IdMappingClientImpl.cs" />
     <Compile Include="src\main\cs\ws\LinkIDUsernameBinding.cs" />
+    <Compile Include="src\main\cs\ws\linkid\LinkIDAuthCancelException.cs" />
+    <Compile Include="src\main\cs\ws\linkid\LinkIDAuthPollException.cs" />
+    <Compile Include="src\main\cs\ws\linkid\LinkIDAuthException.cs" />
+    <Compile Include="src\main\cs\ws\linkid\LinkIDServiceClient.cs" />
+    <Compile Include="src\main\cs\ws\linkid\LinkIDServiceClientImpl.cs" />
     <Compile Include="src\main\cs\ws\LoggingBehavior.cs" />
     <Compile Include="src\main\cs\ws\ltqr\ChangeErrorCode.cs" />
     <Compile Include="src\main\cs\ws\ltqr\ErrorCode.cs" />
@@ -165,6 +163,10 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="target\services\LinkIDWebService.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="target\services\SafeOnlineNotificationConsumerWebService.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -186,10 +188,6 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="target\services\SafeOnlineHawsWebService.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="target\services\SafeOnlineAuthWebService.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -219,11 +217,11 @@
     <None Include="src\main\resources\payment-ws\*" />
     <None Include="src\main\resources\ltqr-ws\*" />
     <None Include="src\main\resources\haws-ws\*" />
-    <None Include="src\main\resources\auth-ws\*" />
     <None Include="src\main\resources\mandate-ws\*" />
     <None Include="src\main\resources\reporting-ws\*" />
     <None Include="src\main\resources\capture-ws\*" />
     <None Include="src\main\resources\wallet-ws\*" />
+    <None Include="src\main\resources\linkid-ws\*" />
   </ItemGroup>
   <Target Name="BeforeBuild">
     <MakeDir Directories="target\services" />
@@ -231,13 +229,13 @@
     <Exec Command="svcutil /namespace:*,StsWSNamespace /directory:target\services src\main\resources\sts-ws\ws-trust-1.3.wsdl src\main\resources\sts-ws\ws-trust-1.3.xsd src\main\resources\ws-addr.xsd src\main\resources\sts-ws\oasis-200401-wss-wssecurity-secext-1.0.xsd src\main\resources\sts-ws\oasis-200401-wss-wssecurity-utility-1.0.xsd" />
     <Exec Command="svcutil /namespace:*,AttributeWSNamespace /directory:target\services src\main\resources\attrib-ws\saml-protocol-2.0.wsdl src\main\resources\saml-schema-protocol-2.0.xsd src\main\resources\saml-schema-assertion-2.0.xsd src\main\resources\xmldsig-core-schema.xsd src\main\resources\xenc-schema.xsd" />
     <Exec Command="svcutil /namespace:*,DataWSNamespace /directory:target\services src\main\resources\data-ws\liberty-idwsf-dst-ref-v2.1-link.wsdl src\main\resources\data-ws\liberty-idwsf-dst-ref-v2.1-safe-online.xsd src\main\resources\data-ws\liberty-idwsf-dst-v2.1.xsd src\main\resources\data-ws\liberty-idwsf-soap-binding-v2.0.xsd src\main\resources\data-ws\liberty-idwsf-utility-v2.0.xsd src\main\resources\data-ws\oasis-sstc-saml-schema-protocol-1.1.xsd src\main\resources\saml-schema-assertion-2.0.xsd src\main\resources\saml-schema-protocol-2.0.xsd src\main\resources\data-ws\wss-util-1.0.xsd src\main\resources\ws-addr.xsd src\main\resources\xmldsig-core-schema.xsd src\main\resources\xenc-schema.xsd" />
+    <Exec Command="svcutil /namespace:*,LinkIDWSNameSpace /directory:target\services src\main\resources\linkid-ws\linkid-3.1.wsdl src\main\resources\linkid-ws\linkid-3.1.xsd" />
     <Exec Command="svcutil /namespace:*,NotificationConsumerWSNameSpace /directory:target\services src\main\resources\notification-ws\notification-consumer.wsdl src\main\resources\notification-ws\b-2.xsd src\main\resources\notification-ws\bf-2.xsd src\main\resources\ws-addr.xsd src\main\resources\notification-ws\t-1.xsd" />
     <Exec Command="svcutil /namespace:*,NotificationProducerWSNameSpace /directory:target\services src\main\resources\notification-ws\notification-producer.wsdl src\main\resources\notification-ws\b-2.xsd src\main\resources\notification-ws\bf-2.xsd src\main\resources\ws-addr.xsd src\main\resources\notification-ws\t-1.xsd" />
     <Exec Command="svcutil /namespace:*,NotificationSubscriptionManagerWSNameSpace /directory:target\services src\main\resources\notification-ws\notification-subscription-manager.wsdl src\main\resources\notification-ws\b-2.xsd src\main\resources\notification-ws\bf-2.xsd src\main\resources\ws-addr.xsd src\main\resources\notification-ws\t-1.xsd" />
     <Exec Command="svcutil /namespace:*,PaymentWSNameSpace /directory:target\services src\main\resources\payment-ws\safe-online-payment-4.0.wsdl src\main\resources\payment-ws\safe-online-payment-4.0.xsd src\main\resources\ws-addr.xsd src\main\resources\xmldsig-core-schema.xsd src\main\resources\xenc-schema.xsd src\main\resources\safe-online-common.xsd" />
     <Exec Command="svcutil /namespace:*,LTQRWSNameSpace /directory:target\services src\main\resources\ltqr-ws\safe-online-ltqr-5.0.wsdl src\main\resources\ltqr-ws\safe-online-ltqr-5.0.xsd src\main\resources\safe-online-common.xsd" />
     <Exec Command="svcutil /namespace:*,HawsWSNameSpace /directory:target\services src\main\resources\haws-ws\safe-online-haws-2.0.wsdl src\main\resources\haws-ws\safe-online-haws-2.0.xsd" />
-    <Exec Command="svcutil /namespace:*,AuthWSNameSpace /directory:target\services src\main\resources\auth-ws\safe-online-auth-3.0.wsdl src\main\resources\auth-ws\safe-online-auth-3.0.xsd" />
     <Exec Command="svcutil /namespace:*,MandateWSNameSpace /directory:target\services src\main\resources\mandate-ws\safe-online-mandate-3.0.wsdl src\main\resources\mandate-ws\safe-online-mandate-3.0.xsd src\main\resources\safe-online-common.xsd" />
     <Exec Command="svcutil /namespace:*,ReportingWSNameSpace /directory:target\services src\main\resources\reporting-ws\safe-online-reporting-4.0.wsdl  src\main\resources\reporting-ws\safe-online-reporting-4.0.xsd src\main\resources\safe-online-common.xsd" />
     <Exec Command="svcutil /namespace:*,CaptureWSNameSpace /directory:target\services src\main\resources\capture-ws\safe-online-capture-2.0.wsdl src\main\resources\capture-ws\safe-online-capture-2.0.xsd" />

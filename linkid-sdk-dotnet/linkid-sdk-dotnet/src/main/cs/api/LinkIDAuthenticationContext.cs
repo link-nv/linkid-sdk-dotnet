@@ -23,14 +23,12 @@ namespace safe_online_sdk_dotnet
 
         public String applicationName { get; set; }
         public String applicationFriendlyName { get; set; }
-        public String serviceProviderUrl { get; set; }          // The URL that will handle the returned SAML response
-        public String identityProviderUrl { get; set; }         // The LinkID authentication entry URL
-        
-        public String authenticationMessage { get; set; }
-        public String finishedMessage { get; set; }
+
         public String language { get; set; }
 
-        public List<String> identityProfiles { get; set; }
+        public String authenticationMessage { get; set; }
+        public String finishedMessage { get; set; }
+        public String identityProfile { get; set; }
         public long sessionExpiryOverride { get; set; }
         public String theme { get; set; }
 
@@ -63,15 +61,10 @@ namespace safe_online_sdk_dotnet
             deviceContextMap.Add(AUTHENTICATION_MESSAGE, authenticationMessage);
             deviceContextMap.Add(FINISHED_MESSAGE, finishedMessage);
 
-            // identity profiles
-            if (null != identityProfiles)
+            // identity profile
+            if (null != identityProfile)
             {
-                int i = 0;
-                foreach (String identityProfile in identityProfiles)
-                {
-                    deviceContextMap.Add(IDENTITY_PROFILE_PREFIX + "." + i, identityProfile);
-                    i++;
-                }
+                deviceContextMap.Add(IDENTITY_PROFILE_PREFIX, identityProfile);
             }
 
             if (sessionExpiryOverride > 0)

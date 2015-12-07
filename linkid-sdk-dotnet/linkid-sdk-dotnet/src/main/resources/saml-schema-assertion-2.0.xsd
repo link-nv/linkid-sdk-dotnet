@@ -322,4 +322,12 @@
       </complexContent>
     </complexType>
 
+  <element name="ExternalCodeResponse" type="saml:ExternalCodeResponseType"/>
+  <complexType name="ExternalCodeResponseType">
+    <complexContent>
+      <extension base="saml:AttributeStatementType">
+      </extension>
+    </complexContent>
+  </complexType>
+
 </schema>

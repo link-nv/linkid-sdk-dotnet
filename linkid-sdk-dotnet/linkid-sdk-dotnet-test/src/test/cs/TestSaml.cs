@@ -145,7 +145,7 @@ namespace safe_online_sdk_dotnet.test.cs
             LinkIDCallback callback = new LinkIDCallback("http://www.google.be", "1234", true);
             linkIDContext.callback = callback;
 
-            AttributeWSNamespace.AuthnRequestType authnRequest = testedInstance.generateAuthnRequestObject(linkIDContext, spUrl, idpUrl);
+            AttributeWSNamespace.AuthnRequestType authnRequest = Saml2AuthUtil.generateAuthnRequest(linkIDContext);
             Assert.NotNull(authnRequest);
         }
 

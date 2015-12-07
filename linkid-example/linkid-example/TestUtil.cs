@@ -24,14 +24,9 @@ namespace linkid_example
         public static string wsPassword = "6E6C1CB7-965C-48A0-B2B0-6B65674BE19F";
         //public static string wsPassword = "5E017416-23B2-47E1-A9E0-43EE3C75A1B0";
 
-        /*
-         * linkID authentication context session attribute
-         * 
-         * After a successfull authentication with linkID this will hold the returned   
-         * AuthenticationProtocolContext object which contains the linkID user ID,
-         * used authentication device(s) and optionally the returned linkID attributes
-         * for the application.
-         */
-        public static string SESSION_AUTH_CONTEXT = "linkID.authContext";
+        public static LinkIDServiceClient getClient()
+        {
+            return new LinkIDServiceClientImpl(LINKID_HOST, wsUsername, wsPassword);
+        }
     }
 }

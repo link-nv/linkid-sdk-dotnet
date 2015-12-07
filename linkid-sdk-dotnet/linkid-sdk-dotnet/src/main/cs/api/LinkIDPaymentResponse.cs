@@ -34,6 +34,19 @@ namespace safe_online_sdk_dotnet
             this.paymentMenuURL = paymentMenuURL;
         }
 
+         public override string ToString()
+         {
+             String output = "";
+
+             output += "orderReference=" + orderReference + "\n";
+             output += "paymentState=" + paymentState + "\n";
+             output += "mandateReference=" + mandateReference + "\n";
+             output += "docdataReference=" + docdataReference + "\n";
+             output += "paymentMenuURL=" + paymentMenuURL + "\n";
+
+             return output;
+         }
+
          public static LinkIDPaymentResponse fromDictionary(Dictionary<string, string> dictionary)
         {
             if (null == dictionary[ORDER_REF_KEY])

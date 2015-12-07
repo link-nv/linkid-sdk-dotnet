@@ -9,12 +9,15 @@
 <body>
     <div>
     
-        <img id="qr" runat="server" />  
+        <img id="qr" runat="server" alt="linkID QR Code" src="" />  
         
         <pre>
             <asp:Label ID="state" runat="server" Text=""></asp:Label>
         </pre>
-    
+
+        <form id="form1" runat="server">
+            <asp:LinkButton ID="restart" runat="server" Text="Restart" OnClick="onRestart" />        
+        </form>
     </div>
 </body>
 </html>

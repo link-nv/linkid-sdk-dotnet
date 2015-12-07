@@ -20,45 +20,63 @@ namespace linkid_example
             ServicePointManager.ServerCertificateValidationCallback =
                 new RemoteCertificateValidationCallback(WCFUtil.AnyCertificateValidationCallback);
 
-            AuthnSession authnSession = (AuthnSession)Session[LINKID_SESSION];
+            LinkIDAuthSession linkIDSession = (LinkIDAuthSession)Session[LINKID_SESSION];
 
-            if (null == authnSession)
+            if (null == linkIDSession)
             {
-                // start a linkID authentication
+                // configure linkID authentication context
                 LinkIDAuthenticationContext linkIDContext = new LinkIDAuthenticationContext();
                 linkIDContext.authenticationMessage = "WS Authn Message";
                 linkIDContext.finishedMessage = "WS Finished Message";
                 linkIDContext.applicationName = TestUtil.APP_NAME;
                 linkIDContext.language = TestUtil.language;
+                linkIDContext.identityProfile = "linkid_basic";
+                
+                // attribute suggestions
+                Dictionary<string, List<Object>> attributeSuggestions = new Dictionary<string, List<object>>();
+                attributeSuggestions.Add("test.attribute.string", new List<Object> { "test" });
+                attributeSuggestions.Add("test.attribute.multi.date", new List<Object> { DateTime.Now });
+                attributeSuggestions.Add("test.attribute.boolean", new List<Object> { true });
+                attributeSuggestions.Add("test.attribute.integer", new List<Object> { 69 });
+                attributeSuggestions.Add("test.attribute.double", new List<Object> { 3.14159 });
+                linkIDContext.attributeSuggestions = attributeSuggestions;
 
-                authnSession = WSLoginUtil.startLinkIDAuthentication(TestUtil.LINKID_HOST,
-                    TestUtil.wsUsername, TestUtil.wsPassword, linkIDContext, null);
+                // linkIDContext.paymentContext = new LinkIDPaymentContext(new LinkIDPaymentAmount(199, LinkIDCurrency.EUR, null));
+                // linkIDContext.callback = new LinkIDCallback("https://www.google.be", null, true);
 
-                qr.Src = "data:image/png;base64," + authnSession.qrCodeImageEncoded;
+                // start the linkID authentication
+                linkIDSession = TestUtil.getClient().authStart(linkIDContext, Request.UserAgent);
 
-                Session[LINKID_SESSION] = authnSession;
+                qr.Src = "data:image/png;base64," + linkIDSession.qrCodeInfo.qrEncoded;
+
+                Session[LINKID_SESSION] = linkIDSession;
             }
             else
             {
                 // poll linkID authentication
-                PollResponse pollResponse =  WSLoginUtil.pollLinkIDAuthentication(TestUtil.LINKID_HOST,
-                    TestUtil.wsUsername, TestUtil.wsPassword,
-                    authnSession.saml2AuthUtil, authnSession.sessionId, TestUtil.language);
+                LinkIDAuthPollResponse pollResponse = TestUtil.getClient().authPoll(linkIDSession.sessionId, TestUtil.language);
 
                 state.Text = "<h2>Poll response</h2>";
-                state.Text += "AuthenticationState: " + pollResponse.authenticationState + "<br/>";
+                state.Text += "AuthenticationState: " + pollResponse.linkIDAuthenticationState + "<br/>";
                 state.Text += "PaymentState: " + pollResponse.paymentState + "<br/>";
                 state.Text += "Payment Menu URL: " + pollResponse.paymentMenuURL + "<br/>";
 
-                if (null != pollResponse.authenticationContext)
+                if (null != pollResponse.linkIDAuthnResponse)
                 {
                     // logged in, dump user data
-                    state.Text += pollResponse.authenticationContext.ToString();
+                    state.Text += pollResponse.linkIDAuthnResponse.ToString();
                 }
 
                 // hide qr image
                 qr.Visible = false;
             }
+        }
+
+        protected void onRestart(Object sender, EventArgs e)
+        {
+            Session[LINKID_SESSION] = null;
+            Session.Abandon();
+            Page.Response.Redirect(Page.Request.Url.ToString(), true);
         }
     }
 }

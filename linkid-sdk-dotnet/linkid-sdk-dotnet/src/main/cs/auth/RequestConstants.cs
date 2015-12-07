@@ -15,10 +15,6 @@ namespace safe_online_sdk_dotnet
 	/// </summary>
 	public sealed class RequestConstants
 	{
-        public static readonly String LANGUAGE_REQUEST_PARAM = "Language";
-        public static readonly String TARGET_URI_REQUEST_PARAM = "return_uri";
-        public static readonly String FORCE_AUTH_REQUEST_PARAM = "force";
-
         // Payment state changed page order reference param
         public static readonly String PAYMENT_CHANGED_ORDER_REF_PARAM = "orderRef";
 
@@ -27,9 +23,6 @@ namespace safe_online_sdk_dotnet
         public static readonly String LTQR_PAYMENT_ORDER_REF_PARAM = "paymentOrderRef";
         public static readonly String ﻿﻿LTQR_CLIENT_SESSION_ID_PARAM = "clientSessionId";
 
-        // HAWS session ID param
-        public static readonly String ﻿HAWS_SESSION_ID_PARAM = "hawsId";
-		
 		private RequestConstants()
 		{
 		}
