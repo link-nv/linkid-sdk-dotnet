@@ -49,7 +49,7 @@
     <Compile Include="src\test\cs\AssemblyInfo.cs" />
     <Compile Include="src\test\cs\TestLinkIDWSConfig.cs" />
     <Compile Include="src\test\cs\TestLinkIDWSPayment.cs" />
-    <Compile Include="src\test\cs\TestReportingClient.cs" />
+    <Compile Include="src\test\cs\TestLinkIDWSReporting.cs" />
     <Compile Include="src\test\cs\TestConstants.cs" />
     <Compile Include="src\test\cs\TestDataClient.cs" />
     <Compile Include="src\test\cs\TestLLinkIDWSLTQR.cs" />

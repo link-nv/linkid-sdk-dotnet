@@ -146,6 +146,170 @@ namespace safe_online_sdk_dotnet
         /// <param name="userAgent">optional user agent for formatting the QR code URL</param>
         /// <returns>the LTQR info objects</returns>
         /// <exception cref="LinkIDLTQRInfoException">something went wrong, check the error code</exception>
-        List<LinkIDLTQRInfo> ltqrInfo(List<String> ltqrReferences, String userAgent);            
+        List<LinkIDLTQRInfo> ltqrInfo(List<String> ltqrReferences, String userAgent);
+
+        /// <summary>
+        /// Fetch payment report
+        /// </summary>
+        /// <param name="dateFilter">optional date filter</param>
+        /// <param name="pageFilter">optional page filter in case of large result sets</param>
+        /// <returns>the payment report</returns>
+        /// <exception cref="LinkIDReportException">something went wrong, check the error code</exception>
+        LinkIDPaymentReport getPaymentReport(LinkIDReportDateFilter dateFilter, LinkIDReportPageFilter pageFilter);
+
+        /// <summary>
+        /// Fetch payment report
+        /// </summary>
+        /// <param name="orderReferences">order references</param>
+        /// <param name="pageFilter">optional page filter in case of large result sets</param>
+        /// <returns>the payment report</returns>
+        /// <exception cref="LinkIDReportException">something went wrong, check the error code</exception>
+        LinkIDPaymentReport getPaymentReportForOrderReferences(List<String> orderReferences, LinkIDReportPageFilter pageFilter);
+
+        /// <summary>
+        /// Fetch payment report
+        /// </summary>
+        /// <param name="mandateReferences">mandate references</param>
+        /// <param name="pageFilter">optional page filter in case of large result sets</param>
+        /// <returns>the payment report</returns>
+        /// <exception cref="LinkIDReportException">something went wrong, check the error code</exception>
+        LinkIDPaymentReport getPaymentReportForMandates(List<String> mandateReferences, LinkIDReportPageFilter pageFilter);
+
+        /// <summary>
+        /// Fetch parking report
+        /// </summary>
+        /// <param name="dateFilter">optional date filter</param>
+        /// <param name="pageFilter">optional page filter in case of large result sets</param>
+        /// <returns>the parking report</returns>
+        /// <exception cref="LinkIDReportException">something went wrong, check the error code</exception>
+        LinkIDParkingReport getParkingReport(LinkIDReportDateFilter dateFilter, LinkIDReportPageFilter pageFilter);
+
+        /// <summary>
+        /// Fetch parking report
+        /// </summary>
+        /// <param name="dateFilter">optional date filter</param>
+        /// <param name="pageFilter">optional page filter in case of large result sets</param>
+        /// <param name="parkings">optional list of parkings</param>
+        /// <returns>the parking report</returns>
+        /// <exception cref="LinkIDReportException">something went wrong, check the error code</exception>
+        LinkIDParkingReport getParkingReport(LinkIDReportDateFilter dateFilter, LinkIDReportPageFilter pageFilter, List<String> parkings);
+
+        /// <summary>
+        /// Fetch parking report
+        /// </summary>
+        /// <param name="barCodes">optional list of barCodes</param>
+        /// <param name="pageFilter">optional page filter in case of large result sets</param>
+        /// <returns>the parking report</returns>
+        /// <exception cref="LinkIDReportException">something went wrong, check the error code</exception>
+        LinkIDParkingReport getParkingReportForBarCodes(List<String> barCodes, LinkIDReportPageFilter pageFilter);
+
+        /// <summary>
+        /// Fetch parking report
+        /// </summary>
+        /// <param name="ticketNumbers">optional list of ticketNumbers</param>
+        /// <param name="pageFilter">optional page filter in case of large result sets</param>
+        /// <returns>the parking report</returns>
+        /// <exception cref="LinkIDReportException">something went wrong, check the error code</exception>
+        LinkIDParkingReport getParkingReportForTicketNumbers(List<String> ticketNumbers, LinkIDReportPageFilter pageFilter);
+
+        /// <summary>
+        /// Fetch parking report
+        /// </summary>
+        /// <param name="dtaKeys">optional list of dtaKeys</param>
+        /// <param name="pageFilter">optional page filter in case of large result sets</param>
+        /// <returns>the parking report</returns>
+        /// <exception cref="LinkIDReportException">something went wrong, check the error code</exception>
+        LinkIDParkingReport getParkingReportForDTAKeys(List<String> dtaKeys, LinkIDReportPageFilter pageFilter);
+
+        /// <summary>
+        /// Fetch wallet report
+        /// </summary>
+        /// <param name="language">optional language, default is en</param>
+        /// <param name="walletOrganizationId">the wallet organization ID</param>
+        /// <param name="applicationFilter">optional application filter</param>
+        /// <param name="walletFilter">optional wallet filter</param>
+        /// <param name="dateFilter">optional date filter</param>
+        /// <param name="pageFilter">optional page filter</param>
+        /// <returns>the wallet report</returns>
+        /// <exception cref="LinkIDReportException">something went wrong, check the error code</exception>
+        LinkIDWalletReport getWalletReport(String language, String walletOrganizationId,
+            LinkIDReportApplicationFilter applicationFilter, LinkIDReportWalletFilter walletFilter, 
+            LinkIDReportDateFilter dateFilter, LinkIDReportPageFilter pageFilter);
+
+        /// <summary>
+        /// Fetch wallet info report for specified wallet IDs
+        /// </summary>
+        /// <param name="language">optional language, default is en</param>
+        /// <param name="walletIds">list of wallet IDs to fetch info for</param>
+        /// <returns>list of wallet report info objects for the specified walletIds. If a walletId was not found it will be skipped</returns>
+        /// <exception cref="LinkIDWalletInfoReportException">something went wrong, check the error code</exception>
+        List<LinkIDWalletInfoReport> getWalletInfoReport(String language, List<String> walletIds);
+
+        /// <summary>
+        /// Enroll users for a wallet. Optionally specify initial credit to add to wallet if applicable
+        /// </summary>
+        /// <param name="userId">the userId</param>
+        /// <param name="walletOrganizationId">the wallet organization ID</param>
+        /// <returns>the wallet ID</returns>
+        /// <exception cref="LinkIDWalletEnrollException">something went wrong, check the error code</exception>
+        String walletEnroll(String userId, String walletOrganizationId, Nullable<double> amount, Nullable<LinkIDCurrency> currency, String walletCoin);
+
+        /// <summary>
+        /// Get info about a wallet for specified user and wallet organization
+        /// </summary>
+        /// <param name="userId">the userId</param>
+        /// <param name="walletOrganizationId">the walletOrganizationId</param>
+        /// <returns>wallet info or null if no such wallet for that user</returns>
+        /// <exception cref="LinkIDWalletGetInfoException">something went wrong, check the error code</exception>
+        LinkIDWalletInfo walletGetInfo(String userId, String walletOrganizationId);
+
+        /// <summary>
+        /// Add credit for a user of a wallet
+        /// </summary>
+        /// <param name="userId">the userId</param>
+        /// <param name="walletId">the walletId</param>
+        /// <param name="amount">the amount to add</param>
+        /// <param name="currency">optional currency</param>
+        /// <param name="walletCoin">optional walletCoint</param>
+        /// <exception cref="LinkIDWalletAddCreditException">something went wrong, check the error code</exception>
+        void walletAddCredit(String userId, String walletId, double amount, Nullable<LinkIDCurrency> currency, String walletCoin);
+
+        /// <summary>
+        /// Remove credit for a user of a wallet
+        /// </summary>
+        /// <param name="userId">the userId</param>
+        /// <param name="walletId">the walletId</param>
+        /// <param name="amount">the amount to remove</param>
+        /// <param name="currency">optional currency</param>
+        /// <param name="walletCoin">optional walletCoint</param>
+        /// <exception cref="LinkIDWalletRemoveCreditException">something went wrong, check the error code</exception>
+        void walletRemoveCredit(String userId, String walletId, double amount, Nullable<LinkIDCurrency> currency, String walletCoin);
+
+        /// <summary>
+        /// Remove the specified wallet from that user
+        /// </summary>
+        /// <param name="userId">the userId</param>
+        /// <param name="walletId">the walletId</param>
+        /// <exception cref="LinkIDWalletRemoveException">something went wrong, check the error code</exception>
+        void walletRemove(String userId, String walletId);
+
+        /// <summary>
+        /// Commit a wallet transaction. The amount payed for the specified wallet transaction ID will be free'd.
+        /// If not committed, linKID will after a period of time release it
+        /// </summary>
+        /// <param name="userId">the userId</param>
+        /// <param name="walletId">the walletId</param>
+        /// <param name="walletTransactionId">the wallet transaction ID</param>
+        /// <exception cref="LinkIDWalletCommitException">something went wrong, check the error code</exception>
+        void walletCommit(String userId, String walletId, String walletTransactionId);
+
+        /// <summary>
+        /// Release a wallet transaction immediately instead of waiting for the wallet's expiration
+        /// </summary>
+        /// <param name="userId">the userId</param>
+        /// <param name="walletId">the walletId</param>
+        /// <param name="walletTransactionId">the wallet transaction ID</param>
+        /// <exception cref="LinkIDWalletReleaseException">something went wrong, check the error code</exception>
+        void walletRelease(String userId, String walletId, String walletTransactionId);
     }
 }

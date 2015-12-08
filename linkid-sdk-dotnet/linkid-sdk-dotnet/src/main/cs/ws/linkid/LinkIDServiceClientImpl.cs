@@ -457,7 +457,510 @@ namespace safe_online_sdk_dotnet
 
         }
 
+        public LinkIDPaymentReport getPaymentReport(LinkIDReportDateFilter dateFilter, LinkIDReportPageFilter pageFilter)
+        {
+            return getPaymentReport(dateFilter, null, null, pageFilter);
+        }
+
+        public LinkIDPaymentReport getPaymentReportForOrderReferences(List<String> orderReferences, LinkIDReportPageFilter pageFilter)
+        {
+            return getPaymentReport(null, orderReferences, null, pageFilter);
+        }
+
+        public LinkIDPaymentReport getPaymentReportForMandates(List<String> mandateReferences, LinkIDReportPageFilter pageFilter)
+        {
+            return getPaymentReport(null, null, mandateReferences, pageFilter);
+        }
+
+        public LinkIDParkingReport getParkingReport(LinkIDReportDateFilter dateFilter, LinkIDReportPageFilter pageFilter)
+        {
+            return getParkingReport(dateFilter, pageFilter, null, null, null, null);
+        }
+
+        public LinkIDParkingReport getParkingReport(LinkIDReportDateFilter dateFilter, LinkIDReportPageFilter pageFilter, List<String> parkings)
+        {
+            return getParkingReport(dateFilter, pageFilter, null, null, null, parkings);
+        }
+
+        public LinkIDParkingReport getParkingReportForBarCodes(List<String> barCodes, LinkIDReportPageFilter pageFilter)
+        {
+            return getParkingReport(null, pageFilter, barCodes, null, null, null);
+        }
+
+        public LinkIDParkingReport getParkingReportForTicketNumbers(List<String> ticketNumbers, LinkIDReportPageFilter pageFilter)
+        {
+            return getParkingReport(null, pageFilter, null, ticketNumbers, null, null);
+        }
+
+        public LinkIDParkingReport getParkingReportForDTAKeys(List<String> dtaKeys, LinkIDReportPageFilter pageFilter)
+        {
+            return getParkingReport(null, pageFilter, null, null, dtaKeys, null);
+        }
+
+        public LinkIDWalletReport getWalletReport(String language, String walletOrganizationId,
+            LinkIDReportApplicationFilter applicationFilter, LinkIDReportWalletFilter walletFilter, 
+            LinkIDReportDateFilter dateFilter, LinkIDReportPageFilter pageFilter)
+        {
+            WalletReportRequest request = new WalletReportRequest();
+            request.language = language;
+            request.walletOrganizationId = walletOrganizationId;
+
+            if (null != dateFilter)
+            {
+                ReportDateFilter wsDateFilter = new ReportDateFilter();
+                wsDateFilter.startDate = dateFilter.startDate;
+                if (null != dateFilter.endDate)
+                {
+                    wsDateFilter.endDate = dateFilter.endDate.Value;
+                    wsDateFilter.endDateSpecified = true;
+                }
+                request.dateFilter = wsDateFilter;
+            }
+            if (null != pageFilter)
+            {
+                ReportPageFilter wsPageFilter = new ReportPageFilter();
+                wsPageFilter.firstResult = pageFilter.firstResult;
+                wsPageFilter.maxResults = pageFilter.maxResults;
+                request.pageFilter = wsPageFilter;
+            }
+            if (null != applicationFilter)
+            {
+                ReportApplicationFilter wsApplicationFilter = new ReportApplicationFilter();
+                wsApplicationFilter.applicationName = applicationFilter.applicationName;
+                request.applicationFilter = wsApplicationFilter;
+            }
+            if (null != walletFilter)
+            {
+                ReportWalletFilter wsWalletFilter = new ReportWalletFilter();
+                wsWalletFilter.walletId = walletFilter.walletId;
+                request.walletFilter = wsWalletFilter;
+            }
+
+            // operate
+            WalletReportResponse response = client.walletReport(request);
+
+            if (null != response.error)
+            {
+                throw new LinkIDReportException(response.error.errorCode);
+            }
+
+            List<LinkIDWalletReportTransaction> transactions = new List<LinkIDWalletReportTransaction>();
+            if (null != response.transactions)
+            {
+                foreach (WalletReportTransaction txn in response.transactions)
+                {
+                    transactions.Add(new LinkIDWalletReportTransaction(txn.walletId, txn.creationDate, txn.transactionId,
+                        txn.amount, convert(txn.currency), txn.walletCoin, txn.refundAmount, txn.paymentDescription,
+                        txn.userId, txn.applicationName, txn.applicationFriendly, convert(txn.type)));
+                }
+            }
+            return new LinkIDWalletReport(response.total, transactions);
+
+        }
+
+        public List<LinkIDWalletInfoReport> getWalletInfoReport(String language, List<String> walletIds)
+        {
+            WalletInfoReportRequest request = new WalletInfoReportRequest();
+            request.language = language;
+            request.walletId = walletIds.ToArray();
+
+            // operate
+            WalletInfoReportResponse response = client.walletInfoReport(request);
+
+            if (null != response.error)
+            {
+                throw new LinkIDWalletInfoReportException(response.error.errorCode);
+            }
+
+            List<LinkIDWalletInfoReport> result = new List<LinkIDWalletInfoReport>();
+            if (null != response.walletInfo)
+            {
+                foreach (WalletInfoReport walletInfo in response.walletInfo)
+                {
+                    result.Add(new LinkIDWalletInfoReport(walletInfo.walletId, walletInfo.created, walletInfo.removed,
+                        walletInfo.userId, walletInfo.organizationId, walletInfo.organization, walletInfo.balance));
+                }
+            }
+            return result;
+        }
+
+        public String walletEnroll(String userId, String walletOrganizationId, Nullable<double> amount, Nullable<LinkIDCurrency> currency, String walletCoin)
+        {
+            WalletEnrollRequest request = new WalletEnrollRequest();
+            request.userId = userId;
+            request.walletOrganizationId = walletOrganizationId;
+            if (null != amount)
+            {
+                request.amount = amount.Value;
+                request.amountSpecified = true;
+            }
+            else
+            {
+                request.amountSpecified = false;
+            }
+            if (null != currency)
+            {
+                request.currency = convert(currency);
+                request.currencySpecified = true;
+            }
+            else
+            {
+                request.currencySpecified = false;
+            }
+            request.walletCoin = walletCoin;
+
+            // operate
+            WalletEnrollResponse response = client.walletEnroll(request);
+
+            if (null != response.error)
+            {
+                throw new LinkIDWalletEnrollException(response.error.errorCode);
+            }
+
+            if (null != response.success)
+            {
+                return response.success.walletId;
+            }
+
+            throw new RuntimeException("No success nor error element in the response ?!");
+        }
+
+        public LinkIDWalletInfo walletGetInfo(String userId, String walletOrganizationId)
+        {
+            WalletGetInfoRequest request = new WalletGetInfoRequest();
+            request.userId = userId;
+            request.walletOrganizationId = walletOrganizationId;
+
+            // operate
+            WalletGetInfoResponse response = client.walletGetInfo(request);
+
+            if (null != response.error)
+            {
+                throw new LinkIDWalletGetInfoException(response.error.errorCode);
+            }
+
+            if (null != response.success)
+            {
+                if (null == response.success.walletId)
+                {
+                    return null;
+                }
+                else
+                {
+                    return new LinkIDWalletInfo(response.success.walletId);
+                }
+            }
+
+            throw new RuntimeException("No success nor error element in the response ?!");
+ 
+        }
+
+        public void walletAddCredit(String userId, String walletId, double amount, Nullable<LinkIDCurrency> currency, String walletCoin)
+        {
+            WalletAddCreditRequest request = new WalletAddCreditRequest();
+            request.userId = userId;
+            request.walletId = walletId;
+            request.amount = amount;
+            request.amountSpecified = true;
+            request.currencySpecified = null != currency;
+            if (null != currency)
+            {
+                request.currency = convert(currency);
+            }
+            request.walletCoin = walletCoin;
+
+            // operate
+            WalletAddCreditResponse response = client.walletAddCredit(request);
+
+            if (null != response.error)
+            {
+                throw new LinkIDWalletAddCreditException(response.error.errorCode);
+            }
+
+            if (null != response.success)
+            {
+                return;
+            }
+
+            throw new RuntimeException("No success nor error element in the response ?!");
+
+        }
+
+        public void walletRemoveCredit(String userId, String walletId, double amount, Nullable<LinkIDCurrency> currency, String walletCoin)
+        {
+            WalletRemoveCreditRequest request = new WalletRemoveCreditRequest();
+            request.userId = userId;
+            request.walletId = walletId;
+            request.amount = amount;
+            request.amountSpecified = true;
+            request.currencySpecified = null != currency;
+            if (null != currency)
+            {
+                request.currency = convert(currency);
+            }
+            request.walletCoin = walletCoin;
+
+            // operate
+            WalletRemoveCreditResponse response = client.walletRemoveCredit(request);
+
+            if (null != response.error)
+            {
+                throw new LinkIDWalletRemoveCreditException(response.error.errorCode);
+            }
+
+            if (null != response.success)
+            {
+                return;
+            }
+
+            throw new RuntimeException("No success nor error element in the response ?!");
+
+        }
+
+        public void walletRemove(String userId, String walletId)
+        {
+            WalletRemoveRequest request = new WalletRemoveRequest();
+            request.userId = userId;
+            request.walletId = walletId;
+
+            // operate
+            WalletRemoveResponse response = client.walletRemove(request);
+
+            if (null != response.error)
+            {
+                throw new LinkIDWalletRemoveException(response.error.errorCode);
+            }
+
+            if (null != response.success)
+            {
+                return;
+            }
+
+            throw new RuntimeException("No success nor error element in the response ?!");
+        }
+
+        public void walletCommit(String userId, String walletId, String walletTransactionId)
+        {
+            WalletCommitRequest request = new WalletCommitRequest();
+            request.userId = userId;
+            request.walletId = walletId;
+            request.walletTransactionId = walletTransactionId;
+
+            // operate
+            WalletCommitResponse response = client.walletCommit(request);
+
+            if (null != response.error)
+            {
+                throw new LinkIDWalletCommitException(response.error.errorCode);
+            }
+
+            if (null != response.success)
+            {
+                return;
+            }
+
+            throw new RuntimeException("No success nor error element in the response ?!");
+        }
+
+        public void walletRelease(String userId, String walletId, String walletTransactionId)
+        {
+            WalletReleaseRequest request = new WalletReleaseRequest();
+            request.userId = userId;
+            request.walletId = walletId;
+            request.walletTransactionId = walletTransactionId;
+
+            // operate
+            WalletReleaseResponse response = client.walletRelease(request);
+
+            if (null != response.error)
+            {
+                throw new LinkIDWalletReleaseException(response.error.errorCode);
+            }
+
+            if (null != response.success)
+            {
+                return;
+            }
+
+            throw new RuntimeException("No success nor error element in the response ?!");
+        }
+
+
         // Helper methods
+
+        private LinkIDWalletReportType convert(WalletReportType reportType)
+        {
+            switch (reportType)
+            {
+                case WalletReportType.usertransaction:
+                    return LinkIDWalletReportType.USER_TRANSACTION;
+                case WalletReportType.walletadd:
+                    return LinkIDWalletReportType.WALLET_ADD;
+                case WalletReportType.walletremove:
+                    return LinkIDWalletReportType.WALLET_REMOVE;
+                case WalletReportType.applicationaddcreditinitial:
+                    return LinkIDWalletReportType.APPLICATION_ADD_CREDIT_INITIAL;
+                case WalletReportType.applicationaddcredit:
+                    return LinkIDWalletReportType.APPLICATION_ADD_CREDIT;
+                case WalletReportType.applicationremovecredit:
+                    return LinkIDWalletReportType.APPLICATION_REMOVE_CREDIT;
+                case WalletReportType.applicationrefund:
+                    return LinkIDWalletReportType.APPLICATION_REFUND;
+            }
+
+            throw new RuntimeException("WalletReportType " + reportType + " not supported ?!");
+        }
+
+        private LinkIDParkingReport getParkingReport(LinkIDReportDateFilter dateFilter, LinkIDReportPageFilter pageFilter,
+            List<String> barCodes, List<String> ticketNumbers, List<String> dtaKeys, List<String> parkings)
+        {
+
+            ParkingReportRequest request = new ParkingReportRequest();
+
+            if (null != dateFilter)
+            {
+                ReportDateFilter wsDateFilter = new ReportDateFilter();
+                wsDateFilter.startDate = dateFilter.startDate;
+                if (null != dateFilter.endDate)
+                {
+                    wsDateFilter.endDate = dateFilter.endDate.Value;
+                    wsDateFilter.endDateSpecified = true;
+                }
+                request.dateFilter = wsDateFilter;
+            }
+
+            if (null != pageFilter)
+            {
+                ReportPageFilter wsPageFilter = new ReportPageFilter();
+                wsPageFilter.firstResult = pageFilter.firstResult;
+                wsPageFilter.maxResults = pageFilter.maxResults;
+                request.pageFilter = wsPageFilter;
+            }
+
+            if (null != barCodes)
+            {
+                request.barCodes = barCodes.ToArray();
+            }
+            if (null != ticketNumbers)
+            {
+                request.ticketNumbers = ticketNumbers.ToArray();
+            }
+            if (null != dtaKeys)
+            {
+                request.dtaKeys = dtaKeys.ToArray();
+            }
+            if (null != parkings)
+            {
+                request.parkings = parkings.ToArray();
+            }
+
+            // operate
+            ParkingReportResponse response = client.parkingReport(request);
+
+            if (null != response.error)
+            {
+                throw new LinkIDReportException(response.error.errorCode);
+            }
+
+            List<LinkIDParkingSession> sessions = new List<LinkIDParkingSession>();
+            if (null != response.sessions)
+            {
+                foreach (ParkingSession session in response.sessions)
+                {
+                    sessions.Add(new LinkIDParkingSession(session.date, session.barCode, session.parking, session.userId,
+                        session.turnover, session.validated, session.paymentOrderReference, convert(session.paymentState)));
+                }
+            }
+            return new LinkIDParkingReport(response.total, sessions);
+
+        }
+
+        private LinkIDPaymentReport getPaymentReport(LinkIDReportDateFilter dateFilter, List<String> orderReferences, 
+            List<String> mandateReferences, LinkIDReportPageFilter pageFilter)
+        {
+            PaymentReportRequest request = new PaymentReportRequest();
+
+            if (null != dateFilter)
+            {
+                request.dateFilter = new ReportDateFilter();
+                request.dateFilter.startDate = dateFilter.startDate;
+                if (null != dateFilter.endDate)
+                {
+                    request.dateFilter.endDate = dateFilter.endDate.Value;
+                    request.dateFilter.endDateSpecified = true;
+                }
+            }
+            if (null != pageFilter)
+            {
+                request.pageFilter = new ReportPageFilter();
+                request.pageFilter.firstResult = pageFilter.firstResult;
+                request.pageFilter.maxResults = pageFilter.maxResults;
+            }
+
+            if (null != orderReferences)
+            {
+                request.orderReferences = orderReferences.ToArray();
+            }
+
+            if (null != mandateReferences)
+            {
+                request.mandateReferences = mandateReferences.ToArray();
+            }
+
+            PaymentReportResponse response = this.client.paymentReport(request);
+
+            if (null != response.error)
+            {
+                throw new LinkIDReportException(response.error.errorCode);
+            }
+
+            List<LinkIDPaymentOrder> orders = new List<LinkIDPaymentOrder>();
+            if (null != response.orders)
+            {
+                foreach (PaymentOrder order in response.orders)
+                {
+                    orders.Add(convert(order));
+                }
+            }
+
+            return new LinkIDPaymentReport(response.total, orders);
+        }
+
+        private LinkIDPaymentOrder convert(PaymentOrder wsOrder)
+        {
+            List<LinkIDPaymentTransaction> transactions = new List<LinkIDPaymentTransaction>();
+            if (null != wsOrder.transactions)
+            {
+                foreach (PaymentTransaction paymentTransaction in wsOrder.transactions)
+                {
+                    transactions.Add(new LinkIDPaymentTransaction(convert(paymentTransaction.paymentMethodType),
+                        paymentTransaction.paymentMethod, convert(paymentTransaction.paymentState),
+                        paymentTransaction.creationDate, paymentTransaction.authorizationDate, paymentTransaction.capturedDate,
+                        paymentTransaction.docdataReference, paymentTransaction.amount, convert(paymentTransaction.currency).Value, 
+                        paymentTransaction.refundAmount));
+                }
+            }
+
+            List<LinkIDWalletTransaction> walletTransactions = new List<LinkIDWalletTransaction>();
+            if (null != wsOrder.walletTransactions)
+            {
+                foreach (WalletTransaction walletTransaction in wsOrder.walletTransactions)
+                {
+                    walletTransactions.Add(new LinkIDWalletTransaction(walletTransaction.walletId, walletTransaction.creationDate,
+                        walletTransaction.transactionId, walletTransaction.amount, 
+                        walletTransaction.currencySpecified ? convert(walletTransaction.currency) : null, 
+                        walletTransaction.walletCoin, walletTransaction.refundAmount, 
+                        wsOrder.description));
+                }
+            }
+
+            return new LinkIDPaymentOrder(wsOrder.date, wsOrder.amount, 
+                wsOrder.currencySpecified? convert(wsOrder.currency) : null, wsOrder.walletCoin,
+                wsOrder.description, convert(wsOrder.paymentState), wsOrder.amountPayed, wsOrder.authorized, 
+                wsOrder.captured, wsOrder.orderReference, wsOrder.userId, wsOrder.email, wsOrder.givenName, 
+                wsOrder.familyName, transactions, walletTransactions);
+        }
+
 
         private LinkIDLTQRLockType convert(LTQRLockType lockType)
         {

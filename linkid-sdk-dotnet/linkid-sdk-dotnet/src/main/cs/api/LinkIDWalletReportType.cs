@@ -1,0 +1,7 @@
+﻿using System;
+
+namespace safe_online_sdk_dotnet
+{
+    public enum LinkIDWalletReportType { USER_TRANSACTION, WALLET_ADD, WALLET_REMOVE, APPLICATION_ADD_CREDIT_INITIAL, 
+        APPLICATION_ADD_CREDIT, APPLICATION_REMOVE_CREDIT, APPLICATION_REFUND }
+}
