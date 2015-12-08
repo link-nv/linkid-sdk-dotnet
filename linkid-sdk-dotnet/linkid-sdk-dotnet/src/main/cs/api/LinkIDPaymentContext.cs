@@ -62,20 +62,6 @@ namespace safe_online_sdk_dotnet
         public LinkIDPaymentContext(LinkIDPaymentAmount amount, String description, String orderReference,
             String paymentProfile, int paymentValidationTime, PaymentAddBrowser paymentAddBrowser, LinkIDPaymentMandate mandate)
         {
-            if (null == amount.currency && null == amount.walletCoin)
-            {
-                throw new InvalidPaymentContextException("LinkIDPaymentContext.amount needs or currency or wallet specified, both are null");
-            }
-            if (null != amount.currency && null != amount.walletCoin)
-            {
-                throw new InvalidPaymentContextException("LinkIDPaymentContext.amount needs or currency or walletCoin specified, both are specified");
-            }
-
-            if (amount.amount <= 0)
-            {
-                throw new InvalidPaymentContextException("LinkIDPaymentContext.amount <= 0, this is not allowed");
-            }
-
             this.amount = amount;
             this.description = description;
             this.orderReference = orderReference;
@@ -98,6 +84,24 @@ namespace safe_online_sdk_dotnet
 
         public Dictionary<string, string> toDictionary()
         {
+            if (null == amount.currency && null == amount.walletCoin)
+            {
+                throw new InvalidPaymentContextException("LinkIDPaymentContext.amount needs or currency or wallet specified, both are null");
+            }
+            if (null != amount.currency && null != amount.walletCoin)
+            {
+                throw new InvalidPaymentContextException("LinkIDPaymentContext.amount needs or currency or walletCoin specified, both are specified");
+            }
+
+            if (amount.amount <= 0)
+            {
+                throw new InvalidPaymentContextException("LinkIDPaymentContext.amount <= 0, this is not allowed");
+            }
+            if (onlyWallets && paymentAddBrowser == PaymentAddBrowser.REDIRECT)
+            {
+                throw new InvalidPaymentContextException("Setting onlyWallets and allowing continue in browser makes no sense, aborting...");
+            }
+
             Dictionary<string, string> dictionary = new Dictionary<string, string>();
             dictionary.Add(AMOUNT_KEY, amount.amount.ToString());
             if (null != amount.currency)

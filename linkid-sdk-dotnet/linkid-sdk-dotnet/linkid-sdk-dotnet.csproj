@@ -65,6 +65,9 @@
     <Compile Include="src\main\cs\api\LinkIDLTQRLockType.cs" />
     <Compile Include="src\main\cs\api\LinkIDLTQRPollingConfiguration.cs" />
     <Compile Include="src\main\cs\api\LinkIDLTQRSession.cs" />
+    <Compile Include="src\main\cs\api\LinkIDNotificationConstants.cs" />
+    <Compile Include="src\main\cs\api\LinkIDNotificationMessage.cs" />
+    <Compile Include="src\main\cs\api\LinkIDNotificationTopic.cs" />
     <Compile Include="src\main\cs\api\LinkIDParkingReport.cs" />
     <Compile Include="src\main\cs\api\LinkIDPaymentAmount.cs" />
     <Compile Include="src\main\cs\api\LinkIDPaymentDetails.cs" />
@@ -95,7 +98,6 @@
     <Compile Include="src\main\cs\api\LinkIDPaymentContext.cs" />
     <Compile Include="src\main\cs\auth\Saml2Constants.cs" />
     <Compile Include="src\main\cs\auth\Saml2AuthUtil.cs" />
-    <Compile Include="src\main\cs\auth\RequestConstants.cs" />
     <Compile Include="src\main\cs\api\LinkIDPaymentOrder.cs" />
     <Compile Include="src\main\cs\ws\attrib\AttributeClient.cs" />
     <Compile Include="src\main\cs\ws\attrib\AttributeClientImpl.cs" />
