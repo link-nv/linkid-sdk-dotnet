@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="LoginWS.aspx.cs" Inherits="linkid_example.LoginWS" %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="LoginWS.aspx.cs" Inherits="linkid_example.LoginWS" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -34,16 +34,6 @@
 
                 });
 
-                /*
-                var pollResult = PageMethods.pollLinkID();
-                console.log("poll result" . pollResult);
-                if (pollResult.hideQR) {
-                console.log("hide QR...");
-                } else {
-                console.log("show QR...");
-                }
-                setTimeout("pollLinkID()", 2000);
-                */
             })();
         
         };
