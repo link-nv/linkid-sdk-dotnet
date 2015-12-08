@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -101,9 +101,6 @@
     <Compile Include="src\main\cs\api\LinkIDPaymentOrder.cs" />
     <Compile Include="src\main\cs\ws\attrib\AttributeClient.cs" />
     <Compile Include="src\main\cs\ws\attrib\AttributeClientImpl.cs" />
-    <Compile Include="src\main\cs\ws\capture\CaptureClient.cs" />
-    <Compile Include="src\main\cs\ws\capture\CaptureClientImpl.cs" />
-    <Compile Include="src\main\cs\ws\capture\CaptureException.cs" />
     <Compile Include="src\main\cs\ws\data\DataServiceConstants.cs" />
     <Compile Include="src\main\cs\ws\exception\ApplicationPoolNotFoundException.cs" />
     <Compile Include="src\main\cs\ws\exception\AttributeNotFoundException.cs" />
