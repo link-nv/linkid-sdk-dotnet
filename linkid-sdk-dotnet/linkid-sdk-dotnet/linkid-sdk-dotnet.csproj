@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -172,60 +172,12 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="target\services\SafeOnlineNotificationConsumerWebService.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="target\services\SafeOnlineNotificationProducerWebService.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="target\services\SafeOnlineNotificationSubscriptionManagerWebService.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="target\services\SafeOnlinePaymentWebService.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="target\services\SafeOnlineLTQRWebService.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="target\services\SafeOnlineHawsWebService.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="target\services\SafeOnlineMandateWebService.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="target\services\SafeOnlineReportingtWebService.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="target\services\SafeOnlineCaptureWebService.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="target\services\SafeOnlineWalletWebService.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="src\main\cs\AssemblyInfo.cs" />
     <None Include="src\main\resources\*" />
     <None Include="src\main\resources\attrib-ws\*" />
     <None Include="src\main\resources\data-ws\*" />
     <None Include="src\main\resources\sts-ws\*" />
     <None Include="src\main\resources\idmapping-ws\*" />
-    <None Include="src\main\resources\notification-ws\*" />
-    <None Include="src\main\resources\payment-ws\*" />
-    <None Include="src\main\resources\ltqr-ws\*" />
-    <None Include="src\main\resources\haws-ws\*" />
-    <None Include="src\main\resources\mandate-ws\*" />
-    <None Include="src\main\resources\reporting-ws\*" />
-    <None Include="src\main\resources\capture-ws\*" />
-    <None Include="src\main\resources\wallet-ws\*" />
     <None Include="src\main\resources\linkid-ws\*" />
   </ItemGroup>
   <Target Name="BeforeBuild">
@@ -235,16 +187,6 @@
     <Exec Command="svcutil /namespace:*,AttributeWSNamespace /directory:target\services src\main\resources\attrib-ws\saml-protocol-2.0.wsdl src\main\resources\saml-schema-protocol-2.0.xsd src\main\resources\saml-schema-assertion-2.0.xsd src\main\resources\xmldsig-core-schema.xsd src\main\resources\xenc-schema.xsd" />
     <Exec Command="svcutil /namespace:*,DataWSNamespace /directory:target\services src\main\resources\data-ws\liberty-idwsf-dst-ref-v2.1-link.wsdl src\main\resources\data-ws\liberty-idwsf-dst-ref-v2.1-safe-online.xsd src\main\resources\data-ws\liberty-idwsf-dst-v2.1.xsd src\main\resources\data-ws\liberty-idwsf-soap-binding-v2.0.xsd src\main\resources\data-ws\liberty-idwsf-utility-v2.0.xsd src\main\resources\data-ws\oasis-sstc-saml-schema-protocol-1.1.xsd src\main\resources\saml-schema-assertion-2.0.xsd src\main\resources\saml-schema-protocol-2.0.xsd src\main\resources\data-ws\wss-util-1.0.xsd src\main\resources\ws-addr.xsd src\main\resources\xmldsig-core-schema.xsd src\main\resources\xenc-schema.xsd" />
     <Exec Command="svcutil /namespace:*,LinkIDWSNameSpace /directory:target\services src\main\resources\linkid-ws\linkid-3.1.wsdl src\main\resources\linkid-ws\linkid-3.1.xsd" />
-    <Exec Command="svcutil /namespace:*,NotificationConsumerWSNameSpace /directory:target\services src\main\resources\notification-ws\notification-consumer.wsdl src\main\resources\notification-ws\b-2.xsd src\main\resources\notification-ws\bf-2.xsd src\main\resources\ws-addr.xsd src\main\resources\notification-ws\t-1.xsd" />
-    <Exec Command="svcutil /namespace:*,NotificationProducerWSNameSpace /directory:target\services src\main\resources\notification-ws\notification-producer.wsdl src\main\resources\notification-ws\b-2.xsd src\main\resources\notification-ws\bf-2.xsd src\main\resources\ws-addr.xsd src\main\resources\notification-ws\t-1.xsd" />
-    <Exec Command="svcutil /namespace:*,NotificationSubscriptionManagerWSNameSpace /directory:target\services src\main\resources\notification-ws\notification-subscription-manager.wsdl src\main\resources\notification-ws\b-2.xsd src\main\resources\notification-ws\bf-2.xsd src\main\resources\ws-addr.xsd src\main\resources\notification-ws\t-1.xsd" />
-    <Exec Command="svcutil /namespace:*,PaymentWSNameSpace /directory:target\services src\main\resources\payment-ws\safe-online-payment-4.0.wsdl src\main\resources\payment-ws\safe-online-payment-4.0.xsd src\main\resources\ws-addr.xsd src\main\resources\xmldsig-core-schema.xsd src\main\resources\xenc-schema.xsd src\main\resources\safe-online-common.xsd" />
-    <Exec Command="svcutil /namespace:*,LTQRWSNameSpace /directory:target\services src\main\resources\ltqr-ws\safe-online-ltqr-5.0.wsdl src\main\resources\ltqr-ws\safe-online-ltqr-5.0.xsd src\main\resources\safe-online-common.xsd" />
-    <Exec Command="svcutil /namespace:*,HawsWSNameSpace /directory:target\services src\main\resources\haws-ws\safe-online-haws-2.0.wsdl src\main\resources\haws-ws\safe-online-haws-2.0.xsd" />
-    <Exec Command="svcutil /namespace:*,MandateWSNameSpace /directory:target\services src\main\resources\mandate-ws\safe-online-mandate-3.0.wsdl src\main\resources\mandate-ws\safe-online-mandate-3.0.xsd src\main\resources\safe-online-common.xsd" />
-    <Exec Command="svcutil /namespace:*,ReportingWSNameSpace /directory:target\services src\main\resources\reporting-ws\safe-online-reporting-4.0.wsdl  src\main\resources\reporting-ws\safe-online-reporting-4.0.xsd src\main\resources\safe-online-common.xsd" />
-    <Exec Command="svcutil /namespace:*,CaptureWSNameSpace /directory:target\services src\main\resources\capture-ws\safe-online-capture-2.0.wsdl src\main\resources\capture-ws\safe-online-capture-2.0.xsd" />
-    <Exec Command="svcutil /namespace:*,WalletWSNameSpace /directory:target\services src\main\resources\wallet-ws\safe-online-wallet-2.0.wsdl src\main\resources\wallet-ws\safe-online-wallet-2.0.xsd src\main\resources\safe-online-common.xsd" />
   </Target>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

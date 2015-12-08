@@ -1,5 +1,4 @@
 ﻿using System;
-using LTQRWSNameSpace;
 using System.Collections.Generic;
 
 namespace safe_online_sdk_dotnet
