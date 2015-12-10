@@ -109,6 +109,14 @@ namespace safe_online_sdk_dotnet
         LinkIDLTQRSession ltqrPush(LinkIDLTQRContent content, String userAgent, LinkIDLTQRLockType lockType);
 
         /// <summary>
+        /// Bulk push long term QR sessions to linkID
+        /// </summary>
+        /// <param name="contents">the LTQR request contents</param>
+        /// <returns>list of responses for the LTQR requests</returns>
+        /// <exception cref="LinkIDLTQRBulkPushException">something went wrong, check the error code</exception>
+        List<LinkIDLTQRPushResponse> ltqrBulkPush(List<LinkIDLTQRPushContent> contents);
+
+        /// <summary>
         /// Change an existing long term QR code
         /// </summary>
         /// <param name="ltqrReference">LTQR reference</param>

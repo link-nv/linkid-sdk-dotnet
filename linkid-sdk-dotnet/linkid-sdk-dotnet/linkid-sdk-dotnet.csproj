@@ -64,6 +64,8 @@
     <Compile Include="src\main\cs\api\LinkIDLTQRContent.cs" />
     <Compile Include="src\main\cs\api\LinkIDLTQRLockType.cs" />
     <Compile Include="src\main\cs\api\LinkIDLTQRPollingConfiguration.cs" />
+    <Compile Include="src\main\cs\api\LinkIDLTQRPushContent.cs" />
+    <Compile Include="src\main\cs\api\LinkIDLTQRPushResponse.cs" />
     <Compile Include="src\main\cs\api\LinkIDLTQRSession.cs" />
     <Compile Include="src\main\cs\api\LinkIDNotificationConstants.cs" />
     <Compile Include="src\main\cs\api\LinkIDNotificationMessage.cs" />
@@ -127,6 +129,7 @@
     <Compile Include="src\main\cs\ws\linkid\configuration\LinkIDLocalizationException.cs" />
     <Compile Include="src\main\cs\ws\linkid\LinkIDServiceClient.cs" />
     <Compile Include="src\main\cs\ws\linkid\LinkIDServiceClientImpl.cs" />
+    <Compile Include="src\main\cs\ws\linkid\ltqr\LinkIDLTQRBulkPushException.cs" />
     <Compile Include="src\main\cs\ws\linkid\ltqr\LinkIDLTQRInfoException.cs" />
     <Compile Include="src\main\cs\ws\linkid\ltqr\LinkIDLTQRRemoveException.cs" />
     <Compile Include="src\main\cs\ws\linkid\ltqr\LinkIDLTQRPullException.cs" />

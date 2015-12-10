@@ -322,6 +322,48 @@ namespace safe_online_sdk_dotnet
             throw new RuntimeException("No success nor error element in the response ?!");
         }
 
+        public List<LinkIDLTQRPushResponse> ltqrBulkPush(List<LinkIDLTQRPushContent> contents)
+        {
+            List<LTQRPushContent> requests = new List<LTQRPushContent>();
+            foreach (LinkIDLTQRPushContent content in contents)
+            {
+                LTQRPushContent ltqrPushContent = new LTQRPushContent();
+                ltqrPushContent.content = convert(content.content);
+                ltqrPushContent.userAgent = content.userAgent;
+                ltqrPushContent.lockType = convert(content.lockType);
+
+                requests.Add(ltqrPushContent);
+            }
+
+            // operate
+            LTQRBulkPushResponse response = client.ltqrBulkPush(requests.ToArray());
+
+            if (null != response.error)
+            {
+                throw new LinkIDLTQRBulkPushException(response.error.errorCode, response.error.errorMessage);
+            }
+
+            if (null != response.success)
+            {
+                List<LinkIDLTQRPushResponse> results = new List<LinkIDLTQRPushResponse>();
+                foreach (LTQRPushResponse2 ltqrPushResponse in response.success)
+                {
+                    if (null != ltqrPushResponse.success)
+                    {
+                        results.Add(new LinkIDLTQRPushResponse(new LinkIDLTQRSession(ltqrPushResponse.success.ltqrReference, 
+                            convert(ltqrPushResponse.success.qrCodeInfo), ltqrPushResponse.success.paymentOrderReference)));
+                    }
+                    else
+                    {
+                        results.Add(new LinkIDLTQRPushResponse(ltqrPushResponse.error.errorCode, ltqrPushResponse.error.errorMessage));
+                    }
+                }
+                return results;
+            }
+
+            throw new RuntimeException("No success nor error element in the response ?!");
+        }
+
         public LinkIDLTQRSession ltqrChange(String ltqrReference, LinkIDLTQRContent content, String userAgent, Boolean unlock, Boolean unblock)
         {
             LTQRChangeRequest request = new LTQRChangeRequest();

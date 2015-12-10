@@ -41,6 +41,28 @@ namespace safe_online_sdk_dotnet.test.cs
         }
 
         [Test]
+        public void testPushBulk()
+        {
+            LinkIDLTQRContent content = new LinkIDLTQRContent();
+            content.authenticationMessage = "foo";
+            content.finishedMessage = "bar";
+            content.paymentContext = new LinkIDPaymentContext(new LinkIDPaymentAmount(20000, LinkIDCurrency.EUR, null),
+                "blaat", null, null);
+            content.expiryDate = DateTime.Now.AddMonths(3);
+
+            List<LinkIDLTQRPushContent> requests = new List<LinkIDLTQRPushContent>();
+            for (int i = 0; i < 5; i++)
+            {
+                requests.Add(new LinkIDLTQRPushContent(content, null, LinkIDLTQRLockType.NEVER));
+            }
+
+            List<LinkIDLTQRPushResponse> results = client.ltqrBulkPush(requests);
+
+            Assert.NotNull(results);
+            Assert.AreEqual(requests.Count, results.Count);
+        }
+
+        [Test]
         public void testChange()
         {
             LinkIDLTQRContent content = new LinkIDLTQRContent();
