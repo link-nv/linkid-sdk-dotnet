@@ -1340,7 +1340,7 @@ namespace safe_online_sdk_dotnet
             FavoritesConfiguration wsFavoritesConfiguration = new FavoritesConfiguration();
             wsFavoritesConfiguration.title = favoritesConfiguration.title;
             wsFavoritesConfiguration.info = favoritesConfiguration.info;
-            wsFavoritesConfiguration.logoEncoded = favoritesConfiguration.logoEncoded;
+            wsFavoritesConfiguration.logoUrl = favoritesConfiguration.logoUrl;
             wsFavoritesConfiguration.backgroundColor = favoritesConfiguration.backgroundColor;
             wsFavoritesConfiguration.textColor = favoritesConfiguration.textColor;
             return wsFavoritesConfiguration;
@@ -1354,7 +1354,7 @@ namespace safe_online_sdk_dotnet
             }
 
             LinkIDFavoritesConfiguration config = new LinkIDFavoritesConfiguration(favoritesConfiguration.title,
-                favoritesConfiguration.info, favoritesConfiguration.logoEncoded,
+                favoritesConfiguration.info, favoritesConfiguration.logoUrl,
                 favoritesConfiguration.backgroundColor, favoritesConfiguration.textColor);
             return config;
         }
