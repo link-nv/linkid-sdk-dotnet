@@ -260,7 +260,7 @@ namespace safe_online_sdk_dotnet
         /// <param name="walletOrganizationId">the wallet organization ID</param>
         /// <returns>the wallet ID</returns>
         /// <exception cref="LinkIDWalletEnrollException">something went wrong, check the error code</exception>
-        String walletEnroll(String userId, String walletOrganizationId, Nullable<double> amount, Nullable<LinkIDCurrency> currency, String walletCoin);
+        String walletEnroll(String userId, String walletOrganizationId, Nullable<double> amount, Nullable<LinkIDCurrency> currency, String walletCoin, LinkIDWalletReportInfo reportInfo);
 
         /// <summary>
         /// Get info about a wallet for specified user and wallet organization
@@ -280,7 +280,7 @@ namespace safe_online_sdk_dotnet
         /// <param name="currency">optional currency</param>
         /// <param name="walletCoin">optional walletCoint</param>
         /// <exception cref="LinkIDWalletAddCreditException">something went wrong, check the error code</exception>
-        void walletAddCredit(String userId, String walletId, double amount, Nullable<LinkIDCurrency> currency, String walletCoin);
+        void walletAddCredit(String userId, String walletId, double amount, Nullable<LinkIDCurrency> currency, String walletCoin, LinkIDWalletReportInfo reportInfo);
 
         /// <summary>
         /// Remove credit for a user of a wallet
@@ -291,7 +291,7 @@ namespace safe_online_sdk_dotnet
         /// <param name="currency">optional currency</param>
         /// <param name="walletCoin">optional walletCoint</param>
         /// <exception cref="LinkIDWalletRemoveCreditException">something went wrong, check the error code</exception>
-        void walletRemoveCredit(String userId, String walletId, double amount, Nullable<LinkIDCurrency> currency, String walletCoin);
+        void walletRemoveCredit(String userId, String walletId, double amount, Nullable<LinkIDCurrency> currency, String walletCoin, LinkIDWalletReportInfo reportInfo);
 
         /// <summary>
         /// Remove the specified wallet from that user

@@ -593,7 +593,7 @@ namespace safe_online_sdk_dotnet
                 {
                     transactions.Add(new LinkIDWalletReportTransaction(txn.walletId, txn.creationDate, txn.transactionId,
                         txn.amount, convert(txn.currency), txn.walletCoin, txn.refundAmount, txn.paymentDescription,
-                        txn.userId, txn.applicationName, txn.applicationFriendly, convert(txn.type)));
+                        txn.userId, txn.applicationName, txn.applicationFriendly, convert(txn.type), convert(txn.reportInfo)));
                 }
             }
             return new LinkIDWalletReport(response.total, transactions);
@@ -626,7 +626,7 @@ namespace safe_online_sdk_dotnet
             return result;
         }
 
-        public String walletEnroll(String userId, String walletOrganizationId, Nullable<double> amount, Nullable<LinkIDCurrency> currency, String walletCoin)
+        public String walletEnroll(String userId, String walletOrganizationId, Nullable<double> amount, Nullable<LinkIDCurrency> currency, String walletCoin, LinkIDWalletReportInfo reportInfo)
         {
             WalletEnrollRequest request = new WalletEnrollRequest();
             request.userId = userId;
@@ -650,6 +650,12 @@ namespace safe_online_sdk_dotnet
                 request.currencySpecified = false;
             }
             request.walletCoin = walletCoin;
+            if (null != reportInfo)
+            {
+                request.reportInfo = new WalletReportInfo();
+                request.reportInfo.reference = reportInfo.reference;
+                request.reportInfo.description = reportInfo.description;
+            }
 
             // operate
             WalletEnrollResponse response = client.walletEnroll(request);
@@ -697,7 +703,7 @@ namespace safe_online_sdk_dotnet
  
         }
 
-        public void walletAddCredit(String userId, String walletId, double amount, Nullable<LinkIDCurrency> currency, String walletCoin)
+        public void walletAddCredit(String userId, String walletId, double amount, Nullable<LinkIDCurrency> currency, String walletCoin, LinkIDWalletReportInfo reportInfo)
         {
             WalletAddCreditRequest request = new WalletAddCreditRequest();
             request.userId = userId;
@@ -710,6 +716,12 @@ namespace safe_online_sdk_dotnet
                 request.currency = convert(currency);
             }
             request.walletCoin = walletCoin;
+            if (null != reportInfo)
+            {
+                request.reportInfo = new WalletReportInfo();
+                request.reportInfo.reference = reportInfo.reference;
+                request.reportInfo.description = reportInfo.description;
+            }
 
             // operate
             WalletAddCreditResponse response = client.walletAddCredit(request);
@@ -728,7 +740,7 @@ namespace safe_online_sdk_dotnet
 
         }
 
-        public void walletRemoveCredit(String userId, String walletId, double amount, Nullable<LinkIDCurrency> currency, String walletCoin)
+        public void walletRemoveCredit(String userId, String walletId, double amount, Nullable<LinkIDCurrency> currency, String walletCoin, LinkIDWalletReportInfo reportInfo)
         {
             WalletRemoveCreditRequest request = new WalletRemoveCreditRequest();
             request.userId = userId;
@@ -741,6 +753,12 @@ namespace safe_online_sdk_dotnet
                 request.currency = convert(currency);
             }
             request.walletCoin = walletCoin;
+            if (null != reportInfo)
+            {
+                request.reportInfo = new WalletReportInfo();
+                request.reportInfo.reference = reportInfo.reference;
+                request.reportInfo.description = reportInfo.description;
+            }
 
             // operate
             WalletRemoveCreditResponse response = client.walletRemoveCredit(request);
@@ -829,6 +847,16 @@ namespace safe_online_sdk_dotnet
 
 
         // Helper methods
+
+        public LinkIDWalletReportInfo convert(WalletReportInfo reportInfo)
+        {
+            if (null != reportInfo)
+            {
+                return new LinkIDWalletReportInfo(reportInfo.reference, reportInfo.description);
+            }
+
+            return null;
+        }
 
         private LinkIDWalletReportType convert(WalletReportType reportType)
         {

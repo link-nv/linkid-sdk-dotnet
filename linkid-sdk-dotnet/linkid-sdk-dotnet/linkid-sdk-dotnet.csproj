@@ -90,6 +90,7 @@
     <Compile Include="src\main\cs\api\LinkIDWalletInfo.cs" />
     <Compile Include="src\main\cs\api\LinkIDWalletInfoReport.cs" />
     <Compile Include="src\main\cs\api\LinkIDWalletReport.cs" />
+    <Compile Include="src\main\cs\api\LinkIDWalletReportInfo.cs" />
     <Compile Include="src\main\cs\api\LinkIDWalletReportTransaction.cs" />
     <Compile Include="src\main\cs\api\LinkIDWalletReportType.cs" />
     <Compile Include="src\main\cs\api\LinkIDWalletTransaction.cs" />

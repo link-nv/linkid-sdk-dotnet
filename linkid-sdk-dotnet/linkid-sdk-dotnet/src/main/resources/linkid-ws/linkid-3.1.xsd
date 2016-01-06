@@ -389,6 +389,11 @@
                     <documentation>Default theme?</documentation>
                 </annotation>
             </element>
+            <element name="owner" type="boolean" minOccurs="0" maxOccurs="1">
+                <annotation>
+                    <documentation>Is the application fetching the theme the owner of it?</documentation>
+                </annotation>
+            </element>
             <element name="logo" type="tns:ConfigLocalizedImages" minOccurs="0" maxOccurs="1">
                 <annotation>
                     <documentation>The application logo, shown in the manage linkID section</documentation>
@@ -1777,6 +1782,7 @@
             <element name="applicationName" type="string" minOccurs="1" maxOccurs="1" />
             <element name="applicationFriendly" type="string" minOccurs="1" maxOccurs="1" />
             <element name="type" type="tns:WalletReportType" minOccurs="1" maxOccurs="1" />
+            <element name="reportInfo" type="tns:WalletReportInfo" minOccurs="0" maxOccurs="1" />
         </sequence>
     </complexType>
 
@@ -1807,6 +1813,11 @@
 			<enumeration value="wallet.remove">
 				<annotation>
 					<documentation>Wallet was removed</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="wallet.unremove">
+				<annotation>
+					<documentation>Wallet was unremoved</documentation>
 				</annotation>
 			</enumeration>
 			<enumeration value="application.add.credit.initial">
@@ -1930,6 +1941,11 @@
 						<documentation>Optional payment amount wallet coin, if null have to specify currency</documentation>
 					</annotation>
 				</element>
+                <element name="reportInfo" type="tns:WalletReportInfo" minOccurs="0" maxOccurs="1">
+                    <annotation>
+                        <documentation>optional info if credits were added or removed</documentation>
+                    </annotation>
+                </element>
             </sequence>
 		</complexType>
 	</element>
@@ -2110,6 +2126,11 @@
 						<documentation>Optional payment amount wallet coin, if null have to specify currency</documentation>
 					</annotation>
 				</element>
+                <element name="reportInfo" type="tns:WalletReportInfo" minOccurs="0" maxOccurs="1">
+                    <annotation>
+                        <documentation>optional info if credits were added or removed</documentation>
+                    </annotation>
+                </element>
             </sequence>
 		</complexType>
 	</element>
@@ -2203,6 +2224,11 @@
 						<documentation>Optional payment amount wallet coin, if null have to specify currency</documentation>
 					</annotation>
 				</element>
+                <element name="reportInfo" type="tns:WalletReportInfo" minOccurs="0" maxOccurs="1">
+                    <annotation>
+                        <documentation>optional info if credits were added or removed</documentation>
+                    </annotation>
+                </element>
             </sequence>
 		</complexType>
 	</element>
@@ -2479,6 +2505,23 @@
 			</enumeration>
 		</restriction>
 	</simpleType>
+
+    <!-- Wallet common -->
+
+    <complexType name="WalletReportInfo">
+        <sequence>
+            <element name="reference" type="string" minOccurs="0" maxOccurs="1">
+                <annotation>
+                    <documentation>optional reference</documentation>
+                </annotation>
+            </element>
+            <element name="description" type="string" minOccurs="0" maxOccurs="1">
+                <annotation>
+                    <documentation>optional description</documentation>
+                </annotation>
+            </element>
+        </sequence>
+    </complexType>
 
     <!-- **************************************************************************************************************************************************
          *                                                                  Common                                                                        *
