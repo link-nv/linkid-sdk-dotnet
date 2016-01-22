@@ -21,6 +21,7 @@ namespace safe_online_sdk_dotnet
         public Nullable<long> expiryDuration { get; set; }
         public bool waitForUnblock { get; set; }
         public LinkIDFavoritesConfiguration favoritesConfiguration { get; set; }
+        public String notificationLocation { get; set; }
 
         public LinkIDLTQRContent()
         {
@@ -31,7 +32,7 @@ namespace safe_online_sdk_dotnet
             long sessionExpiryOverride, String theme, String mobileLandingSuccess,
             String mobileLandingError, String mobileLandingCancel, LinkIDLTQRPollingConfiguration pollingConfiguration,
             String ltqrStatusLocation, DateTime expiryDate, Nullable<long> expiryDuration, bool waitForUnblock,
-            LinkIDFavoritesConfiguration favoritesConfiguration)
+            LinkIDFavoritesConfiguration favoritesConfiguration, String notificationLocation)
         {
             this.authenticationMessage = authenticationMessage;
             this.finishedMessage = finishedMessage;
@@ -49,6 +50,7 @@ namespace safe_online_sdk_dotnet
             this.expiryDuration = expiryDuration;
             this.waitForUnblock = waitForUnblock;
             this.favoritesConfiguration = favoritesConfiguration;
+            this.notificationLocation = notificationLocation;
         }
     }
 }

@@ -145,6 +145,36 @@ namespace safe_online_sdk_dotnet
             throw new RuntimeException("No success nor error element in the response ?!");
         }
 
+        public List<LinkIDApplication> configWalletApplications(String walletOrganizationId, String language)
+        {
+            ConfigWalletApplicationsRequest request = new ConfigWalletApplicationsRequest();
+            request.walletOrganizationId = walletOrganizationId;
+            if (null != language)
+            {
+                request.language = language;
+            }
+
+            // Operate
+            ConfigWalletApplicationsResponse response = client.configWalletApplications(request);
+
+            if (null != response.error)
+            {
+                throw new LinkIDConfigWalletApplicationsException(response.error.errorCode);
+            }
+
+            if (null != response.success)
+            {
+                List<safe_online_sdk_dotnet.LinkIDApplication> applications = new List<safe_online_sdk_dotnet.LinkIDApplication>();
+                foreach (LinkIDWSNameSpace.LinkIDApplication application in response.success)
+                {
+                    applications.Add(new safe_online_sdk_dotnet.LinkIDApplication(application.name, application.friendlyName));
+                }
+                return applications;
+            }
+
+            throw new RuntimeException("No success nor error element in the response ?!");
+        }
+
         public LinkIDThemes getThemes(String applicationName)
         {
             ConfigThemesRequest request = new ConfigThemesRequest();
@@ -273,11 +303,16 @@ namespace safe_online_sdk_dotnet
             }
         }
 
-        public String mandatePayment(String mandateReference, LinkIDPaymentContext paymentContext, String language)
+        public String mandatePayment(String mandateReference, LinkIDPaymentContext paymentContext, 
+            String notificationLocation, String language)
         {
             MandatePaymentRequest request = new MandatePaymentRequest();
             request.paymentContext = convert(paymentContext);
             request.mandateReference = mandateReference;
+            if (null != notificationLocation)
+            {
+                request.notificationLocation = notificationLocation;
+            }
             if (null != language)
             {
                 request.language = language;
@@ -1298,6 +1333,7 @@ namespace safe_online_sdk_dotnet
             }
             content.waitForUnblock = ltqrContent.waitForUnblock;
             content.ltqrStatusLocation = ltqrContent.ltqrStatusLocation;
+            content.notificationLocation = ltqrContent.notificationLocation;
             
             return content;
         }
@@ -1348,12 +1384,17 @@ namespace safe_online_sdk_dotnet
             {
                 ltqrContent.ltqrStatusLocation = content.ltqrStatusLocation;
             }
+            if (null != content.notificationLocation)
+            {
+                ltqrContent.notificationLocation = content.notificationLocation;
+            }
 
             // favorites configuration
             if (null != content.favoritesConfiguration)
             {
                 ltqrContent.favoritesConfiguration = convert(content.favoritesConfiguration);
             }
+            
 
             return ltqrContent;
         }

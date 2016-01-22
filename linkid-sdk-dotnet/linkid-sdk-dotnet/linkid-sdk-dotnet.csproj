@@ -49,10 +49,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="src\main\cs\api\LinkIDApplication.cs" />
     <Compile Include="src\main\cs\api\LinkIDAuthenticationContext.cs" />
     <Compile Include="src\main\cs\api\LinkIDAuthnResponse.cs" />
     <Compile Include="src\main\cs\api\LinkIDAuthPollResponse.cs" />
     <Compile Include="src\main\cs\api\LinkIDAuthSession.cs" />
+    <Compile Include="src\main\cs\ws\linkid\configuration\LinkIDConfigWalletApplicationsException.cs" />
     <Compile Include="src\main\cs\api\LinkIDCurrency.cs" />
     <Compile Include="src\main\cs\api\LinkIDExternalCodeResponse.cs" />
     <Compile Include="src\main\cs\api\LinkIDExternalCodeType.cs" />

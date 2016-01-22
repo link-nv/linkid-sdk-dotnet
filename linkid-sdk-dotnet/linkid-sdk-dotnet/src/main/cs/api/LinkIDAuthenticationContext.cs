@@ -20,6 +20,7 @@ namespace safe_online_sdk_dotnet
         public static readonly String MOBILE_LANDING_SUCCESS_URL = "linkID.mobileLandingSuccess";
         public static readonly String MOBILE_LANDING_ERROR_URL = "linkID.mobileLandingError";
         public static readonly String MOBILE_LANDING_CANCEL_URL = "linkID.mobileLandingCancel";
+        public static readonly String NOTIFICATION_LOCATION = "linkID.notificationLocation";
 
         public String applicationName { get; set; }
         public String applicationFriendlyName { get; set; }
@@ -31,6 +32,7 @@ namespace safe_online_sdk_dotnet
         public String identityProfile { get; set; }
         public long sessionExpiryOverride { get; set; }
         public String theme { get; set; }
+        public String notificationLocation { get; set; }
 
         public String mobileLandingSuccess { get; set; }
         public String mobileLandingError { get; set; }
@@ -74,6 +76,10 @@ namespace safe_online_sdk_dotnet
             if (null != theme)
             {
                 deviceContextMap.Add(THEME, theme);
+            }
+            if (null != notificationLocation)
+            {
+                deviceContextMap.Add(NOTIFICATION_LOCATION, notificationLocation);
             }
 
             if (null != mobileLandingSuccess)

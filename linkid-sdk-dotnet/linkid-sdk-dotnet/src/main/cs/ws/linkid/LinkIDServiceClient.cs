@@ -51,6 +51,15 @@ namespace safe_online_sdk_dotnet
         LinkIDAuthnResponse callbackPull(String sessionId);
 
         /// <summary>
+        /// Fetch the list of linkID applications allowed to use specified wallet organization
+        /// </summary>
+        /// <param name="walletOrganizationId">the wallet organization ID</param>
+        /// <param name="language">locale to return the application friendly name in</param>
+        /// <returns>the list of applications</returns>
+        /// <exception cref="LinkIDConfigWalletApplicationsException">something went wrong, check the error code</exception>
+        List<LinkIDApplication> configWalletApplications(String walletOrganizationId, String language);
+
+        /// <summary>
         /// Fetch the application's themes
         /// </summary>
         /// <param name="applicationName"></param>
@@ -93,10 +102,12 @@ namespace safe_online_sdk_dotnet
         /// </summary>
         /// <param name="mandateReference">reference of the mandate</param>
         /// <param name="paymentContext">payment info</param>
+        /// <param name="notificationLocation">optional notification location override</param>
         /// <param name="language">language</param>
         /// <returns>the reference of the payment order</returns>
         /// <exception cref="LinkIDMandatePaymentException">something went wrong, check the error code</exception>
-        String mandatePayment(String mandateReference, LinkIDPaymentContext paymentContext, String language);
+        String mandatePayment(String mandateReference, LinkIDPaymentContext paymentContext, 
+            String notificationLocation, String language);
 
         /// <summary>
         /// Push a long term QR session to linkID
