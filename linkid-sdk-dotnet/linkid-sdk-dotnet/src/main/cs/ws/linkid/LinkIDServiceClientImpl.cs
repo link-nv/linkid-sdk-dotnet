@@ -244,9 +244,9 @@ namespace safe_online_sdk_dotnet
                         transactions.Add(new LinkIDPaymentTransaction(convert(wsPaymentTransaction.paymentMethodType),
                             wsPaymentTransaction.paymentMethod, convert(wsPaymentTransaction.paymentState),
                             wsPaymentTransaction.creationDate, wsPaymentTransaction.authorizationDate,
-                            wsPaymentTransaction.capturedDate, wsPaymentTransaction.docdataReference,
-                            wsPaymentTransaction.amount, convert(wsPaymentTransaction.currency).Value, 
-                            wsPaymentTransaction.refundAmount));
+                            wsPaymentTransaction.capturedDate, wsPaymentTransaction.refundedDate, 
+                            wsPaymentTransaction.docdataReference, wsPaymentTransaction.amount, 
+                            convert(wsPaymentTransaction.currency).Value, wsPaymentTransaction.refundAmount));
                     }
                 }
 
@@ -255,7 +255,8 @@ namespace safe_online_sdk_dotnet
                 {
                     foreach (WalletTransaction wsWalletTransaction in response.success.paymentDetails.walletTransactions)
                     {
-                        walletTransactions.Add(new LinkIDWalletTransaction(wsWalletTransaction.walletId, wsWalletTransaction.creationDate,
+                        walletTransactions.Add(new LinkIDWalletTransaction(wsWalletTransaction.walletId, 
+                            wsWalletTransaction.creationDate, wsWalletTransaction.refundedDate, wsWalletTransaction.committedDate,
                             wsWalletTransaction.transactionId, wsWalletTransaction.amount,
                             wsWalletTransaction.currencySpecified ? convert(wsWalletTransaction.currency) : null,
                             wsWalletTransaction.walletCoin, wsWalletTransaction.refundAmount, response.success.description));
@@ -626,9 +627,10 @@ namespace safe_online_sdk_dotnet
             {
                 foreach (WalletReportTransaction txn in response.transactions)
                 {
-                    transactions.Add(new LinkIDWalletReportTransaction(txn.walletId, txn.creationDate, txn.transactionId,
-                        txn.amount, convert(txn.currency), txn.walletCoin, txn.refundAmount, txn.paymentDescription,
-                        txn.userId, txn.applicationName, txn.applicationFriendly, convert(txn.type), convert(txn.reportInfo)));
+                    transactions.Add(new LinkIDWalletReportTransaction(txn.walletId, txn.creationDate, txn.refundedDate,
+                        txn.committedDate, txn.transactionId, txn.amount, convert(txn.currency), txn.walletCoin,
+                        txn.refundAmount, txn.paymentDescription, txn.userId, txn.applicationName, 
+                        txn.applicationFriendly, convert(txn.type), convert(txn.reportInfo)));
                 }
             }
             return new LinkIDWalletReport(response.total, transactions);
@@ -1041,7 +1043,8 @@ namespace safe_online_sdk_dotnet
                     transactions.Add(new LinkIDPaymentTransaction(convert(paymentTransaction.paymentMethodType),
                         paymentTransaction.paymentMethod, convert(paymentTransaction.paymentState),
                         paymentTransaction.creationDate, paymentTransaction.authorizationDate, paymentTransaction.capturedDate,
-                        paymentTransaction.docdataReference, paymentTransaction.amount, convert(paymentTransaction.currency).Value, 
+                        paymentTransaction.refundedDate, paymentTransaction.docdataReference, 
+                        paymentTransaction.amount, convert(paymentTransaction.currency).Value, 
                         paymentTransaction.refundAmount));
                 }
             }
@@ -1051,7 +1054,8 @@ namespace safe_online_sdk_dotnet
             {
                 foreach (WalletTransaction walletTransaction in wsOrder.walletTransactions)
                 {
-                    walletTransactions.Add(new LinkIDWalletTransaction(walletTransaction.walletId, walletTransaction.creationDate,
+                    walletTransactions.Add(new LinkIDWalletTransaction(walletTransaction.walletId, 
+                        walletTransaction.creationDate, walletTransaction.refundedDate, walletTransaction.committedDate,
                         walletTransaction.transactionId, walletTransaction.amount, 
                         walletTransaction.currencySpecified ? convert(walletTransaction.currency) : null, 
                         walletTransaction.walletCoin, walletTransaction.refundAmount, 
@@ -1061,8 +1065,9 @@ namespace safe_online_sdk_dotnet
 
             return new LinkIDPaymentOrder(wsOrder.date, wsOrder.amount, 
                 wsOrder.currencySpecified? convert(wsOrder.currency) : null, wsOrder.walletCoin,
-                wsOrder.description, convert(wsOrder.paymentState), wsOrder.amountPayed, wsOrder.authorized, 
-                wsOrder.captured, wsOrder.orderReference, wsOrder.userId, wsOrder.email, wsOrder.givenName, 
+                wsOrder.description, convert(wsOrder.paymentState), wsOrder.amountPayed, wsOrder.authorized,
+                wsOrder.authorizedDate, wsOrder.captured, wsOrder.capturedDate, wsOrder.refunded, wsOrder.refundedDate,
+                wsOrder.orderReference, wsOrder.userId, wsOrder.email, wsOrder.givenName, 
                 wsOrder.familyName, transactions, walletTransactions);
         }
 

@@ -8,6 +8,8 @@ namespace safe_online_sdk_dotnet
     {
         public String walletId { get; set; }
         public DateTime creationDate { get; set; }
+        public DateTime refundedDate { get; set; }
+        public DateTime committedDate { get; set; }
         public String transactionId { get; set; }
         public double amount { get; set; }
         public Nullable<LinkIDCurrency> currency { get; set; }
@@ -15,12 +17,15 @@ namespace safe_online_sdk_dotnet
         public double refundAmount { get; set; }
         public String paymentDescription { get; set; }
 
-        public LinkIDWalletTransaction(String walletId, DateTime creationDate, String transactionId,
+        public LinkIDWalletTransaction(String walletId, DateTime creationDate, DateTime refundedDate,
+            DateTime committedDate, String transactionId,
             double amount, Nullable<LinkIDCurrency> currency, String walletCoin, 
             double refundAmount, String paymentDescription)
         {
             this.walletId = walletId;
             this.creationDate = creationDate;
+            this.refundedDate = refundedDate;
+            this.committedDate = committedDate;
             this.transactionId = transactionId;
             this.amount = amount;
             this.currency = currency;
@@ -44,6 +49,8 @@ namespace safe_online_sdk_dotnet
             }
             output += "      * walletId: " + walletId + "\n";
             output += "      * creationDate: " + creationDate + "\n";
+            output += "      * refundedDate: " + refundedDate + "\n";
+            output += "      * committedDate: " + committedDate + "\n";
             output += "      * transactionId: " + transactionId + "\n";
             output += "      * refundAmount: " + refundAmount + "\n";
             output += "      * paymentDescription: " + paymentDescription + "\n";

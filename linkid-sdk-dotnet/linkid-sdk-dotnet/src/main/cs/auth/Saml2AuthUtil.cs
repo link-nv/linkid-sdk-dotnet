@@ -39,7 +39,7 @@ namespace safe_online_sdk_dotnet
         public static AuthnRequestType generateAuthnRequest(LinkIDAuthenticationContext linkIDContext)
         {
             AuthnRequestType authnRequest = new AuthnRequestType();
-            authnRequest.ForceAuthn = linkIDContext.forceAuthentication;
+            authnRequest.ForceAuthn = true;
             authnRequest.ID = Guid.NewGuid().ToString();
             authnRequest.Version = "2.0";
             authnRequest.IssueInstant = DateTime.UtcNow;
@@ -47,18 +47,6 @@ namespace safe_online_sdk_dotnet
             NameIDType issuer = new NameIDType();
             issuer.Value = linkIDContext.applicationName;
             authnRequest.Issuer = issuer;
-
-            authnRequest.AssertionConsumerServiceURL = "http://foo.bar";
-            authnRequest.ProtocolBinding = Saml2Constants.SAML2_BINDING_HTTP_POST;
-
-            if (null != linkIDContext.applicationFriendlyName)
-            {
-                authnRequest.ProviderName = linkIDContext.applicationFriendlyName;
-            }
-            else
-            {
-                authnRequest.ProviderName = linkIDContext.applicationName;
-            }
 
             NameIDPolicyType nameIdPolicy = new NameIDPolicyType();
             nameIdPolicy.AllowCreate = true;

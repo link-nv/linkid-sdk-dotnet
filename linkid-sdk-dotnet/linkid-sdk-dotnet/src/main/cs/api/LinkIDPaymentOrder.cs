@@ -14,7 +14,11 @@ namespace safe_online_sdk_dotnet
         public LinkIDPaymentState paymentState { get; set; }
         public double amountPayed { get; set; }
         public bool authorized { get; set; }
+        public DateTime authorizedDate { get; set; }
         public bool captured { get; set; }
+        public DateTime capturedDate { get; set; }
+        public bool refunded { get; set; }
+        public DateTime refundedDate { get; set; }
         public String orderReference { get; set; }
         public String userId { get; set; }
         public String email { get; set; }
@@ -23,8 +27,9 @@ namespace safe_online_sdk_dotnet
         public List<LinkIDPaymentTransaction> transactions { get; set; }
         public List<LinkIDWalletTransaction> walletTransactions { get; set; }
 
-        public LinkIDPaymentOrder(DateTime date, double amount, Nullable<LinkIDCurrency> currency, String walletCoin, 
-            String description, LinkIDPaymentState paymentState, double amountPayed, bool authorized, bool captured,
+        public LinkIDPaymentOrder(DateTime date, double amount, Nullable<LinkIDCurrency> currency, String walletCoin,
+            String description, LinkIDPaymentState paymentState, double amountPayed, bool authorized, DateTime authorizedDate,
+            bool captured, DateTime capturedDate, bool refunded, DateTime refundedDate,
             String orderReference, String userId, String email, String givenName, String familyName,
             List<LinkIDPaymentTransaction> transactions, List<LinkIDWalletTransaction> walletTransactions)
         {
@@ -36,7 +41,11 @@ namespace safe_online_sdk_dotnet
             this.paymentState = paymentState;
             this.amountPayed = amountPayed;
             this.authorized = authorized;
+            this.authorizedDate = authorizedDate;
             this.captured = captured;
+            this.capturedDate = capturedDate;
+            this.refunded = refunded;
+            this.refundedDate = refundedDate;
             this.orderReference = orderReference;
             this.userId = userId;
             this.email = email;
@@ -64,8 +73,11 @@ namespace safe_online_sdk_dotnet
             output += "  * paymentState: " + paymentState + "\n";
             output += "  * amountPayed: " + amountPayed + "\n";
             output += "  * authorized: " + authorized + "\n";
+            output += "  * authorizedDate: " + authorizedDate + "\n";
             output += "  * captured: " + captured + "\n";
-            output += "  * authorized: " + authorized + "\n";
+            output += "  * capturedDate: " + capturedDate + "\n";
+            output += "  * refunded: " + refunded + "\n";
+            output += "  * refundedDate: " + refundedDate + "\n";
             output += "  * userId: " + userId + "\n";
             output += "  * email: " + email + "\n";
             output += "  * givenName: " + givenName + "\n";

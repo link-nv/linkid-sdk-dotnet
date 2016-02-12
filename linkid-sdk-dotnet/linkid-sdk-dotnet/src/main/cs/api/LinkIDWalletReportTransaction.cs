@@ -12,11 +12,12 @@ namespace safe_online_sdk_dotnet
         public LinkIDWalletReportType type { get; set; }
         public LinkIDWalletReportInfo reportInfo { get; set; }
 
-        public LinkIDWalletReportTransaction(String walletId, DateTime creationDate, String transactionId,
+        public LinkIDWalletReportTransaction(String walletId, DateTime creationDate, DateTime refundedDate,
+            DateTime committedDate, String transactionId,
             double amount, Nullable<LinkIDCurrency> currency, String walletCoin, 
             double refundAmount, String paymentDescription, String userId, String applicationName,
             String applicationFriendly, LinkIDWalletReportType type, LinkIDWalletReportInfo reportInfo) 
-            : base(walletId, creationDate, transactionId, amount, currency, walletCoin, refundAmount, paymentDescription)
+            : base(walletId, creationDate, refundedDate, committedDate, transactionId, amount, currency, walletCoin, refundAmount, paymentDescription)
         {            
             this.userId = userId;
             this.applicationName = applicationName;

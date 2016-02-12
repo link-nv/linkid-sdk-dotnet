@@ -12,6 +12,7 @@ namespace safe_online_sdk_dotnet
         public DateTime creationDate { get; set; }
         public DateTime authorizationDate { get; set; }
         public DateTime capturedDate { get; set; }
+        public DateTime refundedDate { get; set; }
         public String docdataReference { get; set; }
         public double amount { get; set; }
         public LinkIDCurrency currency { get; set; }
@@ -19,7 +20,8 @@ namespace safe_online_sdk_dotnet
 
         public LinkIDPaymentTransaction(LinkIDPaymentMethodType paymentMethodType, String paymentMethod,
             LinkIDPaymentState paymentState, DateTime creationDate, DateTime authorizationDate,
-            DateTime capturedDate, String docdataReference, double amount, LinkIDCurrency currency, double refundAmount)
+            DateTime capturedDate, DateTime refundedDate, String docdataReference, 
+            double amount, LinkIDCurrency currency, double refundAmount)
         {
             this.paymentMethodType = paymentMethodType;
             this.paymentMethod = paymentMethod;
@@ -27,6 +29,7 @@ namespace safe_online_sdk_dotnet
             this.creationDate = creationDate;
             this.authorizationDate = authorizationDate;
             this.capturedDate = capturedDate;
+            this.refundedDate = refundedDate;
             this.docdataReference = docdataReference;
             this.amount = amount;
             this.currency = currency;
@@ -45,6 +48,7 @@ namespace safe_online_sdk_dotnet
             output += "      * creationDate: " + creationDate + "\n";
             output += "      * authorizationDate: " + authorizationDate + "\n";
             output += "      * capturedDate: " + capturedDate + "\n";
+            output += "      * refundedDate: " + refundedDate + "\n";
             output += "      * docdataReference: " + docdataReference + "\n";
             output += "      * refundAmount: " + refundAmount + "\n";
 
