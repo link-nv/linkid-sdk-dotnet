@@ -627,7 +627,7 @@ namespace safe_online_sdk_dotnet
             {
                 foreach (WalletReportTransaction txn in response.transactions)
                 {
-                    transactions.Add(new LinkIDWalletReportTransaction(txn.walletId, txn.creationDate, txn.refundedDate,
+                    transactions.Add(new LinkIDWalletReportTransaction(txn.id, txn.walletId, txn.creationDate, txn.refundedDate,
                         txn.committedDate, txn.transactionId, txn.amount, convert(txn.currency), txn.walletCoin,
                         txn.refundAmount, txn.paymentDescription, txn.userId, txn.applicationName, 
                         txn.applicationFriendly, convert(txn.type), convert(txn.reportInfo)));
