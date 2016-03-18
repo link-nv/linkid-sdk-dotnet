@@ -21,7 +21,7 @@ using Org.BouncyCastle.X509;
 using System.Security.Cryptography;
 using System.Collections;
 using System.Collections.Generic;
-using IdMappingWSNamespace;
+using AttributeWSNamespace;
 
 using safe_online_sdk_dotnet_test.test.cs;
 
