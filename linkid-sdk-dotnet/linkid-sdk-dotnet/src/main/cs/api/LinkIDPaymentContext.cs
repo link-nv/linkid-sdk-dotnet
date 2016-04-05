@@ -4,8 +4,6 @@ using System.Collections.Generic;
 
 namespace safe_online_sdk_dotnet
 {
-    public enum PaymentAddBrowser { NOT_ALLOWED, REDIRECT };
-
     public class LinkIDPaymentContext
     {
         public static readonly String AMOUNT_KEY           = "PaymentContext.amount";
@@ -15,7 +13,6 @@ namespace safe_online_sdk_dotnet
         public static readonly String ORDER_REFERENCE_KEY  = "PaymentContext.orderReference";
         public static readonly String PROFILE_KEY          = "PaymentContext.profile";
         public static readonly String VALIDATION_TIME_KEY  = "PaymentContext.validationTime";
-        public static readonly String ﻿ADD_BROWSER_KEY      = "PaymentContext.addBrowser";
         public static readonly String MANDATE_KEY          = "PaymentContext.mandate";
         public static readonly String MANDATE_DESCRIPTION_KEY = "PaymentContext.mandateDescription";
         public static readonly String MANDATE_REFERENCE_KEY = "PaymentContext.mandateReference";
@@ -44,9 +41,6 @@ namespace safe_online_sdk_dotnet
         // maximum time to wait for payment validation, if not specified defaults to 5s
         public int paymentValidationTime { get; set; }
 
-        // ﻿whether or not to allow to display the option in the client to add a payment method in the browser. default is not allowed
-        public PaymentAddBrowser paymentAddBrowser { get; set; }
-
         // mandate
         public LinkIDPaymentMandate mandate { get; set; }
 
@@ -60,24 +54,23 @@ namespace safe_online_sdk_dotnet
         public bool onlyWallets {get; set;}     // allow only wallets for this payments
 
         public LinkIDPaymentContext(LinkIDPaymentAmount amount, String description, String orderReference,
-            String paymentProfile, int paymentValidationTime, PaymentAddBrowser paymentAddBrowser, LinkIDPaymentMandate mandate)
+            String paymentProfile, int paymentValidationTime, LinkIDPaymentMandate mandate)
         {
             this.amount = amount;
             this.description = description;
             this.orderReference = orderReference;
             this.paymentProfile = paymentProfile;
             this.paymentValidationTime = paymentValidationTime;
-            this.paymentAddBrowser = paymentAddBrowser;
             this.mandate = mandate;
         }
 
         public LinkIDPaymentContext(LinkIDPaymentAmount amount, String description, String orderReference, 
-            String paymentProfile, int paymentValidationTime, PaymentAddBrowser paymentAddBrowser)
-            : this(amount, description, orderReference, paymentProfile, paymentValidationTime,
-                paymentAddBrowser, null) { }
+            String paymentProfile, int paymentValidationTime)
+            : this(amount, description, orderReference, paymentProfile, paymentValidationTime, null) { }
 
-        public LinkIDPaymentContext(LinkIDPaymentAmount amount, String description, String orderReference, String paymentProfile)
-            : this(amount, description, orderReference, paymentProfile, 5, PaymentAddBrowser.REDIRECT) {}
+        public LinkIDPaymentContext(LinkIDPaymentAmount amount, String description, String orderReference, 
+            String paymentProfile)
+            : this(amount, description, orderReference, paymentProfile, 5) {}
 
         public LinkIDPaymentContext(LinkIDPaymentAmount amount)
             : this(amount, null, null, null) {}
@@ -97,10 +90,6 @@ namespace safe_online_sdk_dotnet
             {
                 throw new InvalidPaymentContextException("LinkIDPaymentContext.amount <= 0, this is not allowed");
             }
-            if (onlyWallets && paymentAddBrowser == PaymentAddBrowser.REDIRECT)
-            {
-                throw new InvalidPaymentContextException("Setting onlyWallets and allowing continue in browser makes no sense, aborting...");
-            }
 
             Dictionary<string, string> dictionary = new Dictionary<string, string>();
             dictionary.Add(AMOUNT_KEY, amount.amount.ToString());
@@ -115,8 +104,6 @@ namespace safe_online_sdk_dotnet
             if (null != paymentProfile)
                 dictionary.Add(PROFILE_KEY, paymentProfile);
             dictionary.Add(VALIDATION_TIME_KEY, paymentValidationTime.ToString());
-
-            dictionary.Add(ADD_BROWSER_KEY, paymentAddBrowser.ToString());
             
             // mandates
             if (null != mandate)

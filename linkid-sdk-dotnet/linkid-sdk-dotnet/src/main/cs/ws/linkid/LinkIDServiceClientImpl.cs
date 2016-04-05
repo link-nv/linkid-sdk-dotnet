@@ -101,8 +101,7 @@ namespace safe_online_sdk_dotnet
                     linkIDAuthnResponse = convert(response.success.authenticationResponse);
                 }
 
-                return new LinkIDAuthPollResponse(response.success.authenticationState, paymentState,
-                    response.success.paymentMenuURL, linkIDAuthnResponse);
+                return new LinkIDAuthPollResponse(response.success.authenticationState, paymentState, linkIDAuthnResponse);
             }
 
             throw new RuntimeException("No success nor error element in the response ?!");

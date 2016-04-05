@@ -87,7 +87,6 @@ namespace linkid_example
                 info = "<h2>Poll response</h2>";
                 info += "AuthenticationState: " + pollResponse.linkIDAuthenticationState + "<br/>";
                 info += "PaymentState: " + pollResponse.paymentState + "<br/>";
-                info += "Payment Menu URL: " + pollResponse.paymentMenuURL + "<br/>";
 
                 if (null != pollResponse.linkIDAuthnResponse)
                 {
